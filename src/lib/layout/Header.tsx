@@ -10,7 +10,9 @@ const Header = () => {
       justifyContent="center"
       gridGap={2}
     >
-      <Box marginLeft="auto" />
+      <Box marginLeft="auto">
+        TODO
+      </Box>
     </Flex>
   );
 };

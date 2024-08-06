@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import Layout from '~/lib/layout';
 import Routings from '~/lib/router/Routings';
-import { theme } from '~/lib/styles/theme';
+import { theme } from '~/theme';
 
 const App = () => (
   <ChakraProvider theme={theme}>

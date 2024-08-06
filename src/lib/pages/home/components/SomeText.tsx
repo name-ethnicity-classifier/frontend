@@ -4,10 +4,10 @@ const SomeText = () => {
   return (
     <Grid textAlign="center" gap={2}>
       <Heading fontSize="2xl" fontWeight="extrabold">
-        vite-react-chakra-starter
+        TODO 123
       </Heading>
       <Text fontSize="sm">
-        This is a vite react template with Chakra-UI and TypeScript setup.
+        TODO create app!
       </Text>
     </Grid>
   );
