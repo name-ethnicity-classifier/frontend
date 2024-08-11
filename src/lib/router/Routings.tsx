@@ -11,7 +11,7 @@
 import { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import RequireAuth from '~/lib/components/auth/RequireAuth';
+import RequireAuth from '~/lib/components/RequireAuth';
 import Page404 from '~/lib/pages/404';
 
 import { routes, privateRoutes } from './routes';

@@ -1,13 +1,10 @@
 import {
-  Box,
-  Button,
-  Grid,
-  Heading,
-  Image,
-  Link,
+  Flex,
   Text,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import PrimaryButton from '~/lib/components/PrimaryButton';
+import { LuArrowLeft } from "react-icons/lu";
 
 const Page404 = () => {
   const navigate = useNavigate();
@@ -15,21 +12,29 @@ const Page404 = () => {
   const handleBackToHome = () => navigate('/');
 
   return (
-    <Grid gap={4} textAlign="center">
-      <Heading>Page not Found</Heading>
+    <Flex
+      textAlign="center"
+      flexDirection="column"
+      gap={2}
+      align="center"
+      justifyContent="center"
+      marginTop="20vh"
+    >
+      <Text
+        fontSize="128px"
+        fontWeight="bold"
+        color="textDark"  
+      >
+        404 :&#40;
+      </Text>
 
-      <Box maxWidth={[280, 400]} marginX="auto">
-        <Image width={400} src="/assets/404 Error-rafiki.svg" />
-        <Link fontSize="xs" href="https://stories.freepik.com/web" isExternal>
-          Illustration by Freepik Stories
-        </Link>
-      </Box>
-
-      <Box>
-        <Text>It&apos;s Okay!</Text>
-        <Button onClick={handleBackToHome}>Let&apos;s Head Back</Button>
-      </Box>
-    </Grid>
+      <PrimaryButton
+        text="Take me home!"
+        size="xs" 
+        onClick={handleBackToHome}
+        leftIcon={<LuArrowLeft color="white"/>}
+      />
+    </Flex>
   );
 };
 

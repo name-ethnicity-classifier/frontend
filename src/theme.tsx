@@ -1,25 +1,27 @@
 import { extendTheme } from "@chakra-ui/react";
 import type { ThemeConfig } from "@chakra-ui/react";
+import "@fontsource-variable/noto-sans-jp";
+
 
 
 const config: ThemeConfig = { };
 
 export const theme = extendTheme({
   fonts: {
-    heading: "Inter, sans-serif",
-    body: "Inter, sans-serif",
+    heading: "Noto Sans, sans-serif",
+    body: "Noto Sans, sans-serif",
   },
   fontSizes: {
-    xs: "15px",
-    sm: "20px",
+    xs: "14px",
+    sm: "18px",
     md: "30px",
     lg: "40px",
     xl: "60px"
   },
   fontWeights: {
     normal: 400,
-    medium: 500,
-    bold: 700
+    medium: 600,
+    bold: 900
   },
   colors: {
     primaryBlue: "#535EF1",
@@ -27,7 +29,7 @@ export const theme = extendTheme({
     surfaceBlue: "#F5F6FE",
     textDark: "#3C406F",
     textLight: "#737695",
-    lightGray: "#D6D6D6",
+    lightGray: "#E6E6E6",
     errorRed: "red",
     successGreen: "green",
   },
@@ -41,15 +43,7 @@ export const theme = extendTheme({
     "5": "75px"
   },
   components: {
-    Button: {
-      baseStyle: {
-        fontWeight: "medium",
-        fontSize: "md",
-        width: "75px",
-        height: "30px",
-				backgroundColor: "primaryBlue"
-      }
-    }
+    
   },
   config,
 });
