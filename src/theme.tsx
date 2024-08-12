@@ -33,15 +33,18 @@ export const theme = extendTheme({
     errorRed: "red",
     successGreen: "green",
   },
-  space: {
+  /*space: {
     px: "1px",
     "0": "0px",
-    "1": "5px",
-    "2": "20px",
-    "3": "25px",
-    "4": "50px",
-    "5": "75px"
-  },
+    "5": "5px",
+    "2": "10px",
+    "3": "15px",
+    "3": "20px",
+    "4": "25px",
+    "8": "50px",
+    "9": "75px",
+    "10": "100px"
+  },*/
   components: {
     
   },

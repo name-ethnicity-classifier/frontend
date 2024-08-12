@@ -1,9 +1,16 @@
-import { Box, Flex, Image, Text, Link, Button, HStack, IconButton } from '@chakra-ui/react';
-import { PhoneIcon, AddIcon, WarningIcon } from '@chakra-ui/icons';
+import { VStack, Flex, Image, Text, Link, Button, HStack, useBreakpointValue, useDisclosure, IconButton } from '@chakra-ui/react';
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+} from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import { LuUser } from "react-icons/lu";
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PrimaryButton from '../components/PrimaryButton';
+import SettingsDrawer from '../components/SettingsDrawer';
 
 
 const NavbarButton: FC<{text: string, page: string}>  = ({ text, page }) => {
@@ -44,12 +51,18 @@ const NavbarButton: FC<{text: string, page: string}>  = ({ text, page }) => {
 
 
 
+
 const Header = () => {
   const navigate = useNavigate();
-  const handleBackToHome = () => navigate('/');
 
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const { isOpen: settingsIsOpen, onOpen: onSettingsOpen, onClose: onSettingsClose } = useDisclosure();
+  const { isOpen: isPopoverOpen, onToggle, onClose: onPopoverClose } = useDisclosure();
+
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [userEmail, setUserEmail] = useState<string | undefined>(undefined)
   const [homeIsHovered, setHomeIsHovered] = useState<boolean>(false);
-  
+
   return (
     <Flex
       as="header"
@@ -62,7 +75,7 @@ const Header = () => {
         width="full"
         marginX="auto"
         maxWidth={1500}
-        paddingX={100}
+        paddingX={{ base: "10px", "lg": "50px", "xl": "100px" }}
         height="50px"
         alignSelf="flex-start"
         justifyContent="space-between"
@@ -84,27 +97,91 @@ const Header = () => {
           <Text
             fontSize="sm"
             fontWeight="medium"
+            marginY="auto"
             color={homeIsHovered ? "primaryBlue" : "textLight"}
           >name-to-ethnicity</Text>
         </Link>
+        
+        
+          <HStack gap={{base: "10px", md: 10}}>
+            {
+              !isMobile ?
+                <HStack gap="10">
+                  <NavbarButton text="About" page="/" />
+                  <NavbarButton text="Model Hub" page="/model-hub" />
+                  <NavbarButton text="API" page="/api" />
+                </HStack>
+              :
+                <>
+                  <Popover
+                    isOpen={isPopoverOpen}
+                    onClose={onPopoverClose}
+                    closeOnBlur={true}
+                    placement="bottom-start"
+                  >
+                    <PopoverTrigger>
+                      <IconButton
+                        icon={<HamburgerIcon color="textLight" />}
+                        backgroundColor="transparent"
+                        aria-label="Open Menu"
+                        marginY="auto"
+                        _hover={{ backgroundColor: "surfaceBlue" }}
+                        onClick={onToggle}
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent
+                      maxWidth="fit-content"
+                      borderColor="lightGray"
+                      boxShadow="lg"
+                      marginTop="2"
+                      width="auto"
+                    >
+                      <PopoverBody display="flex" flexDirection="column">
+                        <VStack align="start" spacing="0">
+                          <NavbarButton text="About" page="/" />
+                          <NavbarButton text="Model Hub" page="/model-hub" />
+                          <NavbarButton text="API" page="/api" />
+                        </VStack>
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
+                </>
 
-        <HStack gap="5">
-          <HStack gap="4">
-            <NavbarButton text="About" page="/" />
-            <NavbarButton text="Model Hub" page="/model-hub" />
-            <NavbarButton text="API" page="/api" />
+            }
+            {
+              isLoggedIn ?
+                <PrimaryButton
+                  size="xs"
+                  text="Login"
+                  leftIcon={<LuUser color="white"/>}
+                  onClick={() => navigate("/login")}
+                />
+              :
+                <>
+                  <Button
+                    borderRadius="full"
+                    size="sm"
+                    bgGradient="linear(to-br, purple.300, primaryBlue)"
+                    marginY="auto"
+                    color="white"
+                    _hover={{
+                      bgGradient: "linear(to-br, purple.300, secondaryBlue)"
+                    }}
+                    onClick={onSettingsOpen}
+                  >
+                    { userEmail ? userEmail[0] : "?" }
+                  </Button>
+                  <SettingsDrawer isOpen={settingsIsOpen} onClose={onSettingsClose} />
+                </>
+            }
           </HStack>
-          
-          <PrimaryButton
-            size="xs"
-            text="Login"
-            leftIcon={<LuUser color="white"/>}
-            onClick={() => navigate("/login")}
-          />
-        </HStack>
+
+
         </Flex>
     </Flex>
   );
 };
 
 export default Header;
+
+
