@@ -16,7 +16,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Box
         marginX="auto"
         maxWidth={1500}
-        paddingX={{ base: "10", lg: "50", xl: "100" }}
+        paddingX={{ base: "5", md: "10", lg: "50", xl: "100" }}
         transition="0.5s ease-out"
       >
         <Meta />

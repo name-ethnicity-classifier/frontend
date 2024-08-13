@@ -66,8 +66,8 @@ const Footer = () => {
         width="full"
         marginX="auto"
         maxWidth={1500}
-        paddingX={{ base: "10", lg: "50", xl: "100" }}
-        paddingY="10"
+        paddingX={{ base: "5", md: "10", lg: "50", xl: "100" }}
+        paddingY={{ base: "5", md: "10" }}
         flexDirection={{ base: "column", md: "row" }}
         alignSelf="flex-start"
         justifyContent="space-between"

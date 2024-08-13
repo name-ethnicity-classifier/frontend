@@ -95,7 +95,7 @@ const Header = () => {
         marginX="auto"
         maxWidth={1500}
         paddingX={{ base: "2.5", md: "10", lg: "50", xl: "100" }}
-        height="50px"
+        paddingY="2.5"
         alignSelf="flex-start"
         justifyContent="space-between"
         gridGap={2}
