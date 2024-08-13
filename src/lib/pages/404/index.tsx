@@ -1,15 +1,13 @@
-import {
-  Flex,
-  Text,
-} from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import PrimaryButton from '~/lib/components/PrimaryButton';
+import { Flex, Text } from "@chakra-ui/react";
 import { LuArrowLeft } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
+
+import PrimaryButton from "~/lib/components/PrimaryButton";
 
 const Page404 = () => {
   const navigate = useNavigate();
 
-  const handleBackToHome = () => navigate('/');
+  const handleBackToHome = () => navigate("/");
 
   return (
     <Flex
@@ -21,18 +19,18 @@ const Page404 = () => {
       marginTop="20vh"
     >
       <Text
-        fontSize="128px"
+        fontSize={{base: "75px", md: "128px" }}
         fontWeight="bold"
-        color="textDark"  
+        color="textDark"
       >
         404 :&#40;
       </Text>
 
       <PrimaryButton
         text="Take me home!"
-        size="xs" 
+        size="xs"
         onClick={handleBackToHome}
-        leftIcon={<LuArrowLeft color="white"/>}
+        leftIcon={<LuArrowLeft color="white" />}
       />
     </Flex>
   );

@@ -1,6 +1,6 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex } from "@chakra-ui/react";
 
-import SomeText from './components/SomeText';
+import SomeText from "./components/SomeText";
 
 const Home = () => {
   return (
