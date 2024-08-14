@@ -10,11 +10,15 @@ export const theme = extendTheme({
     body: "Noto Sans, sans-serif",
   },
   fontSizes: {
-    xs: "14px",
+    xs: "13px",
     sm: "18px",
-    md: "30px",
-    lg: "40px",
-    xl: "60px",
+    md: "23px",
+    lg: "28px",
+    xl: "33px",
+    "2xl": "38px",
+    "3xl": "43px",
+    "4xl": "48px",
+    "5xl": "53px"
   },
   fontWeights: {
     normal: 400,
@@ -23,13 +27,21 @@ export const theme = extendTheme({
   },
   colors: {
     primaryBlue: "#535EF1",
-    secondaryBlue: "#C0C4FD",
+    secondaryBlue: "#CDCFFA",
     surfaceBlue: "#F5F6FE",
     textDark: "#3C406F",
     textLight: "#737695",
     lightGray: "#E6E6E6",
     errorRed: "red",
     successGreen: "green",
+  },
+  breakpoints: {
+    base: '0em', // 0px
+    sm: '34em', // ~480px. em is a relative unit and is dependant on the font size.
+    md: '48em', // ~768px
+    lg: '62em', // ~992px
+    xl: '80em', // ~1280px
+    '2xl': '96em', // ~1536px
   },
   /* space: {
     px: "1px",

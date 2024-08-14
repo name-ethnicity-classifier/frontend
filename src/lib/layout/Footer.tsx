@@ -21,7 +21,10 @@ interface FooterColumnProps {
 
 const FooterColumn = (props: FooterColumnProps) => {
   return (
-    <VStack align="flex-start" gap="2">
+    <VStack
+      align="flex-start"
+      gap={{base: "2", md: "5" }}
+    >
       <Text fontWeight="bold" color="white" fontSize="xs">
         {props.title}
       </Text>

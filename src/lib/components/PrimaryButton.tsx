@@ -5,6 +5,7 @@ interface PrimaryButtonProps {
   text: string;
   onClick: () => void;
   leftIcon?: any;
+  rightIcon?: any;
 }
 
 const PrimaryButton = (props: PrimaryButtonProps) => {
@@ -14,11 +15,12 @@ const PrimaryButton = (props: PrimaryButtonProps) => {
       borderRadius={7}
       onClick={props.onClick}
       width="fit-content"
-      paddingY={props.size === "xs" ? "10px" : "13px"}
-      paddingX={props.size === "xs" ? "12px" : "15px"}
+      paddingY={props.size === "xs" ? "12px" : "15px"}
+      paddingX={props.size === "xs" ? "14px" : "17px"}
       height="auto"
       size={props.size}
       leftIcon={props.leftIcon}
+      rightIcon={props.rightIcon}
       _hover={{
         backgroundColor: "secondaryBlue",
       }}

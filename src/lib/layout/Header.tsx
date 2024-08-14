@@ -63,7 +63,12 @@ const NavbarButton: FC<{ text: string; page: string }> = ({ text, page }) => {
   );
 };
 
-const Header = () => {
+
+interface HeaderProps {
+  height: number
+}
+
+const Header = (props: HeaderProps) => {
   const navigate = useNavigate();
 
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -85,18 +90,20 @@ const Header = () => {
   return (
     <Flex
       as="header"
+      position="fixed"
       width="full"
-      align="center"
+      height={props.height}
       borderBottomWidth={1}
       borderBottomColor="lightGray"
+      backgroundColor="white"
+      zIndex={1000}
     >
       <Flex
         width="full"
         marginX="auto"
         maxWidth={1500}
         paddingX={{ base: "2.5", md: "10", lg: "50", xl: "100" }}
-        paddingY="2.5"
-        alignSelf="flex-start"
+        alignSelf="center"
         justifyContent="space-between"
         gridGap={2}
       >
@@ -164,7 +171,7 @@ const Header = () => {
               </PopoverContent>
             </Popover>
           )}
-          {isLoggedIn ? (
+          {!isLoggedIn ? (
             <PrimaryButton
               size="xs"
               text="Login"
