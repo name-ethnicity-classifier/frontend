@@ -23,7 +23,7 @@ import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../components/PrimaryButton";
 import SettingsDrawer from "../components/SettingsDrawer";
 
-const NavbarButton: FC<{ text: string; page: string }> = ({ text, page }) => {
+const NavbarButton: FC<{ text: string; iconName: string, page: string }> = ({ text, iconName, page }) => {
   const navigate = useNavigate();
   const goToPage = () => navigate(page);
 
@@ -46,8 +46,8 @@ const NavbarButton: FC<{ text: string; page: string }> = ({ text, page }) => {
         <Image
           src={
             isHovered
-              ? "/assets/navbar-icon-blue.svg"
-              : "/assets/navbar-icon.svg"
+              ? `/assets/${iconName}-active-icon.svg`
+              : `/assets/${iconName}-icon.svg`
           }
           height="15px"
         />
@@ -133,9 +133,9 @@ const Header = (props: HeaderProps) => {
         <HStack gap={{ base: "10px", md: 10 }}>
           {!isMobile ? (
             <HStack gap="10">
-              <NavbarButton text="About" page="/" />
-              <NavbarButton text="Model Hub" page="/model-hub" />
-              <NavbarButton text="API" page="/api" />
+              <NavbarButton text="About" iconName="about" page="/" />
+              <NavbarButton text="Model Hub" iconName="model-hub" page="/model-hub" />
+              <NavbarButton text="API" iconName="api" page="/api" />
             </HStack>
           ) : (
             <Popover
@@ -176,7 +176,10 @@ const Header = (props: HeaderProps) => {
               size="xs"
               text="Login"
               leftIcon={<LuUser color="white" />}
-              onClick={() => navigate("/login")}
+              onClick={() => {
+                //navigate("/login")
+                setIsLoggedIn(true);
+              }}
             />
           ) : (
             <>

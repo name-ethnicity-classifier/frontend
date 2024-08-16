@@ -1,13 +1,37 @@
-import { Flex, Grid, GridItem, Box, Text, VStack, Spacer, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
-import { LuArrowRight } from "react-icons/lu";
+import { Flex, Grid, GridItem, Box, Link, Text, VStack, Spacer, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
+import { sum } from "~/lib/utils/sample";
 
-import PrimaryButton from "~/lib/components/PrimaryButton";
-import CallToAction from "./components/CallToAction";
+import HowToSection from "./components/HowToSection";
 import LinkCard from "./components/LinkCard";
 import NumberCard from "./components/NumberCard";
 import TeamMemberCard from "./components/TeamMemberCard";
 
 const Home = () => {
+
+
+  const nationalityData: Record<string, number> = {
+    "german": 21283,
+    "greek": 3848,
+    "american": 89041,
+    "irish": 38347,
+    "pakistani": 17848,
+    "zimwabwen": 63473
+  }
+
+  const defaultModelData: Record<string, number> = {
+    "20_nat_and_else": 21283,
+    "greek_german_and_else": 3848,
+    "european_eastAsian": 89041,
+    "irish_australian": 38347,
+    "chinese_and_else": 17848,
+  }
+
+  const customModelData: Record<string, number> = {
+    "20_nat_and_else": 21283,
+    "greek_german_and_else": 3848,
+  }
+
+  const totalDatasetSize = Object.values(nationalityData).reduce((acc, value) => acc + value, 0);
 
   const sectionGap = { base: "50px", md: "75px" }
 
@@ -25,9 +49,68 @@ const Home = () => {
         justifyContent="space-between"
         gap={{ base: "5", md: "auto" }}
       >
-        <NumberCard number="9" text="nationalities to choose from" />
-        <NumberCard number="49" text="already trained models" />
-        <NumberCard number="149" text="custom models" />
+        <NumberCard
+          data={nationalityData}
+          cardTitle="nationalities to choose from"
+          modalTitle="Our dataset"
+          modalDescription={
+            
+            <>
+            <Text
+              fontSize="xs"
+              color="textLight"
+            >
+              We sampled our dataset from the UK Census Database, resulting in <b>{totalDatasetSize}</b> names from <b>{Object.keys(nationalityData).length}</b> different nationalities.
+            </Text>
+            <Text
+              fontSize="xs"
+              color="textLight"
+            >
+              Here is an overview of how those nationalities are distributed in the dataset:              </Text>
+          </>
+          }
+        />
+        <NumberCard
+          data={defaultModelData}
+          cardTitle="already trained models"
+          modalTitle="Our models"
+          modalDescription={
+            <>
+              <Text
+                fontSize="xs"
+                color="textLight"
+              >
+                We have a growing amount of ready-to-go models which are each trained on a specific set of nationalities.
+              </Text>
+              <Text
+                fontSize="xs"
+                color="textLight"
+              >
+                Take a look and see if one of them fits your use-case. If not, you can request a custom model at the <Link href="/model-hub" color="blue">Model Hub</Link>!
+              </Text>
+            </>
+          }
+        />
+        <NumberCard
+          data={customModelData}
+          cardTitle="custom models"
+          modalTitle="Your custom models"
+          modalDescription={
+            <>
+              <Text
+                fontSize="xs"
+                color="textLight"
+              >
+                If none of our default models fit your use-case you can request a custom one which will only be trained on the nationalities you specify.              </Text>
+              <Text
+                fontSize="xs"
+                color="textLight"
+              >
+                Here is a list of your custom models:
+              </Text>
+            </>
+          }
+        />
       </Flex>
 
       <Grid
@@ -35,14 +118,15 @@ const Home = () => {
         templateColumns={{ base: "1fr", md: "1fr 1fr" }}
         align="center"
         gap="7"
+        alignItems="stretch"
       >
         <GridItem
-          marginLeft={{ base: "none", md: "auto" }} 
+          marginLeft={{ base: "none", md: "auto" }}
         >
           <LinkCard
             subTitle="Our paper published in AI &amp; Society:"
             title="“Equal accuracy for Andrew and Abubakar—detecting and mitigating bias in name-ethnicity classification algorithms”"
-            link="https://www.npmjs.com/package/react-countup"
+            link="https://link.springer.com/article/10.1007/s00146-022-01619-4"
             linkText="link.springer.com"
           />
         </GridItem>
@@ -51,9 +135,9 @@ const Home = () => {
           marginRight={{ base: "none", md: "auto" }} 
           >
           <LinkCard
-            subTitle="Our paper published in AI &amp; Society:"
-            title="“Equal accuracy for Andrew and Abubakar—detecting and mitigating bias in name-ethnicity classification algorithms”"
-            link="https://www.npmjs.com/package/react-countup"
+            subTitle="Paper about an N2E use-case in health care:"
+            title="“Artificial Intelligence (AI) Reveals Ethnic Disparities in Cataract Detection and Treatment”"
+            link="https://link.springer.com/article/10.1007/s40123-024-00945-8"
             linkText="link.springer.com"
           />
         </GridItem>
@@ -62,10 +146,10 @@ const Home = () => {
           colSpan={{ base: "none", md: 2 }}
         >
           <LinkCard
-            subTitle="Our paper published in AI &amp; Society:"
-            title="“Equal accuracy for Andrew and Abubakar—detecting and mitigating bias in name-ethnicity classification algorithms”"
-            link="https://www.npmjs.com/package/react-countup"
-            linkText="link.springer.com"
+            subTitle="Find us on GitHub:"
+            title="If you are interested in how we built N2E, want to contribute or report issues and bugs, check out our GitHub organization!"
+            link="https://github.com/name-ethnicity-classifier"
+            linkText="github.com"
           />
         </GridItem>
 
@@ -88,7 +172,7 @@ const Home = () => {
         </Text>
 
         <VStack
-          gap="2"
+          gap="5"
           align="left"
         >
           <Text
@@ -109,7 +193,7 @@ const Home = () => {
         </VStack>
 
         <VStack
-          gap="8"
+          gap="5"
           align="left"
         >
           <Text
@@ -129,24 +213,44 @@ const Home = () => {
             <TeamMemberCard
               name="Theodor Peifer"
               description="BSc. Student in Computer Science and Design, Munich University of Applied Sciences"
-              linkedInLink="www.google.com"
-              githubLink="www.google.com"
+              linkedInLink="https://www.linkedin.com/in/theodor-peifer-ab6b77190/"
+              githubLink="https://github.com/theopfr"
               imageURL="/assets/team-member-2.png"
             />
             <TeamMemberCard
               name="Lena Hafner"
               description="Phd. Candidate in Politics and International Studies, University of Cambridge"
-              linkedInLink="www.google.com"
+              linkedInLink="https://www.linkedin.com/in/theodor-peifer-ab6b77190/"
               imageURL="/assets/team-member-2.png"
             />
             <TeamMemberCard
               name="Franziska Hafner"
               description="MSc, Student in Social Data Science, University of Oxford"
-              linkedInLink="www.google.com"
+              linkedInLink="https://www.linkedin.com/in/theodor-peifer-ab6b77190/"
               imageURL="/assets/team-member-2.png"
             />
           </Flex>
         </VStack>
+      </VStack>
+
+      <VStack
+        borderTopWidth="1px"
+        borderTopColor="lightGray"
+        paddingTop={sectionGap}
+        gap="7"
+        align="left"
+      >
+        <Text
+          color="textDark"
+          fontWeight="bold"
+          fontSize="xl"
+          marginX="auto"
+        >
+          How to ...
+        </Text>
+
+        <HowToSection />
+        
       </VStack>
 
     </Flex>

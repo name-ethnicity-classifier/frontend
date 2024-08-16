@@ -1,16 +1,21 @@
-import { Flex, Box, Text, VStack, Spacer, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Box, Text, VStack, Spacer, useDisclosure, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import CountUp from "react-countup";
-
+import ListModal from "~/lib/components/ListModal";
+import type { ReactNode } from "react";
 
 
 interface NumberCardProps {
-  number: number,
-  text: string,
-  onClick?: () => void
+  data: Record<string, number>
+  cardTitle: string,
+  modalTitle: string,
+  modalDescription: ReactNode
 }
 
 
 const NumberCard = (props: NumberCardProps) => {
+  const [showListModal, setShowListModal] = useState<boolean>(false);
+
 
   return (
     <Flex
@@ -25,10 +30,14 @@ const NumberCard = (props: NumberCardProps) => {
       maxWidth={{ base: "full", md: "350px" }}
       flexDirection={{ base: "column", xl: "row" }}
       flex="1"
+      transition="ease-out 0.15s"
       _hover={{
         bg: "surfaceBlue",
         borderColor: "surfaceBlue",
         cursor: "pointer"
+      }}
+      onClick={() => {
+        setShowListModal(true);
       }}
     >
       <Text
@@ -38,7 +47,7 @@ const NumberCard = (props: NumberCardProps) => {
       >
         <CountUp
           start={0}
-          end={props.number}
+          end={Object.keys(props.data).length}
           duration={2.0}
         />
       </Text>
@@ -47,8 +56,16 @@ const NumberCard = (props: NumberCardProps) => {
         color="textLight"
         textAlign={{ base: "center", xl: "left" }}
       >
-        {props.text}
+        {props.cardTitle}
       </Text>
+
+      <ListModal
+        isOpen={showListModal}
+        onCloseHandler={() => { setShowListModal(false) }}
+        title={props.modalTitle}
+        description={props.modalDescription}
+        data={props.data}
+      />
     </Flex>
   );
 };

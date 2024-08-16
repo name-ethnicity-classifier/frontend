@@ -10,7 +10,7 @@ export const theme = extendTheme({
     body: "Noto Sans, sans-serif",
   },
   fontSizes: {
-    xs: "13px",
+    xs: "15px",
     sm: "18px",
     md: "23px",
     lg: "28px",
@@ -26,7 +26,7 @@ export const theme = extendTheme({
     bold: 900,
   },
   colors: {
-    primaryBlue: "#535EF1",
+    primaryBlue: "#6556F0",
     secondaryBlue: "#CDCFFA",
     surfaceBlue: "#F5F6FE",
     textDark: "#3C406F",

@@ -19,6 +19,8 @@ import {
                 backgroundColor="primaryBlue"
                 justifyContent="center"
                 align="center"
+                width={{ base: "25px", md: "30px" }}
+                height={{ base: "25px", md: "30px" }}
                 padding="2"
                 _hover={{
                     bg: "secondaryBlue"
@@ -49,11 +51,12 @@ const TeamMemberCard = (props: TeamMemberCardProps) => {
       gap={{ base: "4", md: "4" }}
       flexDirection={{ base: "row", md: "column" }}
       flex="1"
-      align="center"
+      align="flex-start"
       maxWidth={{ base: "full", md: "300px" }}
     >
         <Image
             src={props.imageURL}
+            marginX="auto"
             height={{ base: "100px", md: "150px" }}
             borderRadius={{ base: "7px", md: "full" }}
             aspectRadio="1"

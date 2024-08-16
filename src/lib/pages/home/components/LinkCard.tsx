@@ -14,7 +14,6 @@ interface LinkCardProps {
 
 
 const LinkCard = (props: LinkCardProps) => {
-
   return (
     <Flex
       backgroundColor="surfaceBlue"
@@ -25,6 +24,7 @@ const LinkCard = (props: LinkCardProps) => {
       flexDirection="column"
       maxWidth={{ base: "full", md: "500px" }}
       flex="1"
+      height="100%"
     >
       <HStack>
         <InfoIcon color="primaryBlue" marginY="auto" />
@@ -46,11 +46,17 @@ const LinkCard = (props: LinkCardProps) => {
       </Text>
       <Link
         href={props.link}
-        _hover={{ underline: "none" }}
+        _hover={{
+          underline: "none",
+          paddingLeft: "5"
+        }}
         isExternal={true}
         display="flex"
         flexDirection="row"
         gap="1"
+        width="fit-content"
+        transition="ease-out 0.15s"
+        marginTop="auto"
       >
         <Text
           fontSize="xs"
