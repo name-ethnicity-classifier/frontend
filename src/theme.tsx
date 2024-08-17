@@ -10,6 +10,7 @@ export const theme = extendTheme({
     body: "Noto Sans, sans-serif",
   },
   fontSizes: {
+    "2xs": "12px",
     xs: "15px",
     sm: "18px",
     md: "23px",

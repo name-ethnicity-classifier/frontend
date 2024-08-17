@@ -15,20 +15,28 @@ const Home = () => {
     "american": 89041,
     "irish": 38347,
     "pakistani": 17848,
+    "paladinland": 17848,
     "zimwabwen": 63473
   }
 
-  const defaultModelData: Record<string, number> = {
-    "20_nat_and_else": 21283,
-    "greek_german_and_else": 3848,
-    "european_eastAsian": 89041,
-    "irish_australian": 38347,
-    "chinese_and_else": 17848,
+  const defaultModelData: Record<string, string> = {
+    "20_nat_and_else": "82%",
+    "greek_german_and_else": "82%",
+    "european_eastAsian": "82%",
+    "irish_australian": "82%",
+    "chinese_and_else": "82%",
+    "greek_german_ands_else": "82%",
+    "european_eastAssian": "82%",
+    "irish_australisan": "82%",
+    "chinese_and_elsse": "82%",
+    "fgreek_german_ands_else": "82%",
+    "feuropean_eastAssian": "82%",
+    "firish_australisan": "82%",
   }
 
-  const customModelData: Record<string, number> = {
-    "20_nat_and_else": 21283,
-    "greek_german_and_else": 3848,
+  const customModelData: Record<string, string> = {
+    "20_nat_and_else": "82%",
+    "greek_german_and_else": "98%",
   }
 
   const totalDatasetSize = Object.values(nationalityData).reduce((acc, value) => acc + value, 0);
@@ -50,9 +58,11 @@ const Home = () => {
         gap={{ base: "5", md: "auto" }}
       >
         <NumberCard
-          data={nationalityData}
           cardTitle="nationalities to choose from"
+          modalData={nationalityData}
+          modalColumns={["Nationality", "Names"]}
           modalTitle="Our dataset"
+          modalSearchBar={true}
           modalDescription={
             
             <>
@@ -71,8 +81,9 @@ const Home = () => {
           }
         />
         <NumberCard
-          data={defaultModelData}
           cardTitle="already trained models"
+          modalData={defaultModelData}
+          modalColumns={["Model name", "Accuracy"]}
           modalTitle="Our models"
           modalDescription={
             <>
@@ -92,8 +103,9 @@ const Home = () => {
           }
         />
         <NumberCard
-          data={customModelData}
           cardTitle="custom models"
+          modalData={customModelData}
+          modalColumns={["Model name", "Accuracy"]}
           modalTitle="Your custom models"
           modalDescription={
             <>

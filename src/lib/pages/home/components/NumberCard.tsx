@@ -6,10 +6,12 @@ import type { ReactNode } from "react";
 
 
 interface NumberCardProps {
-  data: Record<string, number>
   cardTitle: string,
+  modalData: Record<string, number | string>
+  modalColumns: string[],
   modalTitle: string,
-  modalDescription: ReactNode
+  modalDescription: ReactNode,
+  modalSearchBar?: boolean
 }
 
 
@@ -47,7 +49,7 @@ const NumberCard = (props: NumberCardProps) => {
       >
         <CountUp
           start={0}
-          end={Object.keys(props.data).length}
+          end={Object.keys(props.modalData).length}
           duration={2.0}
         />
       </Text>
@@ -64,7 +66,9 @@ const NumberCard = (props: NumberCardProps) => {
         onCloseHandler={() => { setShowListModal(false) }}
         title={props.modalTitle}
         description={props.modalDescription}
-        data={props.data}
+        data={props.modalData}
+        columns={props.modalColumns}
+        searchBar={props.modalSearchBar}
       />
     </Flex>
   );
