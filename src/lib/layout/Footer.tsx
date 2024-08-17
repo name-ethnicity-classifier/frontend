@@ -23,7 +23,7 @@ const FooterColumn = (props: FooterColumnProps) => {
   return (
     <VStack
       align="flex-start"
-      gap={{base: "2", md: "5" }}
+      gap={{base: "1", md: "5" }}
     >
       <Text fontWeight="bold" color="white" fontSize="xs">
         {props.title}
@@ -74,7 +74,7 @@ const Footer = () => {
         flexDirection={{ base: "column", md: "row" }}
         alignSelf="flex-start"
         justifyContent="space-between"
-        gap="5"
+        gap={{ base: "7", md: "5" }}
       >
         <VStack align="flex-start" gap="2">
           <HStack gap="3">

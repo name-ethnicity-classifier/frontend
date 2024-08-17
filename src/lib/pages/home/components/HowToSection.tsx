@@ -59,7 +59,7 @@ const HowToSection = () => {
                 borderRightWidth={{ base: "0px", lg: "1px" }}
                 borderColor="lightGray"
                 paddingRight={{ base: "0", lg: "20" }}
-                paddingBottom={{ base: "5", lg: "0" }}
+                paddingBottom={{ base: "7", lg: "0" }}
                 align="left"
                 gap="3"
                 flex="1"

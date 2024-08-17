@@ -198,7 +198,7 @@ const Home = () => {
           <Text
             color="textLight"
             fontSize="xs"
-            textAlign="left"
+            textAlign="justify"
           >
             Ethnic inequalities come in many shades, and uncovering them requires versatile research tools. Without knowledge about these inequalities, we have no basis for combating them. Embracing the shift within the social sciences from a 'colour-blind' to a 'colour-conscious' concept of justice, we've developed a name-ethnicity classification tool to infuse data with 'colour-consciousness'. This tool, available for free on our website, is customized to your research needs. You can choose relevant nationalities, and we automatically train a tailor-made machine learning classifier for you using a dataset from the UK government agency CompaniesHouse, which contains roughly 7.3 million names from across the globe. Check out our GitHub repository to see how we built this tool, and join us in opening our eyes to the coloured inequalities of our times.  
           </Text>
@@ -218,9 +218,8 @@ const Home = () => {
 
           <Flex
             justifyContent="space-between"
-            flexDirection={{ base: "column", md: "row" }}
-            gap={{ base: "5", md: "auto" }}
-            alignItems="stretch"
+            flexDirection={{ base: "column", lg: "row" }}
+            gap="5"
           >
             <TeamMemberCard
               name="Theodor Peifer"

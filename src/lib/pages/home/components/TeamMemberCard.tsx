@@ -15,7 +15,7 @@ import {
             isExternal={true}
         >
             <Flex
-                borderRadius="7"
+                borderRadius="full"
                 backgroundColor="primaryBlue"
                 justifyContent="center"
                 align="center"
@@ -46,42 +46,42 @@ const TeamMemberCard = (props: TeamMemberCardProps) => {
   return (
     <Flex
       backgroundColor="surfaceBlue"
-      padding="5"
+      padding="4"
       borderRadius="7"
-      gap={{ base: "4", md: "4" }}
-      flexDirection={{ base: "row", md: "column" }}
+      gap="4"
+      flexDirection="row"
       flex="1"
       align="flex-start"
-      maxWidth={{ base: "full", md: "300px" }}
-    >
-        <Image
-            src={props.imageURL}
-            marginX="auto"
-            height={{ base: "100px", md: "150px" }}
-            borderRadius={{ base: "7px", md: "full" }}
-            aspectRadio="1"
-        />
+    >   
+        <Box
+            flex={{base: "2", sm: "1", lg: "3" }}
+        >
+            <Image
+                src={props.imageURL}
+                borderRadius="7px"
+                aspectRadio="1"
+            />
+        </Box>
+            
         <VStack
-            flex={{ base: "4", md: "1" }}
-            align={{ base: "left", md: "center" }}
+            align="left"
+            flex="4"
         >
             <Text
                 fontWeight="bold"
                 color="primaryBlue"
                 fontSize="xs"
-                textAlign={{ base: "left", md: "center" }}
             >
                 {props.name}            
             </Text>
             <Text
                 color="textLight"
                 fontSize="xs"
-                textAlign={{ base: "left", md: "center" }}
             >
                 {props.description}            
             </Text>
 
-            <HStack marginTop="auto">
+            <HStack alignItems="flex-end" flexGrow={1}>
                 {
                     props.linkedInLink && (
                         <SocialButton

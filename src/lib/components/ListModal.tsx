@@ -3,7 +3,7 @@ import { ReactNode, useState, ChangeEvent, useEffect } from "react";
 import { Search2Icon } from "@chakra-ui/icons";
 
 
-interface ListModalProps {
+export interface ListModalProps {
 	isOpen: boolean,
 	onCloseHandler: () => void,
 	title: string,
