@@ -2,8 +2,6 @@ import { Flex, Box, Text, VStack, Spacer, Image, Link, HStack, useBreakpointValu
 import {
     LuGithub,
     LuLinkedin,
-    LuGift,
-    LuHeart,
   } from "react-icons/lu";
   import { IconType } from "react-icons";
 
@@ -16,7 +14,7 @@ import {
         >
             <Flex
                 borderRadius="full"
-                backgroundColor="primaryBlue"
+                backgroundColor="secondaryBlue"
                 justifyContent="center"
                 align="center"
                 width={{ base: "25px", md: "30px" }}
@@ -26,7 +24,7 @@ import {
                     bg: "secondaryBlue"
                 }}
             >
-                <props.icon color="white" />
+                <props.icon color="var(--chakra-colors-primaryBlue)" />
             </Flex>
         </Link>
     );

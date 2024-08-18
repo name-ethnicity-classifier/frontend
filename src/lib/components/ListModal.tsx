@@ -39,8 +39,8 @@ const ListModal = (props: ListModalProps) => {
 			preserveScrollBarGap
 		>
 			<ModalOverlay
-				bg='blackAlpha.300'
-				backdropFilter='blur(10px)'
+				bg="blackAlpha.300"
+				backdropFilter="blur(10px)"
 			/>
 			<ModalContent
 				padding={{ base: "5", md: "10" }}
@@ -52,7 +52,7 @@ const ListModal = (props: ListModalProps) => {
 				<ModalHeader padding="0">
 					<HStack alignItems="center">
 						<Text
-							fontSize="lg"
+							fontSize="md"
 							fontWeight="bold"
 							color="textDark"
 						>
@@ -184,6 +184,17 @@ const ListModal = (props: ListModalProps) => {
 												</Td>
 											</Tr>
 										))
+									}
+									{
+										searchQuery.length > 0 && Object.entries(filteredData).length === 0 ?
+											<Text
+												fontSize="xs"
+												color="textLight"
+												padding="5px"
+											>
+												No such nationality exists in our dataset!
+											</Text>
+										: null
 									}
 								</Tbody>
 							</Table>

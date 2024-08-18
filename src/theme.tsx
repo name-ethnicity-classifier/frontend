@@ -33,7 +33,8 @@ export const theme = extendTheme({
     textDark: "#3C406F",
     textLight: "#737695",
     lightGray: "#E6E6E6",
-    errorRed: "red",
+    primaryRed: "#EF383B",
+    secondaryRed: "#FFA6A7",
     successGreen: "green",
   },
   breakpoints: {

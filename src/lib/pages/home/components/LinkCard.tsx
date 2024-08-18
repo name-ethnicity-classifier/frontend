@@ -1,8 +1,6 @@
 import { Flex, Box, Text, VStack, Spacer, Image, Link, HStack, useBreakpointValue } from "@chakra-ui/react";
 import { ArrowForwardIcon, InfoIcon } from "@chakra-ui/icons";
-import CountUp from "react-countup";
 
-import PrimaryButton from "~/lib/components/PrimaryButton";
 
 
 interface LinkCardProps {
@@ -31,6 +29,7 @@ const LinkCard = (props: LinkCardProps) => {
         <Text
           fontSize="xs"
           color="textLight"
+          textAlign="left"
         >
           {props.subTitle}
         </Text>
