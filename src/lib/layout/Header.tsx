@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../components/PrimaryButton";
 import SettingsDrawer from "../components/SettingsDrawer";
 
+
 const NavbarButton: FC<{ text: string; iconName: string, page: string }> = ({ text, iconName, page }) => {
   const navigate = useNavigate();
   const goToPage = () => navigate(page);
@@ -52,7 +53,6 @@ const NavbarButton: FC<{ text: string; iconName: string, page: string }> = ({ te
           height="15px"
         />
         <Text
-          fontSize="xs"
           color={isHovered ? "primaryBlue" : "textLight"}
           fontWeight="bold"
         >
@@ -69,8 +69,6 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
-  const navigate = useNavigate();
-
   const isMobile = useBreakpointValue({ base: true, md: false });
   const {
     isOpen: settingsIsOpen,

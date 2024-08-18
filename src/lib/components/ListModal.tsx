@@ -1,4 +1,4 @@
-import { Input, Flex, Table, Thead, Tbody, Tr, Th, Td, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalCloseButton, ModalBody, Box, Text, VStack, Spacer, Image, Link, HStack, useBreakpointValue } from "@chakra-ui/react";
+import { Input, Heading, Table, Thead, Tbody, Tr, Th, Td, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalCloseButton, ModalBody, Box, Text, VStack, Spacer, Image, Link, HStack, useBreakpointValue } from "@chakra-ui/react";
 import { ReactNode, useState, ChangeEvent, useEffect } from "react";
 import { Search2Icon } from "@chakra-ui/icons";
 
@@ -51,13 +51,11 @@ const ListModal = (props: ListModalProps) => {
 			>
 				<ModalHeader padding="0">
 					<HStack alignItems="center">
-						<Text
-							fontSize="md"
-							fontWeight="bold"
-							color="textDark"
+						<Heading
+							variant="h2"
 						>
 							{props.title}
-						</Text>
+						</Heading>
 						<ModalCloseButton
 							position="relative"
 							top="unset"

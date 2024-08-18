@@ -24,7 +24,7 @@ const SecondaryButton = (props: SecondaryButtonProps) => {
       leftIcon={props.leftIcon}
       rightIcon={props.rightIcon}
       _hover={{
-        backgroundColor: "surfaceBlue",
+        backgroundColor: props.theme === "red" ? "secondaryRedHover" : "secondaryBlueHover",
       }}
     >
       <Text

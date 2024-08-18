@@ -23,7 +23,7 @@ const PrimaryButton = (props: PrimaryButtonProps) => {
       leftIcon={props.leftIcon}
       rightIcon={props.rightIcon}
       _hover={{
-        backgroundColor: "secondaryBlue",
+        backgroundColor: "primaryBlueHover",
       }}
     >
       <Text fontSize={props.size} color="white">

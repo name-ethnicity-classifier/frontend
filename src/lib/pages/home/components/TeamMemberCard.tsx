@@ -72,10 +72,7 @@ const TeamMemberCard = (props: TeamMemberCardProps) => {
             >
                 {props.name}            
             </Text>
-            <Text
-                color="textLight"
-                fontSize="xs"
-            >
+            <Text>
                 {props.description}            
             </Text>
 

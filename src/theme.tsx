@@ -11,7 +11,7 @@ export const theme = extendTheme({
   },
   fontSizes: {
     "2xs": "12px",
-    xs: "15px",
+    xs: "14px",
     sm: "18px",
     md: "23px",
     lg: "28px",
@@ -30,20 +30,25 @@ export const theme = extendTheme({
     primaryBlue: "#6556F0",
     secondaryBlue: "#CDCFFA",
     surfaceBlue: "#F5F6FE",
+    primaryBlueHover: "#5C4ED6",
+    secondaryBlueHover: "#B7BBFB",
+    surfaceBlueHover: "#EBEDFC",
     textDark: "#3C406F",
     textLight: "#737695",
     lightGray: "#E6E6E6",
     primaryRed: "#EF383B",
-    secondaryRed: "#FFA6A7",
+    primaryRedHover: "#CB3436",
+    secondaryRed: "#FFB8B9",
+    secondaryRedHover: "#FFA1A3",
     successGreen: "green",
   },
   breakpoints: {
-    base: '0em', // 0px
-    sm: '34em', // ~480px. em is a relative unit and is dependant on the font size.
-    md: '48em', // ~768px
-    lg: '62em', // ~992px
-    xl: '80em', // ~1280px
-    '2xl': '96em', // ~1536px
+    base: '0em',
+    sm: '34em',
+    md: '48em',
+    lg: '62em',
+    xl: '80em', 
+    '2xl': '96em',
   },
   /* space: {
     px: "1px",
@@ -57,6 +62,44 @@ export const theme = extendTheme({
     "9": "75px",
     "10": "100px"
   }, */
-  components: {},
+  components: {
+    Text: {
+      baseStyle: {
+        fontSize: "xs",
+        color: "textLight",
+      },
+      variants: {
+        "bold": {
+          fontWeight: "bold",
+          color: "textDark"
+        },
+        "link": {
+          fontWeight: "bold",
+          color: "primaryBlue",
+          _hover: {
+            color: "primaryBlueHover"
+          }
+        }
+      }
+    },
+    Heading: {
+      baseStyle: {
+        fontSize: "md",
+        color: "textDark",
+        fontWeight: "bold"
+      },
+      variants: {
+        "h1": {
+          fontSize: "2xl"
+        },
+        "h2": {
+          fontSize: "md"
+        },
+        "h3": {
+          fontSize: "sm"
+        }
+      }
+    },
+  },
   config,
 });

@@ -5,7 +5,7 @@ import {
 import {
   Box,
   Flex,
-  Image,
+  Heading,
   Text,
   Link,
   Button,
@@ -18,6 +18,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
+  useToast,
   DrawerCloseButton,
 } from "@chakra-ui/react";
 import SecondaryButton from "./SecondaryButton";
@@ -31,6 +32,22 @@ interface SettingValueType {
 }
 
 const SettingsCardTable = (props: { rows: Record<string, SettingValueType> }) => {
+  const toast = useToast();
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: "Copied API key to clipboard.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+    }).catch((err) => {
+      console.error("Failed to copy: ", err);
+    });
+  };
+
   return (
     <Table
       style={{ borderCollapse: "separate", borderSpacing: "10px 10px" }}
@@ -43,8 +60,6 @@ const SettingsCardTable = (props: { rows: Record<string, SettingValueType> }) =>
               backgroundColor="white"
             >
               <Td
-                color="textDark"
-                fontWeight="bold"
                 paddingX="5"
                 paddingY="3"
                 boxShadow="sm"
@@ -52,7 +67,11 @@ const SettingsCardTable = (props: { rows: Record<string, SettingValueType> }) =>
                 fontSize={{ base: "2xs", sm: "xs"}}
                 width="45%"
               >
-                {key}
+                <Text
+                  variant="bold"
+                >
+                  {key}
+                </Text>
               </Td>
               <Td
                 color="textLight"
@@ -86,7 +105,7 @@ const SettingsCardTable = (props: { rows: Record<string, SettingValueType> }) =>
                       </Text>
                       <Box>
                         <CopyIcon
-                          onClick={() => alert("Copied!")}
+                          onClick={() => handleCopy(value.text)}
                           color="primaryBlue"
                         />
                       </Box>
@@ -105,8 +124,7 @@ const SettingsCardTable = (props: { rows: Record<string, SettingValueType> }) =>
                         alignItems="center"
                       >
                         <Text
-                          color="primaryBlue"
-                          fontWeight="bold"
+                          variant="link"
                         >
                           {value.text}
                         </Text>
@@ -164,9 +182,11 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
         >
           <HStack gap="3">
             <SettingsIcon color="textDark" boxSize="25px" />
-            <Text fontSize="md" color="textDark">
+            <Heading
+              variant="h2"
+            >
               Settings
-            </Text>
+            </Heading>
             <DrawerCloseButton
               position="relative"
               top="unset"
@@ -197,13 +217,12 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 marginBottom="0"
               >
                 <LuUser color="var(--chakra-colors-primaryBlue)" />
-                <Text
-                  fontSize="sm"
-                  fontWeight="bold"
+                <Heading
+                  variant="h3"
                   color="primaryBlue"
                 >
                   Profile
-                </Text>
+                </Heading>
               </HStack>
 
               <SettingsCardTable
@@ -211,7 +230,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                   "Name": { text: name, type: "text" },
                   "Email": { text: email, type: "text" },
                   "Role": { text: role, type: "text" },
-                  "API Key": { text: api_key, type: "hidden" }
+                  "API key": { text: api_key, type: "hidden" }
                 }}
               />
 
@@ -247,13 +266,12 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 marginBottom="0"
               >
                 <LuShieldCheck color="var(--chakra-colors-primaryBlue)" />
-                <Text
-                  fontSize="sm"
-                  fontWeight="bold"
+                <Heading
+                  variant="h3"
                   color="primaryBlue"
                 >
                   Legal
-                </Text>
+                </Heading>
               </HStack>
 
               <SettingsCardTable
@@ -275,13 +293,12 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 marginBottom="0"
               >
                 <LuMail color="var(--chakra-colors-primaryBlue)" />
-                <Text
-                  fontSize="sm"
-                  fontWeight="bold"
+                <Heading
+                  variant="h3"
                   color="primaryBlue"
                 >
                   Contact
-                </Text>
+                </Heading>
               </HStack>
 
               <SettingsCardTable

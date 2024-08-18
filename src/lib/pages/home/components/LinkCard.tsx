@@ -1,5 +1,5 @@
 import { Flex, Box, Text, VStack, Spacer, Image, Link, HStack, useBreakpointValue } from "@chakra-ui/react";
-import { ArrowForwardIcon, InfoIcon } from "@chakra-ui/icons";
+import { ArrowForwardIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 
 
 
@@ -25,10 +25,8 @@ const LinkCard = (props: LinkCardProps) => {
       height="100%"
     >
       <HStack>
-        <InfoIcon color="primaryBlue" marginY="auto" />
+        <InfoOutlineIcon color="primaryBlue" marginY="auto" />
         <Text
-          fontSize="xs"
-          color="textLight"
           textAlign="left"
         >
           {props.subTitle}
@@ -36,9 +34,7 @@ const LinkCard = (props: LinkCardProps) => {
       </HStack>
       
       <Text
-        fontSize="xs"
-        fontWeight="bold"
-        color="textDark"
+        variant="bold"
         textAlign="left"
       >
         <i>{props.title}</i>

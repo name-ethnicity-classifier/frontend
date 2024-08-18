@@ -1,14 +1,11 @@
-import { Flex, Box, Text, VStack, Spacer, Image, Link, HStack, useBreakpointValue } from "@chakra-ui/react";
-import { ArrowForwardIcon, InfoIcon } from "@chakra-ui/icons";
-import CountUp from "react-countup";
-
-import PrimaryButton from "~/lib/components/PrimaryButton";
+import { Flex, Box, Text, VStack, Heading, Image, Link, HStack } from "@chakra-ui/react";
 
 
 interface BulletSectionProps {
     number: number;
     text: string
-  }
+}
+
 
 const BulletSection = (props: BulletSectionProps) => {
     return (
@@ -64,13 +61,11 @@ const HowToSection = () => {
                 gap="3"
                 flex="1"
             >
-                <Text
-                    color="textDark"
-                    fontWeight="bold"
-                    fontSize="sm"
+                <Heading
+                    variant="h3"
                 >
                     ... classify names
-                </Text>
+                </Heading>
 
                 <Text
                     color="textLight"
@@ -138,13 +133,12 @@ const HowToSection = () => {
                 flex="1"
                 gap="3"
             >
-                <Text
-                    color="textDark"
-                    fontWeight="bold"
-                    fontSize="sm"
+                <Heading
+                    variant="h3"
                 >
                     ... request custom models
-                </Text>
+                </Heading>
+
                 <Text
                     color="textLight"
                     fontSize="xs"

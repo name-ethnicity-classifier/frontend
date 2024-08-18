@@ -22,7 +22,7 @@ const NumberCard = (props: NumberCardProps) => {
   return (
     <Flex
       backgroundColor="white"
-      borderColor="secondaryBlue"
+      borderColor="surfaceBlue"
       borderWidth="1px"
       paddingX={{ base: "2", xl: "12" }}
       paddingY="5"
@@ -33,6 +33,7 @@ const NumberCard = (props: NumberCardProps) => {
       flexDirection={{ base: "column", xl: "row" }}
       flex="1"
       transition="ease-out 0.15s"
+      boxShadow="base"
       _hover={{
         bg: "surfaceBlue",
         borderColor: "surfaceBlue",
@@ -55,7 +56,6 @@ const NumberCard = (props: NumberCardProps) => {
       </Text>
       <Text
         fontSize={{ base: "sm", md: "sm" }}
-        color="textLight"
         textAlign={{ base: "center", xl: "left" }}
       >
         {props.cardTitle}

@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Box, Link, Text, VStack, Spacer, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Heading, Link, Text, VStack, Spacer, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
 import { sum } from "~/lib/utils/sample";
 
 import HowToSection from "./components/HowToSection";
@@ -64,20 +64,13 @@ const Home = () => {
           modalTitle="Our dataset"
           modalSearchBar={true}
           modalDescription={
-            
             <>
-            <Text
-              fontSize="xs"
-              color="textLight"
-            >
-              We sampled our dataset from the UK Census Database, resulting in <b>{totalDatasetSize}</b> names from <b>{Object.keys(nationalityData).length}</b> different nationalities.
-            </Text>
-            <Text
-              fontSize="xs"
-              color="textLight"
-            >
-              Here is an overview of how those nationalities are distributed in the dataset:              </Text>
-          </>
+              <Text>
+                We sampled our dataset from the UK Census Database, resulting in <b>{totalDatasetSize}</b> names from <b>{Object.keys(nationalityData).length}</b> different nationalities.
+              </Text>
+              <Text>
+                Here is an overview of how those nationalities are distributed in the dataset:              </Text>
+            </>
           }
         />
         <NumberCard
@@ -87,16 +80,10 @@ const Home = () => {
           modalTitle="Our models"
           modalDescription={
             <>
-              <Text
-                fontSize="xs"
-                color="textLight"
-              >
+              <Text >
                 We have a growing amount of ready-to-go models which are each trained on a specific set of nationalities.
               </Text>
-              <Text
-                fontSize="xs"
-                color="textLight"
-              >
+              <Text>
                 Take a look and see if one of them fits your use-case. If not, you can request a custom model at the <Link href="/model-hub" color="blue">Model Hub</Link>!
               </Text>
             </>
@@ -109,15 +96,9 @@ const Home = () => {
           modalTitle="Your custom models"
           modalDescription={
             <>
-              <Text
-                fontSize="xs"
-                color="textLight"
-              >
+              <Text>
                 If none of our default models fit your use-case you can request a custom one which will only be trained on the nationalities you specify.              </Text>
-              <Text
-                fontSize="xs"
-                color="textLight"
-              >
+              <Text>
                 Here is a list of your custom models:
               </Text>
             </>
@@ -174,30 +155,24 @@ const Home = () => {
         gap="7"
         align="left"
       >
-        <Text
-          color="textDark"
-          fontWeight="bold"
-          fontSize="xl"
+        <Heading
+          variant="h2"
           marginX="auto"
         >
           About...
-        </Text>
+        </Heading>
 
         <VStack
           gap="5"
           align="left"
         >
-          <Text
-            color="textDark"
-            fontWeight="bold"
-            fontSize="sm"
+          <Heading
+            variant="h3"
           >
             ... this project and our motivation   
-          </Text>
+          </Heading>
 
           <Text
-            color="textLight"
-            fontSize="xs"
             textAlign="justify"
           >
             Ethnic inequalities come in many shades, and uncovering them requires versatile research tools. Without knowledge about these inequalities, we have no basis for combating them. Embracing the shift within the social sciences from a 'colour-blind' to a 'colour-conscious' concept of justice, we've developed a name-ethnicity classification tool to infuse data with 'colour-consciousness'. This tool, available for free on our website, is customized to your research needs. You can choose relevant nationalities, and we automatically train a tailor-made machine learning classifier for you using a dataset from the UK government agency CompaniesHouse, which contains roughly 7.3 million names from across the globe. Check out our GitHub repository to see how we built this tool, and join us in opening our eyes to the coloured inequalities of our times.  
@@ -208,13 +183,11 @@ const Home = () => {
           gap="5"
           align="left"
         >
-          <Text
-            color="textDark"
-            fontWeight="bold"
-            fontSize="sm"
+          <Heading
+            variant="h3"
           >
             ... our team  
-          </Text>
+          </Heading>
 
           <Flex
             justifyContent="space-between"
@@ -251,14 +224,12 @@ const Home = () => {
         gap="7"
         align="left"
       >
-        <Text
-          color="textDark"
-          fontWeight="bold"
-          fontSize="xl"
+        <Heading
+          variant="h2"
           marginX="auto"
         >
           How to ...
-        </Text>
+        </Heading>
 
         <HowToSection />
         

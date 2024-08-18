@@ -37,7 +37,6 @@ const CallToAction = () => {
           
           <Text
             fontSize={{ base: "xs", md: "sm" }}
-            color="textLight"
           >
             The non-profit N2E helps you uncover ethnic imbalances among your research, patients, clients, customers, and whatever other people you care for!
           </Text>
@@ -51,8 +50,7 @@ const CallToAction = () => {
             {
               !changeLayout ?
                 <Text
-                  fontSize="xs"
-                  fontWeight="bold"
+                  variant="bold"
                   color="primaryBlue"
                 >
                   to get started, check out ...
