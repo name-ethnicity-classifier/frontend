@@ -14,7 +14,7 @@ interface LinkCardProps {
 const LinkCard = (props: LinkCardProps) => {
   return (
     <Flex
-      backgroundColor="surfaceBlue"
+      backgroundColor="surfaceBlue.100"
       padding="3"
       borderRadius="7"
       align="left"
@@ -25,7 +25,7 @@ const LinkCard = (props: LinkCardProps) => {
       height="100%"
     >
       <HStack>
-        <InfoOutlineIcon color="primaryBlue" marginY="auto" />
+        <InfoOutlineIcon color="primaryBlue.100" marginY="auto" />
         <Text
           textAlign="left"
         >
@@ -43,7 +43,7 @@ const LinkCard = (props: LinkCardProps) => {
         href={props.link}
         _hover={{
           underline: "none",
-          paddingLeft: "5"
+          paddingLeft: "3"
         }}
         isExternal={true}
         display="flex"
@@ -56,11 +56,11 @@ const LinkCard = (props: LinkCardProps) => {
         <Text
           fontSize="xs"
           fontWeight="bold"
-          color="primaryBlue"
+          color="primaryBlue.100"
         >
           {props.linkText}
         </Text>
-        <ArrowForwardIcon color="primaryBlue" marginY="auto" />
+        <ArrowForwardIcon color="primaryBlue.100" marginY="auto" />
       </Link>
     </Flex>
   );

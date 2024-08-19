@@ -27,20 +27,29 @@ export const theme = extendTheme({
     bold: 900,
   },
   colors: {
-    primaryBlue: "#6556F0",
-    secondaryBlue: "#CDCFFA",
-    surfaceBlue: "#F5F6FE",
-    primaryBlueHover: "#5C4ED6",
-    secondaryBlueHover: "#B7BBFB",
-    surfaceBlueHover: "#EBEDFC",
+    primaryBlue: {
+      100: "#6C6AFC",
+      200: "#6260F8"
+    },
+    secondaryBlue: {
+      100: "#CDCFFA",
+      200: "#B7BBFB"
+    },
+    surfaceBlue: {
+      100: "#F5F6FE",
+      200: "#EBEDFC"
+    },
+    primaryRed: {
+      100: "#EF383B",
+      200: "#CB3436"
+    },
+    secondaryRed: {
+      100: "#FFB8B9",
+      200: "#FFA1A3"
+    },
     textDark: "#3C406F",
     textLight: "#737695",
-    lightGray: "#E6E6E6",
-    primaryRed: "#EF383B",
-    primaryRedHover: "#CB3436",
-    secondaryRed: "#FFB8B9",
-    secondaryRedHover: "#FFA1A3",
-    successGreen: "green",
+    lightGray: "#E6E6E6"
   },
   breakpoints: {
     base: '0em',
@@ -75,9 +84,9 @@ export const theme = extendTheme({
         },
         "link": {
           fontWeight: "bold",
-          color: "primaryBlue",
+          color: "primaryBlue.100",
           _hover: {
-            color: "primaryBlueHover"
+            color: "secondaryBlue.200"
           }
         }
       }
@@ -99,6 +108,43 @@ export const theme = extendTheme({
           fontSize: "sm"
         }
       }
+    },
+    Button: {
+      variants: {
+        default: {
+          bg: "primaryBlue.100",
+          color: "white",
+          fontSize: "xs",
+          borderRadius: "7px",
+          _hover: {
+            bg: "primaryBlue.200"
+          },
+          '>.chakra-button__icon': {
+            paddingX: '0px',
+          },
+        },
+        secondary: {
+          bg: "secondaryBlue.100",
+          color: "primaryBlue.100",
+          fontSize: "xs",
+          borderRadius: "7px",
+          _hover: {
+            bg: "secondaryBlue.200"
+          }
+        },
+        cautious: {
+          bg: "secondaryRed.100",
+          color: "primaryRed.100",
+          fontSize: "xs",
+          borderRadius: "7px",
+          _hover: {
+            bg: "secondaryRed.200"
+          }
+        },
+      },
+      defaultProps: {
+        variant: "default",
+      },
     },
   },
   config,

@@ -53,7 +53,7 @@ const NavbarButton: FC<{ text: string; iconName: string, page: string }> = ({ te
           height="15px"
         />
         <Text
-          color={isHovered ? "primaryBlue" : "textLight"}
+          color={isHovered ? "primaryBlue.100" : "textLight"}
           fontWeight="bold"
         >
           {text}
@@ -92,7 +92,7 @@ const Header = (props: HeaderProps) => {
       width="full"
       height={props.height}
       borderBottomWidth={1}
-      borderBottomColor="lightGray"
+      borderBottomColor="surfaceBlue.200"
       backgroundColor="white"
       zIndex={1000}
     >
@@ -122,7 +122,7 @@ const Header = (props: HeaderProps) => {
             fontSize="sm"
             fontWeight="medium"
             marginY="auto"
-            color={homeIsHovered ? "primaryBlue" : "textLight"}
+            color={homeIsHovered ? "primaryBlue.100" : "textLight"}
           >
             name-to-ethnicity
           </Text>
@@ -148,7 +148,7 @@ const Header = (props: HeaderProps) => {
                   backgroundColor="transparent"
                   aria-label="Open Menu"
                   marginY="auto"
-                  _hover={{ backgroundColor: "surfaceBlue" }}
+                  _hover={{ backgroundColor: "surfaceBlue.100" }}
                   onClick={onToggle}
                 />
               </PopoverTrigger>
@@ -170,25 +170,25 @@ const Header = (props: HeaderProps) => {
             </Popover>
           )}
           {!isLoggedIn ? (
-            <PrimaryButton
-              size="xs"
-              text="Login"
+            <Button
               leftIcon={<LuUser color="white" />}
               onClick={() => {
                 //navigate("/login")
                 setIsLoggedIn(true);
               }}
-            />
+            >
+              Login
+            </Button>
           ) : (
             <>
               <Button
                 borderRadius="full"
                 size="sm"
-                bgGradient="linear(to-br, purple.300, primaryBlue)"
+                bgGradient="linear(to-br, purple.300, primaryBlue.100)"
                 marginY="auto"
                 color="white"
                 _hover={{
-                  bgGradient: "linear(to-br, purple.300, secondaryBlue)",
+                  bgGradient: "linear(to-br, purple.400, secondaryBlue.200)",
                 }}
                 onClick={onSettingsOpen}
               >

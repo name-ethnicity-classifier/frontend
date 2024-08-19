@@ -17,7 +17,7 @@ const BulletSection = (props: BulletSectionProps) => {
             marginX="auto"
         >
             <Flex
-                backgroundColor="secondaryBlue"
+                backgroundColor="secondaryBlue.100"
                 borderRadius="full"
                 align="center"
                 justifyContent="center"
@@ -27,7 +27,7 @@ const BulletSection = (props: BulletSectionProps) => {
                 <Text
                     fontWeight="bold"
                     fontSize="sm"
-                    color="primaryBlue"
+                    color="primaryBlue.100"
                 >
                     {props.number}
                 </Text>
@@ -88,7 +88,7 @@ const HowToSection = () => {
                     marginX="auto"
                     marginY="3"
                     borderWidth="1px"
-                    borderColor="secondaryBlue"
+                    borderColor="secondaryBlue.100"
                     borderRadius="7px"
                 >
                     <Image
@@ -109,7 +109,7 @@ const HowToSection = () => {
                     marginX="auto"
                     marginY="3"
                     borderWidth="1px"
-                    borderColor="secondaryBlue"
+                    borderColor="secondaryBlue.100"
                     borderRadius="7px"
                 >
                     <Image

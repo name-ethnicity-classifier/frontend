@@ -1,8 +1,6 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, Button } from "@chakra-ui/react";
 import { LuArrowLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
-
-import PrimaryButton from "~/lib/components/PrimaryButton";
 
 const Page404 = () => {
   const navigate = useNavigate();
@@ -26,12 +24,12 @@ const Page404 = () => {
         404 :&#40;
       </Text>
 
-      <PrimaryButton
-        text="Take me home!"
-        size="xs"
-        onClick={handleBackToHome}
+      <Button
         leftIcon={<LuArrowLeft color="white" />}
-      />
+        onClick={() => handleBackToHome() }
+      >
+        Take me home!
+      </Button>
     </Flex>
   );
 };

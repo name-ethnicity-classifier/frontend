@@ -106,7 +106,7 @@ const SettingsCardTable = (props: { rows: Record<string, SettingValueType> }) =>
                       <Box>
                         <CopyIcon
                           onClick={() => handleCopy(value.text)}
-                          color="primaryBlue"
+                          color="primaryBlue.100"
                         />
                       </Box>
                     </HStack>
@@ -128,7 +128,7 @@ const SettingsCardTable = (props: { rows: Record<string, SettingValueType> }) =>
                         >
                           {value.text}
                         </Text>
-                        <LuArrowRight color="var(--chakra-colors-primaryBlue"/>
+                        <LuArrowRight color="var(--chakra-colors-primaryBlue-100)"/>
                       </HStack>
                     </Link>
                   : "-"
@@ -209,17 +209,17 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
             <VStack
               alignItems="left"
               gap="2"
-              bg="surfaceBlue"
+              bg="surfaceBlue.100"
               borderRadius="7"
             >
               <HStack
                 margin="5"
                 marginBottom="0"
               >
-                <LuUser color="var(--chakra-colors-primaryBlue)" />
+                <LuUser color="var(--chakra-colors-primaryBlue-100)" />
                 <Heading
                   variant="h3"
-                  color="primaryBlue"
+                  color="primaryBlue.100"
                 >
                   Profile
                 </Heading>
@@ -239,36 +239,41 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 paddingTop="0"
                 gap="3"
               >
-                <SecondaryButton
+                <Button
+                  variant="secondary"
                   width="full"
-                  text="Log out"
-                  size="xs"
-                  leftIcon={<LuLogOut color="var(--chakra-colors-primaryBlue"/>}
-                />
-                <SecondaryButton
+                  leftIcon={<LuLogOut color="var(--chakra-colors-primaryBlue-100"/>}
+                  onClick={() => { }}
+                >
+                  Log out
+                </Button>
+
+                <Button
+                  variant="cautious"
                   width="full"
-                  text="Delete account"
-                  size="xs"
-                  leftIcon={<LuUserX color="var(--chakra-colors-primaryRed"/>}
-                  theme="red"
-                />
+                  leftIcon={<LuUserX color="var(--chakra-colors-primaryRed-100"/>}
+                  onClick={() => { }}
+                >
+                  Delete account
+                </Button>
+
               </VStack>
             </VStack>
 
             <VStack
               alignItems="left"
               gap="2"
-              bg="surfaceBlue"
+              bg="surfaceBlue.100"
               borderRadius="7"
             >
               <HStack
                 margin="5"
                 marginBottom="0"
               >
-                <LuShieldCheck color="var(--chakra-colors-primaryBlue)" />
+                <LuShieldCheck color="var(--chakra-colors-primaryBlue-100)" />
                 <Heading
                   variant="h3"
-                  color="primaryBlue"
+                  color="primaryBlue.100"
                 >
                   Legal
                 </Heading>
@@ -285,17 +290,17 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
             <VStack
               alignItems="left"
               gap="2"
-              bg="surfaceBlue"
+              bg="surfaceBlue.100"
               borderRadius="7"
             >
               <HStack
                 margin="5"
                 marginBottom="0"
               >
-                <LuMail color="var(--chakra-colors-primaryBlue)" />
+                <LuMail color="var(--chakra-colors-primaryBlue-100)" />
                 <Heading
                   variant="h3"
-                  color="primaryBlue"
+                  color="primaryBlue.100"
                 >
                   Contact
                 </Heading>

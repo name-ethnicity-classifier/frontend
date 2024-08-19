@@ -84,7 +84,7 @@ const Home = () => {
                 We have a growing amount of ready-to-go models which are each trained on a specific set of nationalities.
               </Text>
               <Text>
-                Take a look and see if one of them fits your use-case. If not, you can request a custom model at the <Link href="/model-hub" color="blue">Model Hub</Link>!
+                Take a look and see if one of them fits your use-case. If not, you can request a custom model at the <Link href="/model-hub" color="var(--chakra-colors-primaryBlue-100)">Model Hub</Link>!
               </Text>
             </>
           }

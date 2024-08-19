@@ -80,10 +80,10 @@ const ListModal = (props: ListModalProps) => {
 							overflowY="auto"
 							width="full"
 							borderTopWidth="1px"
-							borderTopColor="surfaceBlue"
+							borderTopColor="surfaceBlue.100"
 							borderBottomWidth="1px"
-							borderBottomColor="surfaceBlue"
-							bg="surfaceBlue"
+							borderBottomColor="surfaceBlue.100"
+							bg="surfaceBlue.100"
 							borderRadius="7"
 							gap="0px"
 							alignItems="left"
@@ -103,7 +103,7 @@ const ListModal = (props: ListModalProps) => {
 										gap="0"
 										boxShadow="sm"
 									>
-										<Search2Icon color="primaryBlue"/>
+										<Search2Icon color="primaryBlue.100"/>
 										<Input
 											fontSize={{ base: "2xs", sm: "xs"}}
 											width="full"
@@ -127,9 +127,9 @@ const ListModal = (props: ListModalProps) => {
 									<Tr>
 										<Th
 											textTransform="none"
-											bg="secondaryBlue"
+											bg="secondaryBlue.100"
 											borderRadius="7"
-											color="primaryBlue"
+											color="primaryBlue.100"
 											paddingX="5"
 											paddingY="3"
 											boxShadow="sm"
@@ -139,9 +139,9 @@ const ListModal = (props: ListModalProps) => {
 										</Th>
 										<Th
 											textTransform="none"
-											bg="secondaryBlue"
+											bg="secondaryBlue.100"
 											borderRadius="7"
-											color="primaryBlue"
+											color="primaryBlue.100"
 											paddingX="5"
 											paddingY="3"
 											boxShadow="sm"

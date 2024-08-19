@@ -22,7 +22,7 @@ const NumberCard = (props: NumberCardProps) => {
   return (
     <Flex
       backgroundColor="white"
-      borderColor="surfaceBlue"
+      borderColor="surfaceBlue.100"
       borderWidth="1px"
       paddingX={{ base: "2", xl: "12" }}
       paddingY="5"
@@ -35,8 +35,8 @@ const NumberCard = (props: NumberCardProps) => {
       transition="ease-out 0.15s"
       boxShadow="base"
       _hover={{
-        bg: "surfaceBlue",
-        borderColor: "surfaceBlue",
+        bg: "surfaceBlue.100",
+        borderColor: "surfaceBlue.100",
         cursor: "pointer"
       }}
       onClick={() => {

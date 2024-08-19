@@ -1,4 +1,4 @@
-import { Flex, Box, Text, VStack, Spacer, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Box, Text, VStack, Spacer, Image, Button, useBreakpointValue } from "@chakra-ui/react";
 import { LuArrowRight } from "react-icons/lu";
 import PrimaryButton from "~/lib/components/PrimaryButton";
 
@@ -9,7 +9,7 @@ const CallToAction = () => {
 
   return (
     <Box
-      bg="surfaceBlue"
+      bg="surfaceBlue.100"
       paddingY={{ base: "50px", md: "75px"}}
       width="full"
     >
@@ -51,7 +51,7 @@ const CallToAction = () => {
               !changeLayout ?
                 <Text
                   variant="bold"
-                  color="primaryBlue"
+                  color="primaryBlue.100"
                 >
                   to get started, check out ...
                 </Text>
@@ -59,11 +59,11 @@ const CallToAction = () => {
                 null
             }
 
-            <PrimaryButton
-              size="xs"
-              text="how it works!"
+            <Button
               rightIcon={<LuArrowRight color="white" />}
-            />
+            >
+              how it works!
+            </Button>
           </Flex>
           
         </VStack>

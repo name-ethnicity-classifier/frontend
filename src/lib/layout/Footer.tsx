@@ -63,7 +63,7 @@ const Footer = () => {
       align="center"
       alignSelf="flex-end"
       justifyContent="center"
-      backgroundColor="primaryBlue"
+      backgroundColor="primaryBlue.100"
     >
       <Flex
         width="full"

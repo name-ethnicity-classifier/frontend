@@ -14,17 +14,17 @@ import {
         >
             <Flex
                 borderRadius="full"
-                backgroundColor="secondaryBlue"
+                backgroundColor="secondaryBlue.100"
                 justifyContent="center"
                 align="center"
                 width={{ base: "25px", md: "30px" }}
                 height={{ base: "25px", md: "30px" }}
                 padding="2"
                 _hover={{
-                    bg: "secondaryBlue"
+                    bg: "secondaryBlue.100"
                 }}
             >
-                <props.icon color="var(--chakra-colors-primaryBlue)" />
+                <props.icon color="var(--chakra-colors-primaryBlue-100)" />
             </Flex>
         </Link>
     );
@@ -43,7 +43,7 @@ const TeamMemberCard = (props: TeamMemberCardProps) => {
 
   return (
     <Flex
-      backgroundColor="surfaceBlue"
+      backgroundColor="surfaceBlue.100"
       padding="4"
       borderRadius="7"
       gap="4"
@@ -67,7 +67,7 @@ const TeamMemberCard = (props: TeamMemberCardProps) => {
         >
             <Text
                 fontWeight="bold"
-                color="primaryBlue"
+                color="primaryBlue.100"
                 fontSize="xs"
             >
                 {props.name}            
