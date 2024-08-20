@@ -1,11 +1,12 @@
 import { Box, Flex, Spacer } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { ReactNode } from "react";
 
 import Footer from "./Footer";
 import Header from "./Header";
 import Meta from "./Meta";
 import CallToAction from "../pages/home/components/CallToAction";
+import Login from "../pages/login/index";
 
 type LayoutProps = {
   children: ReactNode;
@@ -28,7 +29,7 @@ const Layout = ({ children }: LayoutProps) => {
           <CallToAction />
         )
       }
-
+      
       <Flex
         width="full"
         maxWidth={1500}

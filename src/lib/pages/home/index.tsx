@@ -1,5 +1,4 @@
 import { Flex, Grid, GridItem, Heading, Link, Text, VStack, Spacer, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
-import { sum } from "~/lib/utils/sample";
 
 import HowToSection from "./components/HowToSection";
 import LinkCard from "./components/LinkCard";

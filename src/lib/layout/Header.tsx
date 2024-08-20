@@ -24,9 +24,16 @@ import PrimaryButton from "../components/PrimaryButton";
 import SettingsDrawer from "../components/SettingsDrawer";
 
 
-const NavbarButton: FC<{ text: string; iconName: string, page: string }> = ({ text, iconName, page }) => {
+interface NavigationButtonProps {
+  text: string,
+  iconName: string,
+  page: string
+}
+
+
+const NavigationButton = (props: NavigationButtonProps) => {
   const navigate = useNavigate();
-  const goToPage = () => navigate(page);
+  const goToPage = () => navigate(props.page);
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -47,8 +54,8 @@ const NavbarButton: FC<{ text: string; iconName: string, page: string }> = ({ te
         <Image
           src={
             isHovered
-              ? `/assets/${iconName}-active-icon.svg`
-              : `/assets/${iconName}-icon.svg`
+              ? `/assets/${props.iconName}-active-icon.svg`
+              : `/assets/${props.iconName}-icon.svg`
           }
           height="15px"
         />
@@ -56,7 +63,7 @@ const NavbarButton: FC<{ text: string; iconName: string, page: string }> = ({ te
           color={isHovered ? "primaryBlue.100" : "textLight"}
           fontWeight="bold"
         >
-          {text}
+          {props.text}
         </Text>
       </HStack>
     </Button>
@@ -69,6 +76,8 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
+  const navigate = useNavigate();
+
   const isMobile = useBreakpointValue({ base: true, md: false });
   const {
     isOpen: settingsIsOpen,
@@ -84,6 +93,14 @@ const Header = (props: HeaderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
   const [homeIsHovered, setHomeIsHovered] = useState<boolean>(false);
+
+  const NavigationButtonList = () => (
+    <>
+      <NavigationButton text="About" iconName="about" page="/" />
+      <NavigationButton text="Model Hub" iconName="model-hub" page="/model-hub" />
+      <NavigationButton text="API" iconName="api" page="/api" />
+    </>
+  )
 
   return (
     <Flex
@@ -131,9 +148,7 @@ const Header = (props: HeaderProps) => {
         <HStack gap={{ base: "10px", md: 10 }}>
           {!isMobile ? (
             <HStack gap="10">
-              <NavbarButton text="About" iconName="about" page="/" />
-              <NavbarButton text="Model Hub" iconName="model-hub" page="/model-hub" />
-              <NavbarButton text="API" iconName="api" page="/api" />
+              <NavigationButtonList />
             </HStack>
           ) : (
             <Popover
@@ -161,9 +176,7 @@ const Header = (props: HeaderProps) => {
               >
                 <PopoverBody display="flex" flexDirection="column">
                   <VStack align="start" spacing="0">
-                    <NavbarButton text="About" page="/" />
-                    <NavbarButton text="Model Hub" page="/model-hub" />
-                    <NavbarButton text="API" page="/api" />
+                    <NavigationButtonList />
                   </VStack>
                 </PopoverBody>
               </PopoverContent>
@@ -173,7 +186,7 @@ const Header = (props: HeaderProps) => {
             <Button
               leftIcon={<LuUser color="white" />}
               onClick={() => {
-                //navigate("/login")
+                navigate("/login")
                 setIsLoggedIn(true);
               }}
             >

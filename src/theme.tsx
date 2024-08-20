@@ -146,6 +146,30 @@ export const theme = extendTheme({
         variant: "default",
       },
     },
+    Input: {
+      variants: {
+        default: {
+          field: {
+            borderRadius: "7px",
+            boxShadow: "sm",
+            bg: "white",
+            borderWidth: "2px",
+            borderColor: "transparent",
+            fontSize: "xs",
+            color: "textLight",
+            _placeholder: {
+              color: "textLight",
+            },
+            _focus: {
+              borderColor: "primaryBlue.100",
+            },
+          },
+        },
+      },
+      defaultProps: {
+        variant: "default",
+      },
+    },
   },
   config,
 });

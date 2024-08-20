@@ -107,13 +107,9 @@ const ListModal = (props: ListModalProps) => {
 										<Input
 											fontSize={{ base: "2xs", sm: "xs"}}
 											width="full"
-											border="none"
-											outline="none"
-											backgroundColor="white"
+											boxShadow="none"
 											placeholder="Search..."
 											value={searchQuery}
-											color="textLight"
-											placeholderColor="textLight"
 											_focus={{ boxShadow: "none", outline: "none" }}
 											onChange={handleSearchChange}
 										/>
