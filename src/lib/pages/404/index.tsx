@@ -11,15 +11,16 @@ const Page404 = () => {
     <Flex
       textAlign="center"
       flexDirection="column"
-      gap={2}
+      gap="4"
       align="center"
       justifyContent="center"
-      marginTop="20vh"
+      marginX="auto"
+      height="calc(100vh - 60px)"
     >
       <Text
         fontSize={{base: "75px", md: "128px" }}
         fontWeight="bold"
-        color="textDark"
+        color="textLight"
       >
         404 :&#40;
       </Text>

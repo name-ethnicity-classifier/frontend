@@ -15,12 +15,10 @@ import {
   PopoverContent,
   PopoverBody,
 } from "@chakra-ui/react";
-import type { FC } from "react";
 import { useState } from "react";
 import { LuUser } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
-import PrimaryButton from "../components/PrimaryButton";
 import SettingsDrawer from "../components/SettingsDrawer";
 
 
@@ -38,8 +36,7 @@ const NavigationButton = (props: NavigationButtonProps) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
-    <Button
-      as="a"
+    <Link
       backgroundColor="transparent"
       width="fit-content"
       padding="0"
@@ -48,7 +45,7 @@ const NavigationButton = (props: NavigationButtonProps) => {
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={goToPage}
+      href={props.page}
     >
       <HStack gap="10px">
         <Image
@@ -66,7 +63,7 @@ const NavigationButton = (props: NavigationButtonProps) => {
           {props.text}
         </Text>
       </HStack>
-    </Button>
+    </Link>
   );
 };
 
@@ -96,7 +93,7 @@ const Header = (props: HeaderProps) => {
 
   const NavigationButtonList = () => (
     <>
-      <NavigationButton text="About" iconName="about" page="/" />
+      <NavigationButton text="About" iconName="about" page="/#about-section" />
       <NavigationButton text="Model Hub" iconName="model-hub" page="/model-hub" />
       <NavigationButton text="API" iconName="api" page="/api" />
     </>

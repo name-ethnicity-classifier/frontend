@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { LuLogIn, LuUserPlus } from "react-icons/lu";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import LoginContainer from "./components/LoginContainer";
 import SignupContainer from "./components/SignupContainer";
 

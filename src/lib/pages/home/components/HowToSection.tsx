@@ -90,6 +90,7 @@ const HowToSection = () => {
                     borderWidth="1px"
                     borderColor="secondaryBlue.100"
                     borderRadius="7px"
+                    boxShadow="base"
                 >
                     <Image
                         src="/assets/input-example-csv.png"
@@ -111,6 +112,7 @@ const HowToSection = () => {
                     borderWidth="1px"
                     borderColor="secondaryBlue.100"
                     borderRadius="7px"
+                    boxShadow="base"
                 >
                     <Image
                         src="/assets/output-example-csv.png"

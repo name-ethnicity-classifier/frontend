@@ -1,10 +1,9 @@
 import { SettingsIcon, CopyIcon } from "@chakra-ui/icons";
-import {
-  LuShieldCheck, LuUser, LuArrowRight, LuMail, LuUserX, LuLogOut
-} from "react-icons/lu";
+import { LuShieldCheck, LuUser, LuArrowRight, LuMail, LuUserX, LuLogOut } from "react-icons/lu";
 import {
   Box,
   Flex,
+  useDisclosure,
   Heading,
   Text,
   Link,
@@ -21,7 +20,7 @@ import {
   useToast,
   DrawerCloseButton,
 } from "@chakra-ui/react";
-import SecondaryButton from "./SecondaryButton";
+import DeleteAccountModal from "./DeleteAccountModal";
 
 
 
@@ -160,6 +159,19 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
   const maintainerEmail = "theodorpeifer@gmail.com"
   const maintainerGitHub = "https://github.com/theopfr"
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+
+  const handleDeleteConfirm = () => {
+    toast({
+      title: "Account deleted.",
+      description: "Your account has been successfully deleted.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+  }
+
   return (
     <Drawer
       placement="right"
@@ -216,7 +228,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 margin="5"
                 marginBottom="0"
               >
-                <LuUser color="var(--chakra-colors-primaryBlue-100)" />
+                <LuUser color="var(--chakra-colors-primaryBlue-200)" />
                 <Heading
                   variant="h3"
                   color="primaryBlue.100"
@@ -252,7 +264,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                   variant="cautious"
                   width="full"
                   leftIcon={<LuUserX color="var(--chakra-colors-primaryRed-100"/>}
-                  onClick={() => { }}
+                  onClick={() => onOpen()}
                 >
                   Delete account
                 </Button>
@@ -270,7 +282,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 margin="5"
                 marginBottom="0"
               >
-                <LuShieldCheck color="var(--chakra-colors-primaryBlue-100)" />
+                <LuShieldCheck color="var(--chakra-colors-primaryBlue-200)" />
                 <Heading
                   variant="h3"
                   color="primaryBlue.100"
@@ -297,7 +309,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 margin="5"
                 marginBottom="0"
               >
-                <LuMail color="var(--chakra-colors-primaryBlue-100)" />
+                <LuMail color="var(--chakra-colors-primaryBlue-200)" />
                 <Heading
                   variant="h3"
                   color="primaryBlue.100"
@@ -320,6 +332,15 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
 
         </DrawerBody>
       </DrawerContent>
+
+      {isOpen && (
+        <DeleteAccountModal
+          onDeleteConfirm={handleDeleteConfirm}
+          isOpen={isOpen}
+          onClose={onClose}
+          />
+      )}
+
     </Drawer>
   );
 };

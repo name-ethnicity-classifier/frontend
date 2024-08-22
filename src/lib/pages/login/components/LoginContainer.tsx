@@ -197,12 +197,13 @@ const LoginContainer = () => {
             <HStack width="full" justify="space-between">
                 <Checkbox
                     sx={{
-                        ".chakra-checkbox__control": {
-                            borderWidth: "1px",
-                            borderColor: "primaryBlue.200",
-                            borderRadius: "3px"
-                        }
-                    }}
+						".chakra-checkbox__control": {
+								borderWidth: "0px",
+								borderColor: "primaryBlue.200",
+								borderRadius: "3px",
+								bg: "secondaryBlue.100"
+						}
+					}}
                     size="sm"
                     isChecked={rememberMe}
                     onChange={() => {
@@ -215,7 +216,6 @@ const LoginContainer = () => {
             <Button
                 width="full"
                 onClick={sendLoginData}
-                isDisabled={loginSuccessful}
             >
                 Log In
             </Button>

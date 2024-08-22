@@ -119,8 +119,8 @@ export const theme = extendTheme({
           _hover: {
             bg: "primaryBlue.200"
           },
-          '>.chakra-button__icon': {
-            paddingX: '0px',
+          ">.chakra-button__icon": {
+            paddingX: "0px",
           },
         },
         secondary: {
@@ -170,6 +170,31 @@ export const theme = extendTheme({
         variant: "default",
       },
     },
+    Select: {
+      variants: {
+        default: {
+          field: {
+            borderRadius: "7px",
+            boxShadow: "sm",
+            bg: "white",
+            borderWidth: "2px",
+            borderColor: "transparent",
+            fontSize: "xs",
+            color: "textLight",
+            _placeholder: {
+              color: "textLight",
+            },
+            _focus: {
+              borderColor: "primaryBlue.100",
+            },
+          },
+        },
+      },
+      defaultProps: {
+        variant: "default",
+      },
+    },
   },
+  
   config,
 });

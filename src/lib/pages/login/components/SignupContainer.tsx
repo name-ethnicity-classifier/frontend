@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, VStack, FormControl, useDisclosure, IconButton, InputGroup, InputRightElement, Heading, HStack, Input, Link as Link, Stack, Text, Image, Flex, useToast, FormErrorMessage } from "@chakra-ui/react";
+import { Box, Button, Checkbox, VStack, FormControl, Select, IconButton, InputGroup, InputRightElement, Heading, HStack, Input, Link as Link, Stack, Text, Image, Flex, useToast, FormErrorMessage } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios, { AxiosResponse, AxiosError } from "axios";
@@ -31,6 +31,7 @@ const SignupContainer = () => {
 
 	const [name, setName] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
+	const [role, setRole] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [confirmedPassword, setConfirmedPassword] = useState<string>("");
 	const [consented, setConsented] = useState<boolean>(false);
@@ -49,7 +50,7 @@ const SignupContainer = () => {
 		}
 	);
 
-    const roles = ["Researcher", "Student", "Data Scientist", "Sociologist", "Journalist", "HR", "Educator", "Journalist", "Developer"]
+    const roles = ["Researcher", "Student", "Data Scientist", "Sociologist", "Journalist", "HR", "Educator", "Journalist", "Developer", "else"]
 
 	const toast = useToast();
 
@@ -85,11 +86,6 @@ const SignupContainer = () => {
 					...prevErrors, email: { failed: true, message: "Please provide an email." }
 				}));
 			}
-            if (email.length === 0) {
-				setValidationError((prevErrors) => ({
-					...prevErrors, role: { failed: true, message: "Please provide a role." }
-				}));
-			}
 			if (password.length === 0) {
 				setValidationError((prevErrors) => ({
 					...prevErrors, password: { failed: true, message: "Please provide a password." }
@@ -110,7 +106,6 @@ const SignupContainer = () => {
 			return;
 		}
 
-		
 		
 		// Make login request
         let requestBody: { name: string, email: string, password: string, consented: boolean } = {
@@ -209,31 +204,60 @@ const SignupContainer = () => {
         
         <VStack gap="5">
             <VStack minWidth="300px">
-                <FormControl
-                    isInvalid={validationError.name.failed}
-                    marginBottom={validationError.name.failed ? "0" : "2"}
-                    
-                >
-                    <Input 
-                        id="name"
-                        type="text"
-                        placeholder="Name"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setName(e.target.value);
-                        }}
-                        onFocus={() => {
-                            setValidationError((prevErrors) => ({
-                                ...prevErrors, name: { failed: false, message: "" }
-                            }));
-                        }}
-                    />
-                    {
+
+				<FormControl
+					isInvalid={validationError.name.failed}
+					flex="1"
+					marginBottom={validationError.name.failed ? "0" : "2"}
+				>
+					<HStack gap="4">
+						<Input
+							id="name"
+							type="text"
+							placeholder="Name"
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+								setName(e.target.value);
+							}}
+							onFocus={() => {
+								setValidationError((prevErrors) => ({
+									...prevErrors, name: { failed: false, message: "" }
+								}));
+							}}
+						/>
+
+						<Select
+							placeholder="Select role"
+							onFocus={() => {
+								setValidationError((prevErrors) => ({
+									...prevErrors, role: { failed: false, message: "" }
+								}));
+							}}
+							onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+								setRole(e.target.value);
+								setValidationError((prevErrors) => ({
+									...prevErrors, role: { failed: false, message: "" }
+								}));
+							}}
+						>
+							{
+								roles.map((role: string) => (
+									<option value={`option-${role}`}>
+										{role}
+									</option>
+								))
+							}
+						</Select>
+					</HStack>
+					
+					{
                         validationError.name.failed ?
 							<FieldErrorMessage message={validationError.name.message} />
                         : null
                     }
 
-                </FormControl>
+				</FormControl>
+	
+					
 
                 <FormControl
                     isInvalid={validationError.email.failed}
@@ -330,7 +354,6 @@ const SignupContainer = () => {
             <Button
                 width="full"
                 onClick={sendSignupData}
-                isDisabled={signupSuccessful}
             >
                 Sign up
             </Button>
