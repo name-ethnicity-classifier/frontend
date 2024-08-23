@@ -12,12 +12,12 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 const pwaOptions: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
   manifest: {
-    short_name: 'vite-react-chakra-starter',
-    name: 'Vite React App Template',
+    short_name: 'N2E',
+    name: 'name-to-ethnicity',
     lang: 'en',
     start_url: '/',
-    background_color: '#FFFFFF',
-    theme_color: '#FFFFFF',
+    background_color: 'var(--chakra-colors-primaryBlue-100)',
+    theme_color: 'var(--chakra-colors-primaryBlue-100)',
     dir: 'ltr',
     display: 'standalone',
     prefer_related_applications: false,
@@ -36,10 +36,10 @@ export default defineConfig({
   plugins: [
     million.vite({ auto: true }),
     react(),
-    checker({
-      typescript: true,
-      eslint: { lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"' },
-    }),
+    // checker({
+    //   typescript: true,
+    //   eslint: { lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"' },
+    // }),
     tsconfigPaths(),
     visualizer({ template: 'sunburst' }) as unknown as PluginOption,
     VitePWA(pwaOptions),

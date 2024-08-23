@@ -20,7 +20,7 @@ import {
   useToast,
   DrawerCloseButton,
 } from "@chakra-ui/react";
-import DeleteAccountModal from "./DeleteAccountModal";
+import DeleteModal from "./DeleteModal";
 
 
 
@@ -334,11 +334,13 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
       </DrawerContent>
 
       {isOpen && (
-        <DeleteAccountModal
+        <DeleteModal
+          deleteEntitiyName="account"
+          deleteText="Are you sure you want to delete your account? This action cannot be undone."
           onDeleteConfirm={handleDeleteConfirm}
           isOpen={isOpen}
           onClose={onClose}
-          />
+        />
       )}
 
     </Drawer>

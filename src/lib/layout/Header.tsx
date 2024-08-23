@@ -26,17 +26,31 @@ interface NavigationButtonProps {
   text: string,
   iconName: string,
   page: string
+  targetId?: string
 }
 
 
 const NavigationButton = (props: NavigationButtonProps) => {
   const navigate = useNavigate();
-  const goToPage = () => navigate(props.page);
+  // const goToPage = () => navigate(props.page);
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
+  const handleNavigation = () => {
+    navigate(props.page);
+
+    if (props.targetId) {
+      setTimeout(() => {
+        const element = document.getElementById(props.targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 0);
+    }
+  };
+
   return (
-    <Link
+    <Button
       backgroundColor="transparent"
       width="fit-content"
       padding="0"
@@ -45,7 +59,7 @@ const NavigationButton = (props: NavigationButtonProps) => {
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      href={props.page}
+      onClick={handleNavigation}
     >
       <HStack gap="10px">
         <Image
@@ -63,7 +77,7 @@ const NavigationButton = (props: NavigationButtonProps) => {
           {props.text}
         </Text>
       </HStack>
-    </Link>
+    </Button>
   );
 };
 
@@ -93,7 +107,7 @@ const Header = (props: HeaderProps) => {
 
   const NavigationButtonList = () => (
     <>
-      <NavigationButton text="About" iconName="about" page="/#about-section" />
+      <NavigationButton text="About" iconName="about" page="/" targetId="about-section" />
       <NavigationButton text="Model Hub" iconName="model-hub" page="/model-hub" />
       <NavigationButton text="API" iconName="api" page="/api" />
     </>

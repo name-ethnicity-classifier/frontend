@@ -6,7 +6,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Meta from "./Meta";
 import CallToAction from "../pages/home/components/CallToAction";
-import Login from "../pages/login/index";
+
 
 type LayoutProps = {
   children: ReactNode;

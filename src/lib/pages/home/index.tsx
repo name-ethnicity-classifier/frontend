@@ -153,6 +153,7 @@ const Home = () => {
         paddingTop={sectionGap}
         gap="7"
         align="left"
+        id="about-section"
       >
         <Heading
           variant="h2"
@@ -160,6 +161,7 @@ const Home = () => {
         >
           About...
         </Heading>
+
 
         <VStack
           gap="5"

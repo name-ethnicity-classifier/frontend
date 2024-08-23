@@ -50,7 +50,7 @@ const SignupContainer = () => {
 		}
 	);
 
-    const roles = ["Researcher", "Student", "Data Scientist", "Sociologist", "Journalist", "HR", "Educator", "Journalist", "Developer", "else"]
+    const roles = ["Researcher", "Student", "Data Scientist", "Sociologist", "HR", "Educator", "Journalist", "Developer", "else"]
 
 	const toast = useToast();
 
@@ -331,10 +331,11 @@ const SignupContainer = () => {
                 <Checkbox
                     sx={{
                         ".chakra-checkbox__control": {
-                            borderWidth: "1px",
-                            borderColor: "primaryBlue.200",
-                            borderRadius: "3px"
-                        }
+							borderWidth: "0px",
+							borderColor: "primaryBlue.200",
+							borderRadius: "3px",
+							bg: "secondaryBlue.100"
+						}
                     }}
                     size="sm"
                     color={validationError.consented.failed ? "primaryRed.100" : "textBlack.100"}

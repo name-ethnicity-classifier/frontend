@@ -1,22 +1,48 @@
-import { Flex, Text, Link, Button, Heading, Box, Checkbox, HStack, VStack, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Text, Link, Button, Heading, Box, Checkbox, useDisclosure, HStack, VStack, useBreakpointValue } from "@chakra-ui/react";
 import Dropzone from "react-dropzone";
+import { Bar } from "react-chartjs-2";
 import { DeleteIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { LuFileUp } from "react-icons/lu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import DeleteModal from "~/lib/components/DeleteModal";
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 
 const ModelHub = () => {
 	const isMobile = useBreakpointValue({ base: true, lg: false });
 
 	const allModels = ["chinese_and_else", "8_nationality_groups", "20_nationalities_else", "greek_german_else", "20_most_occuring_nationalities"]
-
 	const [selectedModel, setSelectedModel] = useState<string>(allModels[0]);
-
 	const dummyModelData = {
 		"nationalities": ["german", "greek", "egyptian", "new zealander", "turkish", "finnish"],
 		"accuracies": [0.82423, 0.8210, 0.8283, 0.82867, 0.850, 0.883],
 		"accuracy": 0.82363
 	}
+
+	const [isRendered, setIsRendered] = useState(false);
+
+	const { isOpen, onOpen, onClose } = useDisclosure()
+
+    useEffect(() => {
+        setIsRendered(true);
+    }, []);
 
 	return (
 		<HStack
@@ -148,6 +174,7 @@ const ModelHub = () => {
 							_hover={{
 								color: "primaryBlue.200"
 							}}
+							onClick={onOpen}
 						/>
 					</HStack>
 				</Flex>
@@ -157,13 +184,59 @@ const ModelHub = () => {
 					width="full"
 					gap="4"
 				>
-					<Box
+					<Flex
 						flex="5"
 						bg="surfaceBlue.100"
 						borderRadius="7px"
+						padding="4"
 					>
-						plot here
-					</Box>
+						<Box
+							height="99%"
+							width="99%"
+						>
+							{
+								isRendered ?
+									<Bar
+										animation={false}
+										height={100} 
+										width={400}
+										data={{
+											labels: dummyModelData.nationalities,
+											datasets: [
+												{
+													label: "Accuracies",
+													data: dummyModelData.accuracies,
+													backgroundColor: "rgba(0, 47, 255, 0.55)",
+													order: 2
+												}
+											]
+										}} 
+										options={{
+											maintainAspectRatio: false,
+											scales: {
+												yAxes: [{
+													ticks: {
+														beginAtZero: true,
+														min: 0
+													}
+												}],
+												xAxes: [{
+													tooltips: {
+														callbacks: {
+															title: function (tooltipItems: { index: string | number; }[], data: { labels: { [x: string]: any; }; }) {
+																return data.labels[tooltipItems[0].index]
+															}
+														}
+													}
+												}]
+											}
+										}}
+									/>
+								: null
+							}
+						</Box>
+						
+					</Flex>
 					<Flex
 						flex="1"
 						flexDirection={{ base: "row", md: "column" }}
@@ -247,33 +320,33 @@ const ModelHub = () => {
 								gap="2"
 							>
 								<Checkbox
-											sx={{
-													".chakra-checkbox__control": {
-															borderWidth: "0px",
-															borderColor: "primaryBlue.200",
-															borderRadius: "3px",
-															bg: "secondaryBlue.100"
-													}
-											}}
-											size="sm"
-											onChange={() => { }}
-									>
-											<Text lineHeight="15px">Give me only the most likely ethnicity per name</Text>
-									</Checkbox>
-									<Checkbox
-											sx={{
-													".chakra-checkbox__control": {
-															borderWidth: "0px",
-															borderColor: "primaryBlue.200",
-															borderRadius: "3px",
-															bg: "secondaryBlue.100"
-													}
-											}}
-											size="sm"
-											onChange={() => { }}
-									>
-											<Text lineHeight="15px">Give me the entire ethnicity-likelyhood distribution per name</Text>
-									</Checkbox>
+									sx={{
+											".chakra-checkbox__control": {
+													borderWidth: "0px",
+													borderColor: "primaryBlue.200",
+													borderRadius: "3px",
+													bg: "secondaryBlue.100"
+											}
+									}}
+									size="sm"
+									onChange={() => { }}
+								>
+									<Text lineHeight="15px">Give me only the most likely ethnicity per name</Text>
+								</Checkbox>
+								<Checkbox
+									sx={{
+											".chakra-checkbox__control": {
+													borderWidth: "0px",
+													borderColor: "primaryBlue.200",
+													borderRadius: "3px",
+													bg: "secondaryBlue.100"
+											}
+									}}
+									size="sm"
+									onChange={() => { }}
+								>
+									<Text lineHeight="15px">Give me the entire ethnicity-likelyhood distribution per name</Text>
+								</Checkbox>
 							</VStack>
 
 							<Dropzone onDrop={(acceptedFiles: any) => console.log(acceptedFiles)}>
@@ -366,12 +439,23 @@ const ModelHub = () => {
 							Classify names locally on your machine
 						</Text>
 						<Text>
-							<i>Coming soon...</i>
+							<i>Coming soon... or sent us an inquiry via email :&#41;</i>
 						</Text>
 					</VStack>
 				</VStack>
 					
 			</VStack>
+
+			{isOpen && (
+				<DeleteModal
+					deleteEntitiyName="model"
+					deleteText={`Are you sure you want to delete the model '${selectedModel}'? This action cannot be undone.`}
+					onDeleteConfirm={() => {}}
+					isOpen={isOpen}
+					onClose={onClose}
+				/>
+			)}
+
 		</HStack>
 	);
 };

@@ -1,9 +1,10 @@
 import React from "react";
 import type { PathRouteProps } from "react-router-dom";
 
-const Home = React.lazy(() => import("~/lib/pages/home"));
-const Login = React.lazy(() => import("~/lib/pages/login"));
-const ModelHub  = React.lazy(() => import("~/lib/pages/model-hub"));
+import Home from "../pages/home/index";
+import Login from "../pages/login/index";
+import ModelHub from "../pages/model-hub/index";
+
 
 export const routes: Array<PathRouteProps> = [
   {
