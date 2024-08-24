@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox, VStack, FormControl, Select, IconButton, InputGroup, InputRightElement, Heading, HStack, Input, Link as Link, Stack, Text, Image, Flex, useToast, FormErrorMessage } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import axios, { AxiosResponse, AxiosError } from "axios";
+import { BACKEND_URL } from "~/lib/utils/serverRequests";
 
 import PasswordField from "./PasswordField";
 
@@ -129,10 +129,7 @@ const SignupContainer = () => {
 			password: password,
 			consented: consented
         };
-        axios.post(
-			`http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/signup`,
-			requestBody
-		)
+        axios.post(`${BACKEND_URL}/signup`, requestBody)
             .then((response: AxiosResponse) => {
 				// Reset all error states
 				setValidationError({

@@ -4,45 +4,73 @@ import { Bar } from "react-chartjs-2";
 import { DeleteIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { LuFileUp } from "react-icons/lu";
 import { useEffect, useState } from "react";
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+import Cookies from "js-cookie";
+import axios, { AxiosResponse } from "axios";
+import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import DeleteModal from "~/lib/components/DeleteModal";
-
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
+import ModelDetails from "./components/ModelDetails";
 
 
 const ModelHub = () => {
+	interface ModelType {
+		name: string,
+		accuracy: number,
+		isCustom: boolean,
+		scores?: number[],
+		nationalities?: string[]
+	}
+	
+	interface ModelsResponseType {
+		data: {
+			customModels: ModelType[],
+			defaultModels: ModelType[]
+		}
+	}
+	
 	const isMobile = useBreakpointValue({ base: true, lg: false });
 
-	const allModels = ["chinese_and_else", "8_nationality_groups", "20_nationalities_else", "greek_german_else", "20_most_occuring_nationalities"]
-	const [selectedModel, setSelectedModel] = useState<string>(allModels[0]);
-	const dummyModelData = {
-		"nationalities": ["german", "greek", "egyptian", "new zealander", "turkish", "finnish"],
-		"accuracies": [0.82423, 0.8210, 0.8283, 0.82867, 0.850, 0.883],
-		"accuracy": 0.82363
-	}
-
-	const [isRendered, setIsRendered] = useState(false);
+	const [selectedModel, setSelectedModel] = useState<ModelType | null>(null);
+	const [models, setModels] = useState<ModelType[]>([]);
 
 	const { isOpen, onOpen, onClose } = useDisclosure()
 
-    useEffect(() => {
-        setIsRendered(true);
-    }, []);
+	const token: string | undefined = Cookies.get("token");
+    const requestHeaders = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    }
+
+	useEffect(() => {
+		axios.get(`${BACKEND_URL}/models`, {
+			headers: requestHeaders
+		})
+			.then((response: AxiosResponse<ModelsResponseType>) => {
+				let allModels: ModelType[] = [];
+				response.data.data?.defaultModels?.forEach((model: any) => {
+					allModels.push({
+						name: model.name,
+						accuracy: model.accuracy,
+						scores: model.scores,
+						nationalities: model.nationalities,
+						isCustom: model.isCustom
+					})
+				});
+				response.data.data?.customModels?.forEach((model: any) => {
+					allModels.push({
+						name: model.name,
+						accuracy: model.accuracy,
+						scores: model.scores,
+						isCustom: model.isCustom
+					})
+				});
+				
+				setModels(allModels);
+				setSelectedModel(allModels[0])
+			})
+			.catch((error: unknown) => {
+				console.error("There was a problem with the axios request:", error);
+			});
+	}, []);
 
 	return (
 		<HStack
@@ -87,8 +115,8 @@ const ModelHub = () => {
 							</Button>
 
 							{
-								allModels.map((model: string) => {
-									const isSelected = model === selectedModel;
+								models.map((model: ModelType) => {
+									const isSelected = model.name === selectedModel?.name;
 
 									let modelButtonStyle = {
 										bg: "white",
@@ -133,7 +161,7 @@ const ModelHub = () => {
 												color={isSelected ? "primaryBlue.100" : "textLight"}
 												isTruncated
 											>
-												{model}
+												{model.name}
 											</Text>
 
 										</HStack>
@@ -142,7 +170,8 @@ const ModelHub = () => {
 							}
 						</VStack>
 					</VStack>
-					: null
+				:
+					null
 			}
 			<VStack flex="4" gap="4">
 				<Flex
@@ -158,7 +187,7 @@ const ModelHub = () => {
 						Selected:
 					</Heading>
 					<Text fontSize="xs">
-						{selectedModel}
+						{selectedModel?.name}
 					</Text>
 
 					<HStack
@@ -178,271 +207,22 @@ const ModelHub = () => {
 						/>
 					</HStack>
 				</Flex>
-
-				<Flex
-					flexDirection={{ base: "column", md: "row" }}
-					width="full"
-					gap="4"
-				>
-					<Flex
-						flex="5"
-						bg="surfaceBlue.100"
-						borderRadius="7px"
-						padding="4"
-					>
-						<Box
-							height="99%"
-							width="99%"
-						>
-							{
-								isRendered ?
-									<Bar
-										animation={false}
-										height={100} 
-										width={400}
-										data={{
-											labels: dummyModelData.nationalities,
-											datasets: [
-												{
-													label: "Accuracies",
-													data: dummyModelData.accuracies,
-													backgroundColor: "rgba(0, 47, 255, 0.55)",
-													order: 2
-												}
-											]
-										}} 
-										options={{
-											maintainAspectRatio: false,
-											scales: {
-												yAxes: [{
-													ticks: {
-														beginAtZero: true,
-														min: 0
-													}
-												}],
-												xAxes: [{
-													tooltips: {
-														callbacks: {
-															title: function (tooltipItems: { index: string | number; }[], data: { labels: { [x: string]: any; }; }) {
-																return data.labels[tooltipItems[0].index]
-															}
-														}
-													}
-												}]
-											}
-										}}
-									/>
-								: null
-							}
-						</Box>
-						
-					</Flex>
-					<Flex
-						flex="1"
-						flexDirection={{ base: "row", md: "column" }}
-						gap="4"
-					>
-						<Flex
-							aspectRatio={{ base: "auto", md: "1" }}
-							bg="surfaceBlue.100"
-							flex="1"
-							borderRadius="7px"
-							flexDirection="column"
-							alignItems="center"
-							justifyContent="center"
-						>
-							<Heading color="primaryBlue.100" fontSize="64px">
-								{dummyModelData.nationalities.length}
-							</Heading>
-							<Text>
-								ethnicities
-							</Text>
-						</Flex>
-						<Flex
-							aspectRatio={{ base: "auto", md: "1" }}
-							bg="surfaceBlue.100"
-							flex="1"
-							borderRadius="7px"
-							flexDirection="column"
-							alignItems="center"
-							justifyContent="center"
-						>
-							<HStack alignItems="flex-end">
-								<Heading
-									color="primaryBlue.100"
-									alignItems="bottom"
-								>
-									{Math.round(dummyModelData.accuracy * 100 * 10) / 10}
-								</Heading>
-								<Heading
-									color="primaryBlue.100"
-									variant="h2"
-									paddingBottom="4px"
-								>
-									%
-								</Heading>
-							</HStack>
-							
-							<Text>
-								accuracy
-							</Text>
-						</Flex>
-					</Flex>
-				</Flex>
 				
-				<VStack
-					width="full"
-					gap="4"
-				>
-					<Flex
-						flexDirection={{ base: "column", md: "row" }}
-						width="full"
-						gap="4"
-					>
+				{
+					selectedModel?.accuracy ?
+						<ModelDetails selectedModel={selectedModel}/>	
+					:
 						<VStack
-							flex="1"
-							bg="surfaceBlue.100"
-							borderRadius="7px"
-							padding="3"
-							alignItems="left"
-							textAlign="left"
-							gap="3"
+							minHeight={isMobile ? "50vh" : "full"}
+							alignItems="center"
+							justifyContent="center"
+							marginX="10"
 						>
-							<Text variant="bold">
-								Classify names via file upload
-							</Text>
-							<Text>
-								Put all the names you want to classify into a .csv file under a column “names” and upload it below! Here is an exemplary .csv file.
-							</Text>
-
-							<VStack
-								alignItems="left"
-								gap="2"
-							>
-								<Checkbox
-									sx={{
-											".chakra-checkbox__control": {
-													borderWidth: "0px",
-													borderColor: "primaryBlue.200",
-													borderRadius: "3px",
-													bg: "secondaryBlue.100"
-											}
-									}}
-									size="sm"
-									onChange={() => { }}
-								>
-									<Text lineHeight="15px">Give me only the most likely ethnicity per name</Text>
-								</Checkbox>
-								<Checkbox
-									sx={{
-											".chakra-checkbox__control": {
-													borderWidth: "0px",
-													borderColor: "primaryBlue.200",
-													borderRadius: "3px",
-													bg: "secondaryBlue.100"
-											}
-									}}
-									size="sm"
-									onChange={() => { }}
-								>
-									<Text lineHeight="15px">Give me the entire ethnicity-likelyhood distribution per name</Text>
-								</Checkbox>
-							</VStack>
-
-							<Dropzone onDrop={(acceptedFiles: any) => console.log(acceptedFiles)}>
-								{() => (
-									<Box
-										width="full"
-										bg="transparent"
-										borderWidth="1px"
-										borderColor="primaryBlue.100"
-										borderStyle="dashed"
-										borderRadius="7px"
-										display="flex"
-										flexDirection="column"
-										alignItems="center"
-										gap="0"
-										padding="5"
-										marginTop="2"
-										_hover={{
-											bg: "surfaceBlue.200"
-										}}
-									>
-										<LuFileUp size="32px" color="var(--chakra-colors-primaryBlue-100)"/>
-										<Text variant="bold" color="primaryBlue.100">
-											Drop .csv file
-										</Text>
-										<Text variant="bold" color="primaryBlue.100">
-											or click to browse files
-										</Text>
-									</Box>
-								)}
-							</Dropzone>
+							<Heading variant="h3" color="secondaryBlue.200">
+								This model is currently queued to be trained. Check in again tomorrow!
+							</Heading>
 						</VStack>
-
-						<VStack
-							flex="1"
-							bg="surfaceBlue.100"
-							borderRadius="7px"
-							padding="3"
-							alignItems="left"
-							textAlign="left"
-							gap="3"
-						>
-							<Text variant="bold">
-								Classify names via API
-							</Text>
-							<Text>
-								You can also use the /classify endpoint of our REST API.
-							</Text>
-							<Text>
-								Please note:<br />
-								We do not recommend you to use the API as part of your backend or any kind of deployed service. It is mainly meant for doing experiments and to be included in, for example, your Python Notebooks or R scripts.
-							</Text>
-
-							<Link
-								href={"/api"}
-								_hover={{
-									underline: "none",
-									paddingLeft: "3"
-								}}
-								isExternal={true}
-								display="flex"
-								flexDirection="row"
-								gap="1"
-								width="fit-content"
-								transition="ease-out 0.15s"
-								marginTop="auto"
-							>
-								<Text
-									fontSize="xs"
-									fontWeight="bold"
-									color="primaryBlue.100"
-								>
-									View API documentation
-								</Text>
-								<ArrowForwardIcon color="primaryBlue.100" marginY="auto" />
-							</Link>
-						</VStack>
-					</Flex>
-
-					<VStack
-						width="full"
-						bg="surfaceBlue.100"
-						borderRadius="7px"
-						padding="3"
-						alignItems="left"
-						textAlign="left"
-						gap="3"
-					>
-						<Text variant="bold">
-							Classify names locally on your machine
-						</Text>
-						<Text>
-							<i>Coming soon... or sent us an inquiry via email :&#41;</i>
-						</Text>
-					</VStack>
-				</VStack>
+				}
 					
 			</VStack>
 

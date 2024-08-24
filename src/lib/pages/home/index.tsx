@@ -1,5 +1,8 @@
 import { Flex, Grid, GridItem, Heading, Link, Text, VStack, Spacer, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
-
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import axios, { AxiosResponse } from "axios";
+import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import HowToSection from "./components/HowToSection";
 import LinkCard from "./components/LinkCard";
 import NumberCard from "./components/NumberCard";
@@ -7,6 +10,24 @@ import TeamMemberCard from "./components/TeamMemberCard";
 
 const Home = () => {
 
+  interface ModelType {
+    name: string,
+    accuracy: number,
+    isCustom: boolean,
+    scores?: number[],
+    nationalities?: string[]
+  }
+
+
+  interface ModelsResponseType {
+    data: {
+      customModels: ModelType[],
+      defaultModels: ModelType[]
+    }
+  }
+
+  const [customModels, setCustomModels] = useState<ModelType[]>([]);
+  const [defaultModels, setDefaultModels] = useState<ModelType[]>([]);
 
   const nationalityData: Record<string, number> = {
     "german": 21283,
@@ -18,28 +39,68 @@ const Home = () => {
     "zimwabwen": 63473
   }
 
-  const defaultModelData: Record<string, string> = {
-    "20_nat_and_else": "82%",
-    "greek_german_and_else": "82%",
-    "european_eastAsian": "82%",
-    "irish_australian": "82%",
-    "chinese_and_else": "82%",
-    "greek_german_ands_else": "82%",
-    "european_eastAssian": "82%",
-    "irish_australisan": "82%",
-    "chinese_and_elsse": "82%",
-    "fgreek_german_ands_else": "82%",
-    "feuropean_eastAssian": "82%",
-    "firish_australisan": "82%",
-  }
+  useEffect(() => {
+    const token: string | undefined = Cookies.get("token");
+    const requestHeaders = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    }
 
-  const customModelData: Record<string, string> = {
-    "20_nat_and_else": "82%",
-    "greek_german_and_else": "98%",
-  }
+    if (token) {
+      axios.get(`${BACKEND_URL}/models`, {
+        headers: requestHeaders
+      })
+        .then((response: AxiosResponse<ModelsResponseType>) => {
+          let allCustomModels: ModelType[] = [];
+          response.data.data?.customModels?.forEach((model: any) => {
+            allCustomModels.push({
+              name: model.name,
+              accuracy: model.accuracy,
+              isCustom: model.isCustom
+            })
+          });
+
+          let allDefaultModels: ModelType[] = [];
+          response.data.data?.defaultModels?.forEach((model: any) => {
+            allDefaultModels.push({
+              name: model.name,
+              accuracy: model.accuracy,
+              isCustom: model.isCustom
+            })
+          });
+
+          setCustomModels(allCustomModels);
+          setDefaultModels(allDefaultModels);
+        })
+        .catch((error: unknown) => {
+          console.error("There was a problem with the axios request:", error);
+        });
+      }
+      else {
+        // fetch only default models if not authenticate
+        axios.get(`${BACKEND_URL}/default-models`, {
+          headers: requestHeaders
+        })
+          .then((response: AxiosResponse<ModelType[]>) => {
+            console.debug(response)
+            let allDefaultModels: ModelType[] = [];
+            response.data.data?.forEach((model: any) => {
+              allDefaultModels.push({
+                name: model.name,
+                accuracy: model.accuracy,
+                isCustom: false
+              })
+            });
+            setCustomModels([]);
+            setDefaultModels(allDefaultModels);
+          })
+          .catch((error: unknown) => {
+            console.error("There was a problem with the axios request:", error);
+          });
+      }
+  }, []);
 
   const totalDatasetSize = Object.values(nationalityData).reduce((acc, value) => acc + value, 0);
-
   const sectionGap = { base: "50px", md: "75px" }
 
   return (
@@ -68,18 +129,24 @@ const Home = () => {
                 We sampled our dataset from the UK Census Database, resulting in <b>{totalDatasetSize}</b> names from <b>{Object.keys(nationalityData).length}</b> different nationalities.
               </Text>
               <Text>
-                Here is an overview of how those nationalities are distributed in the dataset:              </Text>
+                Here is an overview of how those nationalities are distributed in the dataset:
+              </Text>
             </>
           }
         />
         <NumberCard
           cardTitle="already trained models"
-          modalData={defaultModelData}
+          modalData={
+            defaultModels.reduce((acc, model) => {
+              acc[model.name] = model.accuracy;
+              return acc;
+            }, {} as Record<string, number>)
+          }
           modalColumns={["Model name", "Accuracy"]}
           modalTitle="Our models"
           modalDescription={
             <>
-              <Text >
+              <Text>
                 We have a growing amount of ready-to-go models which are each trained on a specific set of nationalities.
               </Text>
               <Text>
@@ -90,13 +157,19 @@ const Home = () => {
         />
         <NumberCard
           cardTitle="custom models"
-          modalData={customModelData}
+          modalData={
+            customModels.reduce((acc, model) => {
+              acc[model.name] = model.accuracy || "training...";
+              return acc;
+            }, {} as Record<string, number | string>)
+          }
           modalColumns={["Model name", "Accuracy"]}
           modalTitle="Your custom models"
           modalDescription={
             <>
               <Text>
-                If none of our default models fit your use-case you can request a custom one which will only be trained on the nationalities you specify.              </Text>
+                If none of our default models fit your use-case you can request a custom one which will only be trained on the nationalities you specify.
+              </Text>
               <Text>
                 Here is a list of your custom models:
               </Text>

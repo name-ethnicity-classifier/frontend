@@ -18,7 +18,6 @@ interface NumberCardProps {
 const NumberCard = (props: NumberCardProps) => {
   const [showListModal, setShowListModal] = useState<boolean>(false);
 
-
   return (
     <Flex
       backgroundColor="white"

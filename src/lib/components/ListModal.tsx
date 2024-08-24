@@ -18,9 +18,9 @@ const ListModal = (props: ListModalProps) => {
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [filteredData, setFilteredData] = useState<Record<string, number | string>>({});
 
-    const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(event.target.value);
-    };
+	const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setSearchQuery(event.target.value);
+	};
 
 	useEffect(() => {
 		const filteredEntries = Object.entries(props.data).filter(([key]) =>
@@ -75,7 +75,7 @@ const ListModal = (props: ListModalProps) => {
 						</VStack>
 
 						{
-							props.data.length > 0 ?
+							Object.keys(props.data).length > 0 ?
 								<VStack
 									maxHeight="40vh"
 									minHeight={ props.searchBar ? "40vh" : "none" }
