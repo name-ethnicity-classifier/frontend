@@ -20,6 +20,7 @@ import {
   useToast,
   DrawerCloseButton,
 } from "@chakra-ui/react";
+import Cookies from "js-cookie";
 import DeleteModal from "./DeleteModal";
 
 
@@ -162,7 +163,13 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
+  const logOutUser = () => {
+    Cookies.remove("token");
+    Cookies.remove("email");
+  }
+
   const handleDeleteConfirm = () => {
+    logOutUser();
     toast({
       title: "Account deleted.",
       description: "Your account has been successfully deleted.",
@@ -255,7 +262,10 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                   variant="secondary"
                   width="full"
                   leftIcon={<LuLogOut color="var(--chakra-colors-primaryBlue-100"/>}
-                  onClick={() => { }}
+                  onClick={() => {
+                    logOutUser();
+                    window.location.href = "/"
+                  }}
                 >
                   Log out
                 </Button>

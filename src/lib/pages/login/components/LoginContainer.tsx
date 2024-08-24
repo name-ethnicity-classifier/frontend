@@ -5,12 +5,10 @@ import axios, { AxiosResponse, AxiosError } from "axios";
 import PasswordField from "./PasswordField";
 
 
-const FieldErrorMessage = (props: { message: string }) => {
-	return (
-		<FormErrorMessage fontSize="0.7em" marginTop="4px" marginLeft="5px">
-			<b>&#9888;</b>&nbsp;&nbsp;{props.message}
-		</FormErrorMessage>
-	);
+
+interface LoginRequest {
+	email: string,
+	password: string
 }
 
 
@@ -21,8 +19,17 @@ interface ValidationError {
 }
 
 
-const LoginContainer = () => {
+const FieldErrorMessage = (props: { message: string }) => {
+	return (
+		<FormErrorMessage fontSize="0.7em" marginTop="4px" marginLeft="5px">
+			{props.message}
+		</FormErrorMessage>
+	);
+}
 
+
+
+const LoginContainer = () => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -67,19 +74,22 @@ const LoginContainer = () => {
 		}
 		
 		// Make login request
-        let requestBody: { email: string, password: string, rememberMe: boolean } = {
+        let requestBody: LoginRequest = {
             email: email,
 			password: password,
-			rememberMe: rememberMe
         };
-        axios.post(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/login`, requestBody)
+        axios.post(
+			`http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/login`,
+			requestBody
+		)
             .then((response: AxiosResponse) => {
-				if (rememberMe) {
-					Cookies.set("token", response.data.data["accessToken"], { expires: 30 });
-				}
-				else {
-					Cookies.set("token", response.data.data["accessToken"]);
-				}
+				const cookieOptions = {
+					expires: rememberMe ? 30 : undefined,
+					sameSite: "Strict" as "Strict" | "Lax" | "None",
+					secure: true,
+				};
+				Cookies.set("token", response.data.data["accessToken"], cookieOptions)
+				Cookies.set("email", email, cookieOptions)
 
 				// Reset all error states
 				setValidationError({
@@ -140,7 +150,7 @@ const LoginContainer = () => {
 
 	return (
         <VStack gap="5">
-            <VStack minWidth="300px">
+            <VStack width="300px">
                 <FormControl
                     isInvalid={validationError.email.failed}
                     marginBottom={validationError.email.failed ? "0" : "2"}
@@ -216,6 +226,7 @@ const LoginContainer = () => {
             <Button
                 width="full"
                 onClick={sendLoginData}
+				isLoading={loginSuccessful}
             >
                 Log In
             </Button>

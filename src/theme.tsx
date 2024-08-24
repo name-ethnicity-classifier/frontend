@@ -91,6 +91,17 @@ export const theme = extendTheme({
         }
       }
     },
+    Link: {
+      baseStyle: {
+        fontSize: "xs",
+        color: "primaryBlue.100",
+        fontWeight: "bold",
+        _hover: {
+          textDecoration: "none",
+          color: "secondaryBlue.200"
+        }
+      },
+    },
     Heading: {
       baseStyle: {
         fontSize: "md",

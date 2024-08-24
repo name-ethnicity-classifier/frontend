@@ -53,7 +53,7 @@ const Login = () => {
                                                 Already have an account?&nbsp;
                                             </Text>
                                             <Link color="primaryBlue.100" onClick={() => setIsSignup(false)}>
-                                                <Text variant="link">Login</Text>
+                                                Login
                                             </Link>
                                         </>
                                     :
@@ -62,7 +62,7 @@ const Login = () => {
                                                 Don't have an account yet?&nbsp;
                                             </Text>
                                             <Link color="primaryBlue.100" onClick={() => setIsSignup(true)}>
-                                                <Text variant="link">Sign Up</Text>
+                                                Sign Up
                                             </Link>
                                         </>
                                 }

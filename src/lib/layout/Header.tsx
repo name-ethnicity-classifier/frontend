@@ -15,9 +15,10 @@ import {
   PopoverContent,
   PopoverBody,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuUser } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 import SettingsDrawer from "../components/SettingsDrawer";
 
@@ -104,6 +105,13 @@ const Header = (props: HeaderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
   const [homeIsHovered, setHomeIsHovered] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (Cookies.get("token") && Cookies.get("email")) {
+      setIsLoggedIn(true);
+      setUserEmail(Cookies.get("email"))
+    }
+  })
 
   const NavigationButtonList = () => (
     <>
@@ -216,7 +224,7 @@ const Header = (props: HeaderProps) => {
                 }}
                 onClick={onSettingsOpen}
               >
-                {userEmail ? userEmail[0] : "?"}
+                {userEmail ? userEmail[0].toUpperCase() : "?"}
               </Button>
               <SettingsDrawer
                 isOpen={settingsIsOpen}

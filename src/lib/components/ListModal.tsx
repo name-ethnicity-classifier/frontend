@@ -74,125 +74,139 @@ const ListModal = (props: ListModalProps) => {
 							{props.description}
 						</VStack>
 
-						<VStack
-							maxHeight="40vh"
-							minHeight={ props.searchBar ? "40vh" : "none" }
-							overflowY="auto"
-							width="full"
-							borderTopWidth="1px"
-							borderTopColor="surfaceBlue.100"
-							borderBottomWidth="1px"
-							borderBottomColor="surfaceBlue.100"
-							bg="surfaceBlue.100"
-							borderRadius="7"
-							gap="0px"
-							alignItems="left"
-                        >
-							{
-								props.searchBar && (
-									<HStack
-										maxWidth="full"
-										border="none"
-										margin="10px"
-										marginBottom="0px"
-										bg="red"
-										borderRadius="7"
-										backgroundColor="white"
-										paddingLeft="5"
-										paddingRight="10px"
-										gap="0"
-										boxShadow="sm"
-									>
-										<Search2Icon color="primaryBlue.100"/>
-										<Input
-											fontSize={{ base: "2xs", sm: "xs"}}
-											width="full"
-											boxShadow="none"
-											placeholder="Search..."
-											value={searchQuery}
-											_focus={{ boxShadow: "none", outline: "none" }}
-											onChange={handleSearchChange}
-										/>
-									</HStack>
-								)
-							}
-							<Table
-								style={{borderCollapse: "separate", borderSpacing: "10px 10px"}}
-							>
-								<Thead>
-									<Tr>
-										<Th
-											textTransform="none"
-											bg="secondaryBlue.100"
-											borderRadius="7"
-											color="primaryBlue.100"
-											paddingX="5"
-											paddingY="3"
-											boxShadow="sm"
-											fontSize={{ base: "2xs", sm: "xs"}}
-										>
-											{props.columns[0]}
-										</Th>
-										<Th
-											textTransform="none"
-											bg="secondaryBlue.100"
-											borderRadius="7"
-											color="primaryBlue.100"
-											paddingX="5"
-											paddingY="3"
-											boxShadow="sm"
-											fontSize={{ base: "2xs", sm: "xs"}}
-										>
-											{props.columns[1]}
-										</Th>
-									</Tr>
-								</Thead>
-								<Tbody>
+						{
+							props.data.length > 0 ?
+								<VStack
+									maxHeight="40vh"
+									minHeight={ props.searchBar ? "40vh" : "none" }
+									overflowY="auto"
+									width="full"
+									borderTopWidth="1px"
+									borderTopColor="surfaceBlue.100"
+									borderBottomWidth="1px"
+									borderBottomColor="surfaceBlue.100"
+									bg="surfaceBlue.100"
+									borderRadius="7"
+									gap="0px"
+									alignItems="left"
+								>
 									{
-										Object.entries(
-											searchQuery.length > 0 ? filteredData : props.data
-										).map(([key, value]) => (
-											<Tr
-												key={key}
+										props.searchBar && (
+											<HStack
+												maxWidth="full"
+												border="none"
+												margin="10px"
+												marginBottom="0px"
+												bg="red"
+												borderRadius="7"
 												backgroundColor="white"
+												paddingLeft="5"
+												paddingRight="10px"
+												gap="0"
+												boxShadow="sm"
 											>
-												<Td
-													color="textLight"
+												<Search2Icon color="primaryBlue.100"/>
+												<Input
+													fontSize={{ base: "2xs", sm: "xs"}}
+													width="full"
+													boxShadow="none"
+													placeholder="Search..."
+													value={searchQuery}
+													_focus={{ boxShadow: "none", outline: "none" }}
+													onChange={handleSearchChange}
+												/>
+											</HStack>
+										)
+									}
+
+									<Table
+										style={{borderCollapse: "separate", borderSpacing: "10px 10px"}}
+									>
+										<Thead>
+											<Tr>
+												<Th
+													textTransform="none"
+													bg="secondaryBlue.100"
+													borderRadius="7"
+													color="primaryBlue.100"
 													paddingX="5"
 													paddingY="3"
 													boxShadow="sm"
-													borderRadius="7"
 													fontSize={{ base: "2xs", sm: "xs"}}
 												>
-													{key}
-												</Td>
-												<Td
-													color="textLight"
+													{props.columns[0]}
+												</Th>
+												<Th
+													textTransform="none"
+													bg="secondaryBlue.100"
+													borderRadius="7"
+													color="primaryBlue.100"
 													paddingX="5"
 													paddingY="3"
 													boxShadow="sm"
-													borderRadius="7"
 													fontSize={{ base: "2xs", sm: "xs"}}
 												>
-													{value}
-												</Td>
+													{props.columns[1]}
+												</Th>
 											</Tr>
-										))
-									}
-									{
-										searchQuery.length > 0 && Object.entries(filteredData).length === 0 ?
-											<Text
-												fontSize="xs"
-												color="textLight"
-												padding="5px"
-											>
-												No such nationality exists in our dataset!
-											</Text>
-										: null
-									}
-								</Tbody>
-							</Table>
-						</VStack>
+										</Thead>
+										<Tbody>
+											{
+												Object.entries(
+													searchQuery.length > 0 ? filteredData : props.data
+												).map(([key, value]) => (
+													<Tr
+														key={key}
+														backgroundColor="white"
+													>
+														<Td
+															color="textLight"
+															paddingX="5"
+															paddingY="3"
+															boxShadow="sm"
+															borderRadius="7"
+															fontSize={{ base: "2xs", sm: "xs"}}
+														>
+															{key}
+														</Td>
+														<Td
+															color="textLight"
+															paddingX="5"
+															paddingY="3"
+															boxShadow="sm"
+															borderRadius="7"
+															fontSize={{ base: "2xs", sm: "xs"}}
+														>
+															{value}
+														</Td>
+													</Tr>
+												))
+											}
+											{
+												searchQuery.length > 0 && Object.entries(filteredData).length === 0 ?
+													<Text
+														fontSize="xs"
+														color="textLight"
+														padding="5px"
+													>
+														No such nationality exists in our dataset!
+													</Text>
+												: null
+											}
+										</Tbody>
+									</Table>
+								</VStack>
+							:
+								<Heading
+									marginY="20"
+									variant="h2"
+									color="secondaryBlue.200"
+								>
+									Nothing here :/
+								</Heading>
+									
+								
+						}
 					</VStack>
 				</ModalBody>
 			</ModalContent>

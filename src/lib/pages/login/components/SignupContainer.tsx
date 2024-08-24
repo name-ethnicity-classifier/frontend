@@ -7,13 +7,12 @@ import PasswordField from "./PasswordField";
 
 
 
-
-const FieldErrorMessage = (props: { message: string }) => {
-	return (
-		<FormErrorMessage fontSize="0.7em" marginTop="4px" marginLeft="5px">
-			<b>&#9888;</b>&nbsp;&nbsp;{props.message}
-		</FormErrorMessage>
-	);
+interface SignupRequest {
+	name: string,
+	email: string,
+	role: string,
+	password: string,
+	consented: boolean
 }
 
 
@@ -26,6 +25,18 @@ interface ValidationError {
 	confirmedPassword: { failed: boolean, message: string },
 	consented: { failed: boolean, message: string }
 }
+
+
+
+const FieldErrorMessage = (props: { message: string }) => {
+	return (
+		<FormErrorMessage fontSize="0.7em" marginTop="4px" marginLeft="5px">
+			{props.message}
+		</FormErrorMessage>
+	);
+}
+
+
 
 const SignupContainer = () => {
 
@@ -78,43 +89,50 @@ const SignupContainer = () => {
 			// Check for empty input fields
 			if (name.length === 0) {
 				setValidationError((prevErrors) => ({
-					...prevErrors, name: { failed: true, message: "Please provide a name." }
+					...prevErrors,
+					name: { failed: true, message: "Please provide a name." }
 				}));
 			}
 			if (email.length === 0) {
 				setValidationError((prevErrors) => ({
-					...prevErrors, email: { failed: true, message: "Please provide an email." }
+					...prevErrors,
+					email: { failed: true, message: "Please provide an email." }
 				}));
 			}
 			if (password.length === 0) {
 				setValidationError((prevErrors) => ({
-					...prevErrors, password: { failed: true, message: "Please provide a password." }
+					...prevErrors,
+					password: { failed: true, message: "Please provide a password." }
 				}));
 			}
 			if (confirmedPassword.length === 0) {
 				setValidationError((prevErrors) => ({
-					...prevErrors, confirmedPassword: { failed: true, message: "Please confirm password." }
+					...prevErrors,
+					confirmedPassword: { failed: true, message: "Please confirm password." }
 				}));
 			}
 			// Check password confirmation
 			if (confirmedPassword !== password) {
 				setValidationError((prevErrors) => ({
-					...prevErrors, confirmedPassword: { failed: true, message: "Passwords do not match." }
+					...prevErrors,
+					confirmedPassword: { failed: true, message: "Passwords do not match." }
 				}));
 			}
 
 			return;
 		}
-
 		
-		// Make login request
-        let requestBody: { name: string, email: string, password: string, consented: boolean } = {
+        let requestBody: SignupRequest = {
 			name: name,
             email: email,
+			role: role,
 			password: password,
 			consented: consented
         };
-        axios.post(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/signup`, requestBody)
+        axios.post(
+			`http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/signup`,
+			requestBody
+		)
             .then((response: AxiosResponse) => {
 				// Reset all error states
 				setValidationError({
@@ -152,6 +170,13 @@ const SignupContainer = () => {
 
 				const responseData = (error as AxiosError).response?.data as { errorCode?: string };
 				switch (responseData?.errorCode) {
+					case "EMAIL_EXISTS": {
+						setValidationError((prevErrors) => ({
+							...prevErrors,
+							email: { failed: true, message: "An account with this email already exists." },
+						}));
+						break;
+					}
 					case "INVALID_NAME": {
 						setValidationError((prevErrors) => ({
 							...prevErrors,
@@ -164,6 +189,10 @@ const SignupContainer = () => {
 							...prevErrors,
 							email: { failed: true, message: "Invalid email format." },
 						}));
+						break;
+					}
+					case "INVALID_ROLE": {
+						alert("WTF")
 						break;
 					}
 					case "PASSWORD_TOO_LONG": {
@@ -192,7 +221,7 @@ const SignupContainer = () => {
 							...prevErrors,
 							server: {
 								failed: true,
-								message: `[${responseData?.errorCode}] We are sorry for the inconvenience. Please try again later.`
+								message: `[${responseData?.errorCode}] An unexpected error occured. Please try again later.`
 							},
 						}));
 					}
@@ -203,7 +232,7 @@ const SignupContainer = () => {
 	return (
         
         <VStack gap="5">
-            <VStack minWidth="300px">
+            <VStack width="300px">
 
 				<FormControl
 					isInvalid={validationError.name.failed}
@@ -241,7 +270,7 @@ const SignupContainer = () => {
 						>
 							{
 								roles.map((role: string) => (
-									<option value={`option-${role}`}>
+									<option value={role}>
 										{role}
 									</option>
 								))
@@ -332,9 +361,8 @@ const SignupContainer = () => {
                     sx={{
                         ".chakra-checkbox__control": {
 							borderWidth: "0px",
-							borderColor: "primaryBlue.200",
 							borderRadius: "3px",
-							bg: "secondaryBlue.100"
+							bg: validationError.consented.failed ? "red.100" : "secondaryBlue.100"
 						}
                     }}
                     size="sm"
@@ -348,13 +376,16 @@ const SignupContainer = () => {
                         setConsented(!consented);
                     }}
                 >
-                    <Text>Accept terms of service</Text>
+                    <Text
+						color={validationError.consented.failed ? "primaryRed.100" : "textLight"}
+					>Accept terms of service</Text>
                 </Checkbox>
             </HStack>
             
             <Button
                 width="full"
                 onClick={sendSignupData}
+				isLoading={signupSuccessful}
             >
                 Sign up
             </Button>
