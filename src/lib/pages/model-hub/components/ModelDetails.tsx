@@ -4,6 +4,8 @@ import { Bar } from "react-chartjs-2";
 import { DeleteIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { LuFileUp } from "react-icons/lu";
 import { useEffect, useState } from "react";
+import Classification from "./Classification";
+import Cookies from "js-cookie";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -40,9 +42,13 @@ interface ModelDetailsProps {
 
 const ModelDetails = (props: ModelDetailsProps) => {
 	const [isRendered, setIsRendered] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 	useEffect(() => {
-			setIsRendered(true);
+		if (Cookies.get("token") && Cookies.get("email")) {
+			setIsLoggedIn(true);
+		}
+		setIsRendered(true);
 	}, []);
 
 	return (
@@ -61,6 +67,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 					<Box
 						height="99%"
 						width="99%"
+						minHeight="200px"
 					>
 						{
 							isRendered ?
@@ -119,7 +126,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 						alignItems="center"
 						justifyContent="center"
 					>
-						<Heading color="primaryBlue.100" fontSize="64px">
+						<Heading color="primaryBlue.100" fontSize={{ base: "32px", md: "64px" }}>
 							{props.selectedModel.nationalities.length}
 						</Heading>
 						<Text>
@@ -189,70 +196,20 @@ const ModelDetails = (props: ModelDetailsProps) => {
 						<Text>
 							Put all the names you want to classify into a .csv file under a column “names” and upload it below! Here is an exemplary .csv file.
 						</Text>
-
-						<VStack
-							alignItems="left"
-							gap="2"
-						>
-							<Checkbox
-								sx={{
-										".chakra-checkbox__control": {
-												borderWidth: "0px",
-												borderColor: "primaryBlue.200",
-												borderRadius: "3px",
-												bg: "secondaryBlue.100"
-										}
-								}}
-								size="sm"
-								onChange={() => { }}
-							>
-								<Text lineHeight="15px">Give me only the most likely ethnicity per name</Text>
-							</Checkbox>
-							<Checkbox
-								sx={{
-										".chakra-checkbox__control": {
-												borderWidth: "0px",
-												borderColor: "primaryBlue.200",
-												borderRadius: "3px",
-												bg: "secondaryBlue.100"
-										}
-								}}
-								size="sm"
-								onChange={() => { }}
-							>
-								<Text lineHeight="15px">Give me the entire ethnicity-likelyhood distribution per name</Text>
-							</Checkbox>
-						</VStack>
-
-						<Dropzone onDrop={(acceptedFiles: any) => console.log(acceptedFiles)}>
-							{() => (
-								<Box
-									width="full"
-									bg="transparent"
-									borderWidth="1px"
-									borderColor="primaryBlue.100"
-									borderStyle="dashed"
-									borderRadius="7px"
-									display="flex"
-									flexDirection="column"
-									alignItems="center"
-									gap="0"
-									padding="5"
-									marginTop="2"
-									_hover={{
-										bg: "surfaceBlue.200"
-									}}
+						
+						{
+							isLoggedIn ?
+								<Classification selectedModelName={props.selectedModel.name} />
+							:
+								<Button
+									variant="secondary"
+									width="fit-content"
+									margin="auto"
+									onClick={() => { window.location.href = "/login" }}
 								>
-									<LuFileUp size="32px" color="var(--chakra-colors-primaryBlue-100)"/>
-									<Text variant="bold" color="primaryBlue.100">
-										Drop .csv file
-									</Text>
-									<Text variant="bold" color="primaryBlue.100">
-										or click to browse files
-									</Text>
-								</Box>
-							)}
-						</Dropzone>
+									Log in to classify names
+								</Button>
+						}
 					</VStack>
 
 					<VStack

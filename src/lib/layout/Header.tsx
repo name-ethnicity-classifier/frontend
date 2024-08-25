@@ -206,7 +206,6 @@ const Header = (props: HeaderProps) => {
               leftIcon={<LuUser color="white" />}
               onClick={() => {
                 navigate("/login")
-                setIsLoggedIn(true);
               }}
             >
               Login

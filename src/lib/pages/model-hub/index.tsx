@@ -1,4 +1,4 @@
-import { Flex, Text, Link, Button, Heading, Box, Checkbox, useDisclosure, HStack, VStack, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Text, Link, Image, Button, Heading, Box, Checkbox, useDisclosure, HStack, VStack, useBreakpointValue } from "@chakra-ui/react";
 import Dropzone from "react-dropzone";
 import { Bar } from "react-chartjs-2";
 import { DeleteIcon, ArrowForwardIcon } from '@chakra-ui/icons';
@@ -28,48 +28,75 @@ const ModelHub = () => {
 	}
 	
 	const isMobile = useBreakpointValue({ base: true, lg: false });
+	const { isOpen, onOpen, onClose } = useDisclosure()
 
 	const [selectedModel, setSelectedModel] = useState<ModelType | null>(null);
 	const [models, setModels] = useState<ModelType[]>([]);
-
-	const { isOpen, onOpen, onClose } = useDisclosure()
-
-	const token: string | undefined = Cookies.get("token");
-    const requestHeaders = {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
-    }
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 	useEffect(() => {
-		axios.get(`${BACKEND_URL}/models`, {
-			headers: requestHeaders
-		})
-			.then((response: AxiosResponse<ModelsResponseType>) => {
-				let allModels: ModelType[] = [];
-				response.data.data?.defaultModels?.forEach((model: any) => {
-					allModels.push({
+		const loggedIn = Cookies.get("token") && Cookies.get("email")
+		if (loggedIn) {
+			setIsLoggedIn(loggedIn);
+
+			const requestHeaders = {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${Cookies.get("token")}`,
+			}
+			axios.get(`${BACKEND_URL}/models`, {
+				headers: requestHeaders
+			})
+				.then((response: AxiosResponse<ModelsResponseType>) => {
+					let allModels: ModelType[] = [];
+					response.data.data?.defaultModels?.forEach((model: any) => {
+						allModels.push({
+							name: model.name,
+							accuracy: model.accuracy,
+							scores: model.scores,
+							nationalities: model.nationalities,
+							isCustom: model.isCustom
+						})
+					});
+					response.data.data?.customModels?.forEach((model: any) => {
+						allModels.push({
+							name: model.name,
+							accuracy: model.accuracy,
+							scores: model.scores,
+							nationalities: model.nationalities,
+							isCustom: model.isCustom
+						})
+					});
+					
+					setModels(allModels);
+					setSelectedModel(allModels[0])
+				})
+				.catch((error: unknown) => {
+					console.error("There was a problem with the axios request:", error);
+				});
+		}
+		else {
+			// fetch only default models if not authenticate
+			axios.get(`${BACKEND_URL}/default-models`, {
+				headers: { "Content-Type": "application/json" }
+			  })
+				.then((response: AxiosResponse<ModelType[]>) => {
+				  let allDefaultModels: ModelType[] = [];
+				  response.data.data?.forEach((model: any) => {
+					allDefaultModels.push({
 						name: model.name,
 						accuracy: model.accuracy,
 						scores: model.scores,
 						nationalities: model.nationalities,
-						isCustom: model.isCustom
+						isCustom: false
 					})
+				  });
+				  setModels(allDefaultModels);
+				  setSelectedModel(allDefaultModels[0])
+				})
+				.catch((error: unknown) => {
+				  console.error("There was a problem with the axios request:", error);
 				});
-				response.data.data?.customModels?.forEach((model: any) => {
-					allModels.push({
-						name: model.name,
-						accuracy: model.accuracy,
-						scores: model.scores,
-						isCustom: model.isCustom
-					})
-				});
-				
-				setModels(allModels);
-				setSelectedModel(allModels[0])
-			})
-			.catch((error: unknown) => {
-				console.error("There was a problem with the axios request:", error);
-			});
+		}
 	}, []);
 
 	return (
@@ -110,9 +137,15 @@ const ModelHub = () => {
 							padding="4"
 							gap="4"
 						>
-							<Button width="full">
-								+ Request custom model
-							</Button>
+							{
+								isLoggedIn ?
+									<Button width="full">
+										+ Request custom model
+									</Button>
+								:
+									null
+							}
+							
 
 							{
 								models.map((model: ModelType) => {
@@ -142,9 +175,10 @@ const ModelHub = () => {
 											paddingY="10px"
 											paddingX="3"
 											gap="3"
-											maxWiidth="300px"
+											maxWidth="300px"
 											transition="100ms ease-in-out"
 											boxShadow="sm"
+											cursor="pointer"
 											sx={
 												isSelected ? selectedModelButtonStyle
 													: modelButtonStyle
@@ -157,7 +191,7 @@ const ModelHub = () => {
 												borderRadius="full"
 												bg="orange.400"
 											/>
-											<Text maxWiidth="75%"
+											<Text maxWidth="75%"
 												color={isSelected ? "primaryBlue.100" : "textLight"}
 												isTruncated
 											>
@@ -190,22 +224,26 @@ const ModelHub = () => {
 						{selectedModel?.name}
 					</Text>
 
-					<HStack
-						marginLeft="auto"
-						height="100%"
-						aspectRatio="1"
-						borderRadius="4px"
-						justifyContent="center"
-					>
-						<DeleteIcon
-							color="primaryBlue.100"
-							margin="2px"
-							_hover={{
-								color: "primaryBlue.200"
-							}}
-							onClick={onOpen}
-						/>
-					</HStack>
+					{
+						isLoggedIn ?
+							<HStack
+								marginLeft="auto"
+								height="100%"
+								aspectRatio="1"
+								borderRadius="4px"
+								justifyContent="center"
+							>
+								<DeleteIcon
+									color="primaryBlue.100"
+									margin="2px"
+									_hover={{
+										color: "primaryBlue.200"
+									}}
+									onClick={onOpen}
+								/>
+							</HStack>
+						: null
+					}
 				</Flex>
 				
 				{
@@ -216,9 +254,18 @@ const ModelHub = () => {
 							minHeight={isMobile ? "50vh" : "full"}
 							alignItems="center"
 							justifyContent="center"
+							gap="7"
 							marginX="10"
-						>
-							<Heading variant="h3" color="secondaryBlue.200">
+						>	
+							<Image
+								src="/assets/hourglass-illustration.svg"
+								height="25%"	
+							/>
+							<Heading
+								variant="h3"
+								color="secondaryBlue.200"
+								maxWidth="500px"
+							>
 								This model is currently queued to be trained. Check in again tomorrow!
 							</Heading>
 						</VStack>
