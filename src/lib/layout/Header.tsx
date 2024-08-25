@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import SettingsDrawer from "../components/SettingsDrawer";
+import { useAuth } from "../contexts/AuthContext";
 
 
 interface NavigationButtonProps {
@@ -88,6 +89,7 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -102,16 +104,7 @@ const Header = (props: HeaderProps) => {
     onClose: onPopoverClose,
   } = useDisclosure();
 
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
   const [homeIsHovered, setHomeIsHovered] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (Cookies.get("token") && Cookies.get("email")) {
-      setIsLoggedIn(true);
-      setUserEmail(Cookies.get("email"))
-    }
-  })
 
   const NavigationButtonList = () => (
     <>
@@ -223,7 +216,7 @@ const Header = (props: HeaderProps) => {
                 }}
                 onClick={onSettingsOpen}
               >
-                {userEmail ? userEmail[0].toUpperCase() : "?"}
+                {isLoggedIn ? Cookies.get("email")[0].toUpperCase() : "?"}
               </Button>
               <SettingsDrawer
                 isOpen={settingsIsOpen}

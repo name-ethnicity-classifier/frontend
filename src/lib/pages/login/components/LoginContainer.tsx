@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import PasswordField from "./PasswordField";
 import { BACKEND_URL } from "~/lib/utils/serverRequests";
+import { useAuth } from "~/lib/contexts/AuthContext";
 
 
 interface LoginRequest {
@@ -30,6 +31,8 @@ const FieldErrorMessage = (props: { message: string }) => {
 
 
 const LoginContainer = () => {
+	const { logIn } = useAuth();
+	
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -85,8 +88,9 @@ const LoginContainer = () => {
 					sameSite: "Strict" as "Strict" | "Lax" | "None",
 					secure: true,
 				};
-				Cookies.set("token", response.data.data["accessToken"], cookieOptions)
-				Cookies.set("email", email, cookieOptions)
+				Cookies.set("token", response.data.data["accessToken"], cookieOptions);
+				Cookies.set("email", email, cookieOptions);
+				logIn();
 
 				// Reset all error states
 				setValidationError({

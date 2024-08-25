@@ -7,24 +7,13 @@ import HowToSection from "./components/HowToSection";
 import LinkCard from "./components/LinkCard";
 import NumberCard from "./components/NumberCard";
 import TeamMemberCard from "./components/TeamMemberCard";
+import { useAuth } from "~/lib/contexts/AuthContext";
+import { fetchModels, fetchDefaultModels } from "~/lib/utils/serverRequests";
+import { ModelType } from "~/types";
+
 
 const Home = () => {
-
-  interface ModelType {
-    name: string,
-    accuracy: number,
-    isCustom: boolean,
-    scores?: number[],
-    nationalities?: string[]
-  }
-
-
-  interface ModelsResponseType {
-    data: {
-      customModels: ModelType[],
-      defaultModels: ModelType[]
-    }
-  }
+	const { isLoggedIn } = useAuth();
 
   const [customModels, setCustomModels] = useState<ModelType[]>([]);
   const [defaultModels, setDefaultModels] = useState<ModelType[]>([]);
@@ -40,65 +29,18 @@ const Home = () => {
   }
 
   useEffect(() => {
-    const token: string | undefined = Cookies.get("token");
-    const requestHeaders = {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
-    }
-
-    if (token) {
-      axios.get(`${BACKEND_URL}/models`, {
-        headers: requestHeaders
+    if (isLoggedIn) {
+      fetchModels((customModels: ModelType[], defaultModels: ModelType[]) => {
+        setCustomModels(customModels);
+        setDefaultModels(defaultModels);
       })
-        .then((response: AxiosResponse<ModelsResponseType>) => {
-          let allCustomModels: ModelType[] = [];
-          response.data.data?.customModels?.forEach((model: any) => {
-            allCustomModels.push({
-              name: model.name,
-              accuracy: model.accuracy,
-              isCustom: model.isCustom
-            })
-          });
-
-          let allDefaultModels: ModelType[] = [];
-          response.data.data?.defaultModels?.forEach((model: any) => {
-            allDefaultModels.push({
-              name: model.name,
-              accuracy: model.accuracy,
-              isCustom: model.isCustom
-            })
-          });
-
-          setCustomModels(allCustomModels);
-          setDefaultModels(allDefaultModels);
-        })
-        .catch((error: unknown) => {
-          console.error("There was a problem with the axios request:", error);
-        });
-      }
-      else {
-        // fetch only default models if not authenticate
-        axios.get(`${BACKEND_URL}/default-models`, {
-          headers: requestHeaders
-        })
-          .then((response: AxiosResponse<ModelType[]>) => {
-            console.debug(response)
-            let allDefaultModels: ModelType[] = [];
-            response.data.data?.forEach((model: any) => {
-              allDefaultModels.push({
-                name: model.name,
-                accuracy: model.accuracy,
-                isCustom: false
-              })
-            });
-            setCustomModels([]);
-            setDefaultModels(allDefaultModels);
-          })
-          .catch((error: unknown) => {
-            console.error("There was a problem with the axios request:", error);
-          });
-      }
-  }, []);
+    }
+    else {
+      fetchDefaultModels((defaultModels: ModelType[]) => {
+        setDefaultModels(defaultModels);
+      })
+    }
+  }, [isLoggedIn]);
 
   const totalDatasetSize = Object.values(nationalityData).reduce((acc, value) => acc + value, 0);
   const sectionGap = { base: "50px", md: "75px" }

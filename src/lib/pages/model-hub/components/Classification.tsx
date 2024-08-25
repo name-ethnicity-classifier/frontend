@@ -20,10 +20,10 @@ const Classification = (props: ClassificationProps) => {
 				<Checkbox
 					sx={{
 							".chakra-checkbox__control": {
-									borderWidth: "0px",
-									borderColor: "primaryBlue.200",
-									borderRadius: "3px",
-									bg: "secondaryBlue.100"
+								borderWidth: "0px",
+								borderColor: "primaryBlue.200",
+								borderRadius: "3px",
+								bg: "secondaryBlue.100"
 							}
 					}}
 					size="sm"
@@ -34,10 +34,10 @@ const Classification = (props: ClassificationProps) => {
 				<Checkbox
 					sx={{
 							".chakra-checkbox__control": {
-									borderWidth: "0px",
-									borderColor: "primaryBlue.200",
-									borderRadius: "3px",
-									bg: "secondaryBlue.100"
+								borderWidth: "0px",
+								borderColor: "primaryBlue.200",
+								borderRadius: "3px",
+								bg: "secondaryBlue.100"
 							}
 					}}
 					size="sm"
@@ -59,9 +59,9 @@ const Classification = (props: ClassificationProps) => {
 						display="flex"
 						flexDirection="column"
 						alignItems="center"
-						gap="0"
 						padding="5"
 						marginTop="2"
+						cursor="pointer"
 						_hover={{
 							bg: "surfaceBlue.200"
 						}}

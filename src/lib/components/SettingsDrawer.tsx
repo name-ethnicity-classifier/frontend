@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 import DeleteModal from "./DeleteModal";
+import { useAuth } from "../contexts/AuthContext";
 
 
 
@@ -151,6 +152,8 @@ interface SettingsDrawerProps {
 
 
 const SettingsDrawer = (props: SettingsDrawerProps) => {
+  const { logOut } = useAuth();
+
   const name = "theodor peifer"
   const role = "student"
   const email = "teddypeifer@gmail.com"
@@ -163,13 +166,8 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const logOutUser = () => {
-    Cookies.remove("token");
-    Cookies.remove("email");
-  }
-
   const handleDeleteConfirm = () => {
-    logOutUser();
+    logOut();
     toast({
       title: "Account deleted.",
       description: "Your account has been successfully deleted.",
@@ -263,7 +261,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                   width="full"
                   leftIcon={<LuLogOut color="var(--chakra-colors-primaryBlue-100"/>}
                   onClick={() => {
-                    logOutUser();
+                    logOut();
                     window.location.href = "/"
                   }}
                 >

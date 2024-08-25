@@ -15,6 +15,8 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
+import { useAuth } from "~/lib/contexts/AuthContext";
+import { ModelType } from "~/types";
 
 
 ChartJS.register(
@@ -27,27 +29,17 @@ ChartJS.register(
 );
 
 
-interface ModelType {
-	name: string,
-	accuracy: number,
-	isCustom: boolean,
-	scores: number[],
-	nationalities: string[]
-}
-
 interface ModelDetailsProps {
 	selectedModel: ModelType
 }
 
 
 const ModelDetails = (props: ModelDetailsProps) => {
+	const { isLoggedIn } = useAuth();
+
 	const [isRendered, setIsRendered] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 	useEffect(() => {
-		if (Cookies.get("token") && Cookies.get("email")) {
-			setIsLoggedIn(true);
-		}
 		setIsRendered(true);
 	}, []);
 
