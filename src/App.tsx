@@ -6,15 +6,15 @@ import Routings from "~/lib/router/Routings";
 import { theme } from "~/theme";
 
 const App = () => (
-  <AuthProvider>
-    <ChakraProvider theme={theme}>
-      <Router>
+  <ChakraProvider theme={theme}>
+    <Router>
+      <AuthProvider>
         <Layout>
           <Routings />
         </Layout>
-      </Router>
-    </ChakraProvider>
-  </AuthProvider>
+      </AuthProvider>
+    </Router>
+  </ChakraProvider>
 );
 
 export default App;

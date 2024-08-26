@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import Cookies from "js-cookie";
+import {jwtDecode} from "jwt-decode";
+import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext({
   isLoggedIn: false,
@@ -12,16 +15,33 @@ type LayoutProps = {
 };
 
 export const AuthProvider = ({ children }: LayoutProps) => {
+  const toast = useToast();
+  const navigate = useNavigate();  // This should work now
+
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  useEffect(() => {
+  useEffect(() => {    
     const token = Cookies.get("token");
     const email = Cookies.get("email");
 
     if (token && email) {
-      setIsLoggedIn(true);
+        const decodedToken: { exp: number } = jwtDecode(token);
+        if (decodedToken.exp < Date.now() / 1000) {
+          logOut();
+          toast({
+            title: "Your session expired. Please log in again.",
+            status: "warning",
+            duration: 5000,
+            isClosable: false,
+            position: "top",
+          });
+          navigate("/");
+        } else {
+          logIn();
+        }
+      
     }
-  }, []);
+  }, [navigate]);
 
   const logIn = () => {
     setIsLoggedIn(true);

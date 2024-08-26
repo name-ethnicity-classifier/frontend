@@ -57,7 +57,7 @@ const TeamMemberCard = (props: TeamMemberCardProps) => {
             <Image
                 src={props.imageURL}
                 borderRadius="7px"
-                aspectRadio="1"
+                aspectRatio="1"
             />
         </Box>
             

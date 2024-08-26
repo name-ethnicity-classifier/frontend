@@ -1,8 +1,5 @@
 import { Flex, Grid, GridItem, Heading, Link, Text, VStack, Spacer, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import axios, { AxiosResponse } from "axios";
-import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import HowToSection from "./components/HowToSection";
 import LinkCard from "./components/LinkCard";
 import NumberCard from "./components/NumberCard";
@@ -37,6 +34,7 @@ const Home = () => {
     }
     else {
       fetchDefaultModels((defaultModels: ModelType[]) => {
+        setCustomModels([]);
         setDefaultModels(defaultModels);
       })
     }
@@ -239,6 +237,7 @@ const Home = () => {
         paddingTop={sectionGap}
         gap="7"
         align="left"
+        id="how-it-works-section"
       >
         <Heading
           variant="h2"

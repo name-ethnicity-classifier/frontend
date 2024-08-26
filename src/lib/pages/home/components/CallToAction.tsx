@@ -61,6 +61,14 @@ const CallToAction = () => {
 
             <Button
               rightIcon={<LuArrowRight color="white" />}
+              onClick={() => {
+                setTimeout(() => {
+                  const element = document.getElementById("how-it-works-section");
+                  if (element) {
+                    element.scrollIntoView({ behavior: "smooth" });
+                  }
+                }, 0);
+              }}
             >
               how it works!
             </Button>
