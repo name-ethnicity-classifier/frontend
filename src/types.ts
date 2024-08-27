@@ -22,3 +22,8 @@ export interface ModelType {
 	nationalities: string[]
 }
 
+
+export interface NationalityDataType {
+	nationalities: Record<string, number>,
+	nationalityGroups: Record<string, number>
+}

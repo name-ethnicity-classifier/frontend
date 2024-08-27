@@ -40,7 +40,7 @@ const DeleteModal = (props: DeleteModalProps) => {
 				setIsDeleting(false);
 				props.onDeleteConfirm();
 				props.onClose();
-			}, 2000);
+			}, 1000);
 
 		} else {
 			toast({
@@ -55,7 +55,12 @@ const DeleteModal = (props: DeleteModalProps) => {
 
 	return (
 		<>
-			<Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
+			<Modal
+				isOpen={props.isOpen}
+				onClose={props.onClose}
+				isCentered
+				preserveScrollBarGap
+			>
 				<ModalOverlay
 					bg="blackAlpha.300"
 					backdropFilter="blur(10px)"

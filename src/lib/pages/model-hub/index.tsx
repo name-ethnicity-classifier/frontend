@@ -12,9 +12,10 @@ import {
 	VStack,
 	useBreakpointValue,
 	Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody
+	PopoverTrigger,
+	PopoverContent,
+	PopoverBody,
+	useToast
 } from "@chakra-ui/react";
 import { DeleteIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
@@ -24,9 +25,11 @@ import ModelDetails from "./components/ModelDetails";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
 import ModelSelectionList from "./components/ModelSelectionList";
+import { deleteModel } from "~/lib/utils/serverRequests";
 
 
 const ModelHub = () => {
+	const toast = useToast();
 	const { isLoggedIn } = useAuth();
 
 	const isMediumViewPort = useBreakpointValue({ base: true, lg: false });
@@ -65,6 +68,7 @@ const ModelHub = () => {
 			marginY="4"
 			marginBottom="100"
 			alignItems="top"
+			minHeight="calc(100vh - 60px)"
 		>
 			{
 				!isMediumViewPort ?
@@ -188,7 +192,7 @@ const ModelHub = () => {
 						<ModelDetails selectedModel={selectedModel}/>	
 					:
 						<VStack
-							minHeight={isMediumViewPort ? "50vh" : "full"}
+							minHeight="75vh"
 							alignItems="center"
 							justifyContent="center"
 							gap="7"
@@ -213,8 +217,26 @@ const ModelHub = () => {
 			{isOpen && (
 				<DeleteModal
 					deleteEntitiyName="model"
-					deleteText={`Are you sure you want to delete the model '${selectedModel}'? This action cannot be undone.`}
-					onDeleteConfirm={() => {}}
+					deleteText={`Are you sure you want to delete the model '${selectedModel?.name}'? This action cannot be undone.`}
+					onDeleteConfirm={() => {
+						if (!selectedModel) {
+							return;
+						}
+						deleteModel(selectedModel.name, () => {
+							onClose();
+							toast({
+								title: "Mode deleted.",
+								description: `You successfully deleted the model ${selectedModel.name}.`,
+								status: "success",
+								duration: 3000,
+								isClosable: true,
+							});
+							setModels(
+								(prevModels: ModelType[]) => prevModels.filter((model: ModelType) => model.name !== selectedModel.name)
+							);
+							setSelectedModel(models[0])
+						});
+					}}
 					isOpen={isOpen}
 					onClose={onClose}
 				/>

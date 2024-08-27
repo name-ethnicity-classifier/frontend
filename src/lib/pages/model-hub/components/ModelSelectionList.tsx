@@ -4,7 +4,7 @@ import { LuFileUp } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import { ModelType } from "~/types";
 import { useAuth } from "~/lib/contexts/AuthContext";
-
+import RequestModelModal from "./RequestModelModal";
 
 interface ModelSelectionProps {
 	models: ModelType[],
@@ -14,6 +14,8 @@ interface ModelSelectionProps {
 
 
 const ModelSelectionList = (props: ModelSelectionProps) => {
+	const [showRequestModal, setShowRequestModal] = useState<boolean>(false);
+
     const { isLoggedIn } = useAuth();
 
 	return (
@@ -26,7 +28,12 @@ const ModelSelectionList = (props: ModelSelectionProps) => {
         >
             {
                 isLoggedIn ?
-                    <Button width="full">
+                    <Button
+                        width="full"
+                        onClick={() => {
+                            setShowRequestModal(true)
+                        }}
+                    >
                         + Request custom model
                     </Button>
                 :
@@ -88,6 +95,12 @@ const ModelSelectionList = (props: ModelSelectionProps) => {
                     )
                 })
             }
+
+            <RequestModelModal
+                isOpen={showRequestModal}
+                onCloseHandler={() => { setShowRequestModal(false) }}
+            />
+
         </VStack>
 	);
 };

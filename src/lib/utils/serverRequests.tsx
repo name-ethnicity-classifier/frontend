@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
-import { ModelType, ModelsResponseType, DefaultModelsResponseType } from "../../types";
+import { ModelType, ModelsResponseType, DefaultModelsResponseType, NationalityDataType } from "../../types";
 
 
 export const BACKEND_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/`
@@ -71,3 +71,35 @@ export const fetchDefaultModels = (callback: (defaultModels: ModelType[]) => voi
 
 
 
+export const fetchNationalityData = (callback: (nationalityData: NationalityDataType) => void) => {
+	axios.get(`${BACKEND_URL}/nationalities`, {
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+		.then((response: AxiosResponse<NationalityDataType>) => {
+			callback(response.data);
+		})
+		.catch((error: unknown) => {
+			console.error(`Request failed. Error: ${error}`);
+		});
+}
+
+
+export const deleteModel = (modelName: string, callback: () => void) => {
+	axios.delete(`${BACKEND_URL}/models`, {
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${Cookies.get("token")}`
+		},
+		data: {
+			names: [modelName]
+		}
+	})
+		.then((response: AxiosResponse) => {
+			callback();
+		})
+		.catch((error: unknown) => {
+			console.error(`Request failed. Error: ${error}`);
+		});
+}

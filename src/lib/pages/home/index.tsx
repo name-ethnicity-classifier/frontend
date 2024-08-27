@@ -6,8 +6,8 @@ import NumberCard from "./components/NumberCard";
 import TeamMemberCard from "./components/TeamMemberCard";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { fetchModels, fetchDefaultModels } from "~/lib/utils/serverRequests";
-import { ModelType } from "~/types";
-
+import { ModelType, NationalityDataType } from "~/types";
+import { fetchNationalityData } from "~/lib/utils/serverRequests";
 
 const Home = () => {
 	const { isLoggedIn } = useAuth();
@@ -15,15 +15,9 @@ const Home = () => {
   const [customModels, setCustomModels] = useState<ModelType[]>([]);
   const [defaultModels, setDefaultModels] = useState<ModelType[]>([]);
 
-  const nationalityData: Record<string, number> = {
-    "german": 21283,
-    "greek": 3848,
-    "american": 89041,
-    "irish": 38347,
-    "pakistani": 17848,
-    "paladinland": 17848,
-    "zimwabwen": 63473
-  }
+  const [nationalityData, setNationalityData] = useState<Record<string, number> | null>(null);
+  const [nationalityAmount, setNationalityAmount] = useState<number>(0);
+  const [nameAmount, setNameAmount] = useState<number>(0);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -38,9 +32,16 @@ const Home = () => {
         setDefaultModels(defaultModels);
       })
     }
+
+    fetchNationalityData((responseData) => {
+      setNationalityData(responseData.nationalities);
+      setNationalityAmount(Object.keys(responseData.nationalities).length);
+      setNameAmount(Object.values(responseData.nationalities).reduce((acc, value) => acc + value, 0))
+    });
   }, [isLoggedIn]);
 
-  const totalDatasetSize = Object.values(nationalityData).reduce((acc, value) => acc + value, 0);
+
+
   const sectionGap = { base: "50px", md: "75px" }
 
   return (
@@ -59,14 +60,14 @@ const Home = () => {
       >
         <NumberCard
           cardTitle="nationalities to choose from"
-          modalData={nationalityData}
+          modalData={nationalityData || []}
           modalColumns={["Nationality", "Names"]}
           modalTitle="Our dataset"
           modalSearchBar={true}
           modalDescription={
             <>
               <Text>
-                We sampled our dataset from the UK Census Database, resulting in <b>{totalDatasetSize}</b> names from <b>{Object.keys(nationalityData).length}</b> different nationalities.
+                We sampled our dataset from the UK Census Database, resulting in <b>{nameAmount}</b> names from <b>{nationalityAmount}</b> different nationalities.
               </Text>
               <Text>
                 Here is an overview of how those nationalities are distributed in the dataset:
