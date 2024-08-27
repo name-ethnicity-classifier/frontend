@@ -247,7 +247,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                   "Name": { text: name, type: "text" },
                   "Email": { text: email, type: "text" },
                   "Role": { text: role, type: "text" },
-                  "API key": { text: api_key, type: "hidden" }
+                  "API key": { text: Cookies.get("token"), type: "hidden" }
                 }}
               />
 

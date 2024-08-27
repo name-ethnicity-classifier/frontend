@@ -21,7 +21,7 @@ import {
                 height={{ base: "25px", md: "30px" }}
                 padding="2"
                 _hover={{
-                    bg: "secondaryBlue.100"
+                    bg: "secondaryBlue.200"
                 }}
             >
                 <props.icon color="var(--chakra-colors-primaryBlue-100)" />
