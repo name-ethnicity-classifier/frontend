@@ -1,7 +1,7 @@
 import { Input, Heading, Table, Thead, Tbody, Tr, Th, Td, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalCloseButton, ModalBody, Box, Text, VStack, Spacer, Image, Link, HStack, useBreakpointValue } from "@chakra-ui/react";
 import { ReactNode, useState, ChangeEvent, useEffect } from "react";
 import { Search2Icon } from "@chakra-ui/icons";
-
+import IconSearchbar from "~/lib/components/IconSearchbar";
 
 interface ListModalProps {
 	isOpen: boolean,
@@ -92,30 +92,14 @@ const ListModal = (props: ListModalProps) => {
 								>
 									{
 										props.searchBar && (
-											<HStack
-												maxWidth="full"
-												border="none"
-												margin="10px"
-												marginBottom="0px"
-												bg="red"
-												borderRadius="7"
-												backgroundColor="white"
-												paddingLeft="5"
-												paddingRight="10px"
-												gap="0"
-												boxShadow="sm"
-											>
-												<Search2Icon color="primaryBlue.100"/>
-												<Input
-													fontSize={{ base: "2xs", sm: "xs"}}
-													width="full"
-													boxShadow="none"
-													placeholder="Search..."
-													value={searchQuery}
-													_focus={{ boxShadow: "none", outline: "none" }}
-													onChange={handleSearchChange}
-												/>
-											</HStack>
+											<IconSearchbar
+												placeholderText="Search..."
+												inputValue={searchQuery}
+												onInputChange={handleSearchChange}
+												icon={<Search2Icon color="primaryBlue.100"/>}
+												marginX="10px"
+												marginTop="10px"
+											/>
 										)
 									}
 

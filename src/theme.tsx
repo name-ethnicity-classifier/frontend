@@ -169,12 +169,35 @@ export const theme = extendTheme({
             fontSize: "xs",
             color: "textLight",
             _placeholder: {
-              color: "textLight",
+              color: "gray.400",
             },
             _focus: {
               borderColor: "primaryBlue.100",
             },
           },
+        },
+      },
+      defaultProps: {
+        variant: "default",
+      },
+    },
+    Textarea: {
+      variants: {
+        default: {
+            borderRadius: "7px",
+            boxShadow: "sm",
+            bg: "white",
+            borderWidth: "2px",
+            borderColor: "transparent",
+            fontSize: "xs",
+            resize: "none",
+            color: "textLight",
+            _placeholder: {
+              color: "gray.400",
+            },
+            _focus: {
+              borderColor: "primaryBlue.100",
+            },
         },
       },
       defaultProps: {
