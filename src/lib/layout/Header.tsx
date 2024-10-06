@@ -23,14 +23,12 @@ import Cookies from "js-cookie";
 import SettingsDrawer from "../components/SettingsDrawer";
 import { useAuth } from "../contexts/AuthContext";
 
-
 interface NavigationButtonProps {
-  text: string,
-  iconName: string,
-  page: string
-  targetId?: string
+  text: string;
+  iconName: string;
+  page: string;
+  targetId?: string;
 }
-
 
 const NavigationButton = (props: NavigationButtonProps) => {
   const navigate = useNavigate();
@@ -83,9 +81,8 @@ const NavigationButton = (props: NavigationButtonProps) => {
   );
 };
 
-
 interface HeaderProps {
-  height: number
+  height: number;
 }
 
 const Header = (props: HeaderProps) => {
@@ -108,11 +105,20 @@ const Header = (props: HeaderProps) => {
 
   const NavigationButtonList = () => (
     <>
-      <NavigationButton text="About" iconName="about" page="/" targetId="about-section" />
-      <NavigationButton text="Model Hub" iconName="model-hub" page="/model-hub" />
+      <NavigationButton
+        text="About"
+        iconName="about"
+        page="/"
+        targetId="about-section"
+      />
+      <NavigationButton
+        text="Model Hub"
+        iconName="model-hub"
+        page="/model-hub"
+      />
       <NavigationButton text="API" iconName="api" page="/api" />
     </>
-  )
+  );
 
   return (
     <Flex
@@ -197,8 +203,9 @@ const Header = (props: HeaderProps) => {
           {!isLoggedIn ? (
             <Button
               leftIcon={<LuUser color="white" />}
+              size="sm"
               onClick={() => {
-                navigate("/login")
+                navigate("/login");
               }}
             >
               Login
