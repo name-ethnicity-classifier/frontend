@@ -1,34 +1,53 @@
-import { Input, Heading, Checkbox, Textarea, Flex, Button, Tbody, Tr, Th, Td, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalCloseButton, ModalBody, Box, Text, VStack, Spacer, Image, Link, HStack, useBreakpointValue } from "@chakra-ui/react";
+import { Input, Heading, Checkbox, Textarea, Flex, Button, FormErrorMessage, FormControl, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalCloseButton, ModalBody, Box, Text, VStack, Spacer, Image, Link, HStack, useBreakpointValue } from "@chakra-ui/react";
 import { ReactNode, useState, ChangeEvent, useEffect, ReactElement } from "react";
 import { LuPencil, LuPointer } from "react-icons/lu";
 import { NationalityDataType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
 import { EmailIcon } from "@chakra-ui/icons";
+import axios, { AxiosResponse, AxiosError } from "axios";
+import { BACKEND_URL } from "~/lib/utils/serverRequests";
+import Cookies from "js-cookie";
 
+
+
+interface ValidationError {
+	server: { failed: boolean, message: string },
+	modelName: { failed: boolean, message: string },
+	modelDescription: { failed: boolean, message: string },
+	selection: { failed: boolean, message: string },
+}
+
+const FieldErrorMessage = (props: { message: string }) => {
+	return (
+		<FormErrorMessage fontSize="0.7em" marginTop="4px" marginLeft="5px">
+			{props.message}
+		</FormErrorMessage>
+	);
+}
 
 
 const SectionTitle = (props: { title: string, icon: ReactElement }) => {
-		return (
-			<HStack
+	return (
+		<HStack
+			width="full"
+			bg="secondaryBlue.100"
+			boxShadow="sm"
+			borderRadius="7"
+			paddingX="5"
+			paddingY="10px"
+			gap="4"
+		>
+			{props.icon}
+			<Text
 				width="full"
-				bg="secondaryBlue.100"
-				boxShadow="sm"
-				borderRadius="7"
-				paddingX="5"
-				paddingY="10px"
-				gap="4"
+				fontWeight="bold"
+				color="primaryBlue.100"
+				fontSize={{ base: "2xs", sm: "xs"}}
 			>
-				{props.icon}
-				<Text
-					width="full"
-					fontWeight="bold"
-					color="primaryBlue.100"
-					fontSize={{ base: "2xs", sm: "xs"}}
-				>
-					{props.title}
-				</Text>
-			</HStack>
-		)
+				{props.title}
+			</Text>
+		</HStack>
+	);
 }
 
 interface RequestModelModalProps {
@@ -41,11 +60,21 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 	const [nationalityData, setNationalityData] = useState<NationalityDataType | null>(null);
 	const [selectGroupLevel, setSelectGroupLevel] = useState<boolean>(false);
 	const [selectedClasses, setSelectedClasses] = useState<string[]>([]);
-	const [nameAmount, setNameAmount] = useState<number>(0);
 	const [smallestNameAmount, setSmallestNameAmount] = useState<number>(0);
 	const [modelName, setModelName] = useState<string>("");
 	const [modelDescription, setModelDescription] = useState<string>("");
-	
+	const [requestSuccessful, setRequestSuccessful] = useState<boolean>(false);
+	const [validationError, setValidationError] = useState<ValidationError>(
+		{
+			server: { failed: false, message: "" },
+			modelName: { failed: false, message: "" },
+			modelDescription: { failed: false, message: "" },
+			selection: { failed: false, message: "" },
+		}
+	);
+
+	const toast = useToast();
+
 	useEffect(() => {
 		fetchNationalityData((responseData) => {
 			setNationalityData({
@@ -54,6 +83,125 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 			});
 		});
 	}, []);
+
+	const getNameAmountByKey = (key: string): number => {
+		if (!nationalityData) return 0;
+
+		if (selectGroupLevel) {
+			return nationalityData?.nationalityGroups[key];
+		}
+		return nationalityData?.nationalities[key];
+	}
+
+	useEffect(() => {
+		if (selectedClasses.length === 0) {
+			setSmallestNameAmount(0);
+			return;
+		}
+	
+		let currentSmallest = Infinity;
+		for (const class_ of selectedClasses) {
+			if (class_ === "else") {
+				continue;
+			}
+	
+			const currentAmount = getNameAmountByKey(class_);
+			if (currentAmount < currentSmallest) {
+				currentSmallest = currentAmount;
+			}
+		}
+		setSmallestNameAmount(currentSmallest === Infinity ? 0 : currentSmallest);
+	}, [selectedClasses, nationalityData]);
+	
+
+	const sendModelRequest = () => {
+		if (modelName.length === 0 || modelDescription.length === 0 || selectedClasses.length < 2) {
+			if (modelName.length === 0) {
+				setValidationError((prevErrors) => ({
+					...prevErrors,
+					modelName: { failed: true, message: "Please provide a model name." }
+				}));
+			}
+			if (modelDescription.length === 0) {
+				setValidationError((prevErrors) => ({
+					...prevErrors,
+					modelDescription: { failed: true, message: "Please provide a description." }
+				}));
+			}
+			if (selectedClasses.length < 2) {
+				setValidationError((prevErrors) => ({
+					...prevErrors,
+					selection: { failed: true, message: "Please select at least two ethnicities." }
+				}));
+			}
+
+			return;
+		}
+
+		axios.post(
+			`${BACKEND_URL}/models`, {
+					name: modelName,
+					nationalities: selectedClasses
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${Cookies.get("token")}`,
+				}
+			}
+		)
+			.then((response: AxiosResponse) => {
+				// Reset all error states
+				setValidationError({
+					server: { failed: false, message: "" },
+					modelName: { failed: false, message: "" },
+					modelDescription: { failed: false, message: "" },
+					selection: { failed: false, message: "" }
+				});
+					
+					setRequestSuccessful(true);
+
+					toast({
+						title: "Sign up successful.",
+						description: "You will be redirected shortly.",
+						status: "success",
+						duration: 2000,
+						isClosable: false,
+					});
+
+					setTimeout(() => {
+						window.location.reload();
+					}, 2000);
+			})
+			.catch((error: AxiosError) => {
+				if (error.code === "ERR_NETWORK") {
+					setValidationError((prevErrors) => ({
+						...prevErrors,
+						server: { failed: true, message: "Couldn't reach server. We are sorry for the inconvenience. Please try again later." },
+					}));
+					return;
+				}
+
+				const responseData = (error as AxiosError).response?.data as { errorCode?: string };
+				switch (responseData?.errorCode) {
+					case "MODEL_NAME_EXISTS": {
+						setValidationError((prevErrors) => ({
+							...prevErrors,
+							modelName: { failed: true, message: "You already have a model with that name." },
+						}));
+						break;
+					}
+					case "NATIONALITIES_INVALID": {
+						setValidationError((prevErrors) => ({
+							...prevErrors,
+							selection: { failed: true, message: "Please select at least two from nationalities or at least two from groups." },
+						}));
+						break;
+					}
+					// TODO add description field to backend and evaluate
+				}
+			})
+	}
 
 	return (
 		<Modal
@@ -119,12 +267,28 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 									title="Name"
 									icon={<LuPencil color="var(--chakra-colors-primaryBlue-100"/>}
 								/>
-								<Input
-									placeholder="Give your model a descriptive name!"
-									value={modelName}
-									onChange={(e: React.ChangeEvent<HTMLInputElement>) => setModelName(e.target.value)}
-									width="full"
-								/>
+
+								<FormControl
+									isInvalid={validationError.modelName.failed}
+                >
+									<Input
+										placeholder="Give your model a descriptive name!"
+										value={modelName}
+										onChange={(e: React.ChangeEvent<HTMLInputElement>) => setModelName(e.target.value)}
+										width="full"
+										onFocus={() => {
+											setValidationError((prevErrors) => ({
+												...prevErrors, modelName: { failed: false, message: "" }
+											}));
+										}}
+									/>
+									{
+										validationError.modelName.failed ?
+											<FieldErrorMessage message={validationError.modelName.message} />
+									: null
+									}
+								</FormControl>
+
 							</VStack>
 
 							<VStack
@@ -143,13 +307,28 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 								<Text>
 									Use-Cases of ethnicity classification require ethical attention. We would be happy to know what you are aiming to use your model for. Be as specific as you want.
 								</Text>
-								<Textarea
-									placeholder="What will you use this model for?"
-									value={modelDescription}
-									onChange={(e: React.ChangeEvent<HTMLInputElement>) => setModelDescription(e.target.value)}
-									width="full"
-									flex="1"
-								/>
+
+								<FormControl
+									isInvalid={validationError.modelDescription.failed}
+								>
+									<Textarea
+										placeholder="What will you use this model for?"
+										value={modelDescription}
+										onChange={(e: React.ChangeEvent<HTMLInputElement>) => setModelDescription(e.target.value)}
+										onFocus={() => {
+											setValidationError((prevErrors) => ({
+												...prevErrors, modelDescription: { failed: false, message: "" }
+											}));
+										}}
+										width="full"
+										flex="1"
+									/>
+									{
+										validationError.modelDescription.failed ?
+											<FieldErrorMessage message={validationError.modelDescription.message} />
+									: null
+									}
+								</FormControl>
 								
 							</VStack>
 						</VStack>
@@ -239,13 +418,17 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 														bg: isSelected ? "primaryBlue.200" : "secondaryBlue.200"
 													}}
 													onClick={() => {
+														// reset validation errors
+														setValidationError((prevErrors) => ({
+															...prevErrors, selection: { failed: false, message: "" }
+														}));
+
 														if (selectedClasses.includes(nationality)) {
 															setSelectedClasses((prev) => {
 																return prev.filter((item) => item !== nationality);
 															});
 														}
 														else {
-															
 															setSelectedClasses((prev) => {
 																return [...prev, nationality];
 															});
@@ -265,7 +448,12 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 								alignItems="left"
 								gap="1"
 							>
-								<Text color="primaryBlue.100"><b>Total amount of names to train on:</b> {nameAmount}</Text>
+								<Text color="primaryBlue.100"><b>Total amount of names to train on:</b> {smallestNameAmount * selectedClasses.length}</Text>
+								{
+									validationError.selection.failed ?
+										<Text width="full" color="red">{validationError.selection.message}</Text>
+									: null
+								}
 							</VStack>
 
 						</VStack>
@@ -273,8 +461,10 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 
 					<Button
 						width="full"
-					  paddingY="16px"
+						paddingY="16px"
 						leftIcon={<EmailIcon />}
+						isLoading={requestSuccessful}
+						onClick={sendModelRequest}
 					>
 						request model
 					</Button>

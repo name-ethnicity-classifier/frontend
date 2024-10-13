@@ -98,6 +98,7 @@ const DeleteModal = (props: DeleteModalProps) => {
 								<Button
 									flex="1"
 									variant="secondary"
+									isDisabled={isDeleting}
 									onClick={props.onClose}
 								>
 									Cancel

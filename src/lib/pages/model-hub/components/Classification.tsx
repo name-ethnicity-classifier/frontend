@@ -11,6 +11,8 @@ interface ClassificationProps {
 
 const Classification = (props: ClassificationProps) => {
 
+	const [entireDistribution, setEntireDistribution] = useState<boolean>(false);
+
 	return (
 		<>
 			<VStack
@@ -19,29 +21,31 @@ const Classification = (props: ClassificationProps) => {
 			>
 				<Checkbox
 					sx={{
-							".chakra-checkbox__control": {
-								borderWidth: "0px",
-								borderColor: "primaryBlue.200",
-								borderRadius: "3px",
-								bg: "secondaryBlue.100"
-							}
+						".chakra-checkbox__control": {
+							borderWidth: "0px",
+							borderColor: "primaryBlue.200",
+							borderRadius: "3px",
+							bg: "secondaryBlue.100"
+						}
 					}}
 					size="sm"
-					onChange={() => { }}
+					isChecked={!entireDistribution}
+					onChange={() => setEntireDistribution(false)}
 				>
 					<Text lineHeight="15px">Give me only the most likely ethnicity per name</Text>
 				</Checkbox>
 				<Checkbox
 					sx={{
-							".chakra-checkbox__control": {
-								borderWidth: "0px",
-								borderColor: "primaryBlue.200",
-								borderRadius: "3px",
-								bg: "secondaryBlue.100"
-							}
+						".chakra-checkbox__control": {
+							borderWidth: "0px",
+							borderColor: "primaryBlue.200",
+							borderRadius: "3px",
+							bg: "secondaryBlue.100"
+						}
 					}}
 					size="sm"
-					onChange={() => { }}
+					isChecked={entireDistribution}
+					onChange={() => setEntireDistribution(true)}
 				>
 					<Text lineHeight="15px">Give me the entire ethnicity-likelyhood distribution per name</Text>
 				</Checkbox>

@@ -44,14 +44,14 @@ const ModelHub = () => {
 		if (isLoggedIn) {
 			fetchModels((customModels: ModelType[], defaultModels: ModelType[]) => {
 				setModels(defaultModels.concat(customModels));
-				setSelectedModel(defaultModels[0])
-			})
+				setSelectedModel(defaultModels[0]);
+			});
 		}
 		else {
 			fetchDefaultModels((defaultModels: ModelType[]) => {
 				setModels(defaultModels);
-				setSelectedModel(defaultModels[0])
-			})
+				setSelectedModel(defaultModels[0]);
+			});
 		}
 	}, [isLoggedIn]);
 
