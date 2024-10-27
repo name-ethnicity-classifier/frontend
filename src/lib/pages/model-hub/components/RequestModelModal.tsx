@@ -161,10 +161,9 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 					setRequestSuccessful(true);
 
 					toast({
-						title: "Sign up successful.",
-						description: "You will be redirected shortly.",
+						title: "Successfully created model.",
 						status: "success",
-						duration: 2000,
+						duration: 3000,
 						isClosable: false,
 					});
 

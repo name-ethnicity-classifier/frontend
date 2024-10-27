@@ -76,7 +76,6 @@ const LoginContainer = () => {
 			return;
 		}
 		
-		// Make login request
         let requestBody: LoginRequest = {
             email: email,
 			password: password,

@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { ModelType, ModelsResponseType, DefaultModelsResponseType, NationalityDataType } from "../../types";
 
@@ -86,7 +86,7 @@ export const fetchNationalityData = (callback: (nationalityData: NationalityData
 }
 
 
-export const deleteModel = (modelName: string, callback: () => void) => {
+export const deleteModel = (modelName: string, callback: () => void, errorCallback: (errorCode: string) => void) => {
 	axios.delete(`${BACKEND_URL}/models`, {
 		headers: {
 			"Content-Type": "application/json",
@@ -99,7 +99,13 @@ export const deleteModel = (modelName: string, callback: () => void) => {
 		.then((response: AxiosResponse) => {
 			callback();
 		})
-		.catch((error: unknown) => {
+		.catch((error: AxiosError) => {
+			const responseData = (error as AxiosError).response?.data as { errorCode?: string };
+
+			if (responseData?.errorCode && errorCallback) {
+				errorCallback(responseData.errorCode);
+				return;
+			}
 			console.error(`Request failed. Error: ${error}`);
 		});
 }

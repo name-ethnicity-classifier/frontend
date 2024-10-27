@@ -222,20 +222,31 @@ const ModelHub = () => {
 						if (!selectedModel) {
 							return;
 						}
-						deleteModel(selectedModel.name, () => {
-							onClose();
-							toast({
-								title: "Mode deleted.",
-								description: `You successfully deleted the model ${selectedModel.name}.`,
-								status: "success",
-								duration: 3000,
-								isClosable: true,
-							});
-							setModels(
-								(prevModels: ModelType[]) => prevModels.filter((model: ModelType) => model.name !== selectedModel.name)
-							);
-							setSelectedModel(models[0])
-						});
+						deleteModel(
+							selectedModel.name,
+							() => {
+								onClose();
+								toast({
+									title: `Successfully deleted the model ${selectedModel.name}.`,
+									status: "success",
+									duration: 3000,
+									isClosable: true,
+								});
+								setModels(
+									(prevModels: ModelType[]) => prevModels.filter((model: ModelType) => model.name !== selectedModel.name)
+								);
+								setSelectedModel(models[0])
+							},
+							(errorCode: string) => {
+								toast({
+									title: "Failed to delete model.",
+									description: errorCode,
+									status: "error",
+									duration: 5000,
+									isClosable: true
+								});
+							}
+						);
 					}}
 					isOpen={isOpen}
 					onClose={onClose}

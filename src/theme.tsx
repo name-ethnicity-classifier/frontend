@@ -133,6 +133,11 @@ export const theme = extendTheme({
           ">.chakra-button__icon": {
             paddingX: "0px",
           },
+          _disabled: {
+            _hover: {
+              bg: "primaryBlue.100 !important",
+            },
+          }
         },
         secondary: {
           bg: "secondaryBlue.100",
@@ -141,6 +146,11 @@ export const theme = extendTheme({
           borderRadius: "7px",
           _hover: {
             bg: "secondaryBlue.200"
+          },
+          _disabled: {
+            _hover: {
+              bg: "secondaryBlue.100 !important",
+            },
           }
         },
         cautious: {
@@ -150,7 +160,12 @@ export const theme = extendTheme({
           borderRadius: "7px",
           _hover: {
             bg: "secondaryRed.200"
-          }
+          },
+          _disabled: {
+            _hover: {
+              bg: "secondaryRed.100 !important",
+            },
+          },
         },
       },
       defaultProps: {
