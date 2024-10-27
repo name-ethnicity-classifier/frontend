@@ -1,10 +1,11 @@
 import { Flex, Text, Link, Button, Heading, Box, Checkbox, useDisclosure, HStack, VStack, useBreakpointValue } from "@chakra-ui/react";
-import Dropzone from "react-dropzone";
-import { LuFileUp } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import { ModelType } from "~/types";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import RequestModelModal from "./RequestModelModal";
+
+
+const MODEL_COLORS = ["#FFA7A7", "#F8D78F", "#8AB0F5", "#91E489", "#CCA4EF", "#F396B0", "#85DCEC", "#EBEB75", "#ED94EB", "#AA8EEA"];
 
 interface ModelSelectionProps {
 	models: ModelType[],
@@ -41,7 +42,7 @@ const ModelSelectionList = (props: ModelSelectionProps) => {
             }
             
             {
-                props.models.map((model: ModelType) => {
+                props.models.map((model: ModelType, key: number) => {
                     const isSelected = model.name === props.selectedModel?.name;
 
                     let modelButtonStyle = {
@@ -82,7 +83,10 @@ const ModelSelectionList = (props: ModelSelectionProps) => {
                                 width="10px"
                                 aspectRatio="1"
                                 borderRadius="full"
-                                bg={isSelected ? "primaryBlue.100" : "secondaryBlue.100"}
+                                bg={
+                                    isSelected ? "primaryBlue.100"
+                                    : MODEL_COLORS[key % MODEL_COLORS.length]
+                                    }
                             />
                             <Text maxWidth="75%"
                                 color={isSelected ? "primaryBlue.100" : "textLight"}

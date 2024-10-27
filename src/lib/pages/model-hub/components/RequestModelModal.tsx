@@ -9,7 +9,6 @@ import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import Cookies from "js-cookie";
 
 
-
 interface ValidationError {
 	server: { failed: boolean, message: string },
 	modelName: { failed: boolean, message: string },
