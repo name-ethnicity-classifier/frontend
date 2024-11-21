@@ -19,7 +19,7 @@ export const fetchModels = (callback: (customModels: ModelType[], defaultModels:
 				customModels.push({
 					name: model.name,
 					accuracy: model.accuracy,
-					isCustom: model.isCustom,
+					isCustom: true,
 					scores: model.scores,
 					nationalities: model.nationalities
 				})
@@ -30,7 +30,7 @@ export const fetchModels = (callback: (customModels: ModelType[], defaultModels:
 				defaultModels.push({
 					name: model.name,
 					accuracy: model.accuracy,
-					isCustom: model.isCustom,
+					isCustom: false,
 					scores: model.scores,
 					nationalities: model.nationalities
 				})
@@ -56,7 +56,7 @@ export const fetchDefaultModels = (callback: (defaultModels: ModelType[]) => voi
 				models.push({
 					name: model.name,
 					accuracy: model.accuracy,
-					isCustom: model.isCustom,
+					isCustom: false,
 					scores: model.scores,
 					nationalities: model.nationalities
 				})

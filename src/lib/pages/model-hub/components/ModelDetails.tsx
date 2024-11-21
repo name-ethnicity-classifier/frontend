@@ -1,11 +1,10 @@
-import { Flex, Text, Link, Button, Heading, Box, Checkbox, useDisclosure, HStack, VStack, useBreakpointValue } from "@chakra-ui/react";
-import Dropzone from "react-dropzone";
+import { Flex, Text, Link, Button, Heading, Box, HStack, VStack } from "@chakra-ui/react";
 import { Bar } from "react-chartjs-2";
 import { DeleteIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { LuFileUp } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import Classification from "./Classification";
-import Cookies from "js-cookie";
+
 import {
     Chart as ChartJS,
     CategoryScale,

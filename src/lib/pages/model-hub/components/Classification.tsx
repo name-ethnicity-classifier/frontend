@@ -1,7 +1,7 @@
-import { Flex, Text, Link, Button, useToast, Box, Checkbox, useDisclosure, HStack, VStack, useBreakpointValue } from "@chakra-ui/react";
+import { Text, Button, useToast, Box, Checkbox, HStack, VStack } from "@chakra-ui/react";
 import Dropzone from "react-dropzone";
-import axios, { AxiosResponse, AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import axios, { AxiosResponse, AxiosError, CancelTokenSource } from "axios";
+import { useRef, useState } from "react";
 import Papa from "papaparse";
 import Cookies from "js-cookie";
 import { BACKEND_URL } from "~/lib/utils/serverRequests";
@@ -20,6 +20,8 @@ const Classification = (props: ClassificationProps) => {
 	const [uploadedNames, setUploadedNames] = useState<string[]>([]);
 	const [classificationRunning, setClassificationRunning] = useState<boolean>(false);
 
+	const controllerRef = useRef<AbortController | null>(null);
+	
 	const showToast = (message: string, failed: boolean = false) => {
 		toast({
 			title: `Classification ${failed ? "failed" : "successful"}.`,
@@ -50,15 +52,22 @@ const Classification = (props: ClassificationProps) => {
 				setUploadedNames(Object.values(result.data).map(value => value[0]));
 				setClassificationRunning(true);
 
+				// 3 second delay for dramatic effect
+				//setTimeout(() => {
 				classifyNames();
+				//}, 3000);
+				
 			},
 			error: (error: any) => {
-				showToast(`File upload failed. Error: ${error.message}`, true)
+				showToast(`File upload failed. Error: ${error.message}`, true);
+				setClassificationRunning(false);
 			}
 		});
 	}
 
 	const classifyNames = () => {
+		controllerRef.current = new AbortController();
+
         axios.post(`${BACKEND_URL}/classify`, {
 			modelName: props.selectedModelName,
 			names: uploadedNames,
@@ -68,49 +77,21 @@ const Classification = (props: ClassificationProps) => {
 			headers: {
 				"Content-Type": "application/json",
 				"Authorization": `Bearer ${Cookies.get("token")}`,
-			}
-		})
-            .then((response: AxiosResponse) => {
-				console.log(response.data);
-				showToast("Output .csv file downloading...", true);
-
+			},
+			signal: controllerRef.current.signal
+		},
+		)
+            .then((_response: AxiosResponse) => {
+				showToast("Downloading result...", false);
 				setClassificationRunning(false);
             })
-            .catch((error: AxiosError) => {
-				console.log(props.selectedModelName);
-				setClassificationRunning(false);
-				/*if (error.code === "ERR_NETWORK") {
-					setValidationError((prevErrors) => ({
-						...prevErrors,
-						server: {
-							failed: true,
-							message: `[${error.code}] Couldn't reach server. We are sorry for the inconvenience. Please try again later.`
-						},
-					}));
+            .catch((_error: AxiosError) => {
+				if (controllerRef.current?.signal.aborted) {
 					return;
 				}
-
-				const responseData = error.response?.data as { errorCode?: string };
-				switch (responseData?.errorCode) {
-					case "AUTHENTICATION_FAILED": {
-						setValidationError((prevErrors) => ({
-							...prevErrors,
-							email: { failed: true, message: "Email or password not correct." },
-							password: { failed: true, message: "Email or password not correct." }
-						}));
-						break;
-					}
-					case "UNEXPECTED_ERROR": {
-						setValidationError((prevErrors) => ({
-							...prevErrors,
-							server: {
-								failed: true,
-								message: `[${responseData?.errorCode}] We are sorry for the inconvenience. Please try again later.`
-							}
-						}));
-						break;
-					}
-				}*/
+				showToast("An unexpected error occured.", true);
+				setClassificationRunning(false);
+				controllerRef.current = null;
             });
     }
 	
@@ -175,7 +156,9 @@ const Classification = (props: ClassificationProps) => {
 							flex="1"
 							variant="cautious"
 							onClick={() => {
-								// TODO sent cancellation request
+								if (controllerRef.current) {
+									controllerRef.current.abort();
+								}
 								setClassificationRunning(false);
 							}}
 						>
@@ -183,7 +166,7 @@ const Classification = (props: ClassificationProps) => {
 						</Button>
 					</HStack>
 				:
-					<Dropzone onDrop={fileUploadHandler}>
+					<Dropzone onDrop={fileUploadHandler} accept={{"text/csv": [".csv"]}} maxFiles={1}>
 						{({getRootProps, getInputProps}) => (
 							<Box
 								{...getRootProps()}

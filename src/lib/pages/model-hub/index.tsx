@@ -165,7 +165,7 @@ const ModelHub = () => {
 					</Text>
 
 					{
-						isLoggedIn ?
+						isLoggedIn && selectedModel?.isCustom ?
 							<HStack
 								marginLeft="auto"
 								height="100%"
