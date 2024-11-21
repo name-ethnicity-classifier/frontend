@@ -24,13 +24,13 @@ const Home = () => {
       fetchModels((customModels: ModelType[], defaultModels: ModelType[]) => {
         setCustomModels(customModels);
         setDefaultModels(defaultModels);
-      })
+      });
     }
     else {
       fetchDefaultModels((defaultModels: ModelType[]) => {
         setCustomModels([]);
         setDefaultModels(defaultModels);
-      })
+      });
     }
 
     fetchNationalityData((responseData) => {

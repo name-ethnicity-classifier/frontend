@@ -6,7 +6,7 @@ import { ModelType, ModelsResponseType, DefaultModelsResponseType, NationalityDa
 export const BACKEND_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/`
 
 
-export const fetchModels = (callback: (customModels: ModelType[], defaultModels: ModelType[]) => void) => {
+export const fetchModels = (callback: (customModels: ModelType[], defaultModels: ModelType[]) => void, onError?: () => void) => {
 	axios.get(`${BACKEND_URL}/models`, {
 		headers: {
 			"Content-Type": "application/json",
@@ -39,12 +39,13 @@ export const fetchModels = (callback: (customModels: ModelType[], defaultModels:
 			callback(customModels, defaultModels);
 		})
 		.catch((error: unknown) => {
+			if (onError) onError();
 			console.error(`Request failed. Error: ${error}`);
 		});
 }
 
 
-export const fetchDefaultModels = (callback: (defaultModels: ModelType[]) => void) => {
+export const fetchDefaultModels = (callback: (defaultModels: ModelType[]) => void, onError?: () => void) => {
 	axios.get(`${BACKEND_URL}/default-models`, {
 		headers: {
 			"Content-Type": "application/json"
@@ -65,6 +66,7 @@ export const fetchDefaultModels = (callback: (defaultModels: ModelType[]) => voi
 			callback(models);
 		})
 		.catch((error: unknown) => {
+			if (onError) onError();
 			console.error(`Request failed. Error: ${error}`);
 		});
 }

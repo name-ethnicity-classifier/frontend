@@ -42,18 +42,34 @@ const ModelHub = () => {
 
 	useEffect(() => {
 		if (isLoggedIn) {
-			fetchModels((customModels: ModelType[], defaultModels: ModelType[]) => {
-				setModels(defaultModels.concat(customModels));
-				setSelectedModel(defaultModels[0]);
-			});
+			fetchModels(
+				(customModels: ModelType[], defaultModels: ModelType[]) => {
+					setModels(defaultModels.concat(customModels));
+					setSelectedModel(defaultModels[0]);
+				},
+				() => showErrorToast()
+			);
 		}
 		else {
-			fetchDefaultModels((defaultModels: ModelType[]) => {
-				setModels(defaultModels);
-				setSelectedModel(defaultModels[0]);
-			});
+			fetchDefaultModels(
+				(defaultModels: ModelType[]) => {
+					setModels(defaultModels);
+					setSelectedModel(defaultModels[0]);
+				},
+				() => showErrorToast()
+			);
 		}
 	}, [isLoggedIn]);
+
+	const showErrorToast = () => {
+		toast({
+			title: "Failed to reach server",
+			description: "We are sorry for the inconvenience. Please try again later.",
+			status: "error",
+			duration: 100000,
+			isClosable: false,
+		});
+	}
 
 	if (models.length == 0) {
 		return <Box height="100vh"><Text>Loading...</Text></Box>

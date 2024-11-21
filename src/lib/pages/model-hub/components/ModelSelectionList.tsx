@@ -83,10 +83,7 @@ const ModelSelectionList = (props: ModelSelectionProps) => {
                                 width="10px"
                                 aspectRatio="1"
                                 borderRadius="full"
-                                bg={
-                                    isSelected ? "primaryBlue.100"
-                                    : MODEL_COLORS[key % MODEL_COLORS.length]
-                                    }
+                                bg={MODEL_COLORS[key % MODEL_COLORS.length]}
                             />
                             <Text maxWidth="75%"
                                 color={isSelected ? "primaryBlue.100" : "textLight"}
