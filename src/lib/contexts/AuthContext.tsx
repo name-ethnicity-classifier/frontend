@@ -16,7 +16,7 @@ type LayoutProps = {
 
 export const AuthProvider = ({ children }: LayoutProps) => {
   const toast = useToast();
-  const navigate = useNavigate();  // This should work now
+  const navigate = useNavigate();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 

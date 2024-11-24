@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Heading, Link, Text, VStack, Spacer, Image, HStack, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import HowToSection from "./components/HowToSection";
 import LinkCard from "./components/LinkCard";
@@ -6,7 +6,7 @@ import NumberCard from "./components/NumberCard";
 import TeamMemberCard from "./components/TeamMemberCard";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { fetchModels, fetchDefaultModels } from "~/lib/utils/serverRequests";
-import { ModelType, NationalityDataType } from "~/types";
+import { ModelType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
 
 const Home = () => {
@@ -39,8 +39,6 @@ const Home = () => {
       setNameAmount(Object.values(responseData.nationalities).reduce((acc, value) => acc + value, 0))
     });
   }, [isLoggedIn]);
-
-
 
   const sectionGap = { base: "50px", md: "75px" }
 

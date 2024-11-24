@@ -36,7 +36,7 @@ export const theme = extendTheme({
       200: "#B7BBFB"
     },
     surfaceBlue: {
-      100: "#F5F6FE",
+      100: "#F1F2FD",
       200: "#EBEDFC"
     },
     primaryRed: {

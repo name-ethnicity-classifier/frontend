@@ -54,6 +54,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 					bg="surfaceBlue.100"
 					borderRadius="7px"
 					padding="4"
+					flexDirection="column"
 				>
 					<Box
 						height="99%"
@@ -63,7 +64,6 @@ const ModelDetails = (props: ModelDetailsProps) => {
 						{
 							isRendered ?
 								<Bar
-									animation={false}
 									height={100} 
 									width={400}
 									data={{
@@ -101,7 +101,6 @@ const ModelDetails = (props: ModelDetailsProps) => {
 							: null
 						}
 					</Box>
-					
 				</Flex>
 				<Flex
 					flex="1"

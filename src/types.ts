@@ -27,3 +27,11 @@ export interface NationalityDataType {
 	nationalities: Record<string, number>,
 	nationalityGroups: Record<string, number>
 }
+
+export interface BasicClassificationResponseType {
+	[key: string]: [string, number]
+}
+
+export interface DistributionClassificationResponseType {
+	[key: string]: Record<string, number>
+}

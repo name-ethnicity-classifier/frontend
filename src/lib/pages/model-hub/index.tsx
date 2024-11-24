@@ -41,6 +41,10 @@ const ModelHub = () => {
 	const [models, setModels] = useState<ModelType[]>([]);
 
 	useEffect(() => {
+		if (isLoggedIn === undefined) {
+			return;
+		}
+
 		if (isLoggedIn) {
 			fetchModels(
 				(customModels: ModelType[], defaultModels: ModelType[]) => {
@@ -101,9 +105,9 @@ const ModelHub = () => {
 							alignItems="center"
 							borderRadius="7px"
 						>
-							<Heading variant="h3" color="primaryBlue.100">
+							<Text variant="bold" color="primaryBlue.100">
 								Models:
-							</Heading>
+							</Text>
 						</Flex>
 
 						<ModelSelectionList
@@ -170,9 +174,9 @@ const ModelHub = () => {
 					}
 					{
 						!isSmallViewPort ?
-							<Heading variant="h3" color="primaryBlue.100">
+							<Text variant="bold" color="primaryBlue.100">
 								Selected:
-							</Heading>
+							</Text>
 						:
 							null
 					}

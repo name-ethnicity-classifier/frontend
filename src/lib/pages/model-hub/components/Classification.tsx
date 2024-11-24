@@ -1,11 +1,12 @@
 import { Text, Button, useToast, Box, Checkbox, HStack, VStack } from "@chakra-ui/react";
 import Dropzone from "react-dropzone";
-import axios, { AxiosResponse, AxiosError, CancelTokenSource } from "axios";
+import axios, { AxiosResponse, AxiosError } from "axios";
 import { useRef, useState } from "react";
 import Papa from "papaparse";
 import Cookies from "js-cookie";
 import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import { LuFileUp } from "react-icons/lu";
+import { BasicClassificationResponseType, DistributionClassificationResponseType } from "~/types";
 
 
 interface ClassificationProps {
@@ -17,17 +18,17 @@ const Classification = (props: ClassificationProps) => {
 	const toast = useToast();
 
 	const [entireDistribution, setEntireDistribution] = useState<boolean>(false);
-	const [uploadedNames, setUploadedNames] = useState<string[]>([]);
+	const [uploadedFileName, setUploadedFileName] = useState<string>("");
 	const [classificationRunning, setClassificationRunning] = useState<boolean>(false);
 
 	const controllerRef = useRef<AbortController | null>(null);
 	
-	const showToast = (message: string, failed: boolean = false) => {
+	const showToast = (message: string, failed: boolean = false, duration: number = 5000) => {
 		toast({
 			title: `Classification ${failed ? "failed" : "successful"}.`,
 			description: message,
 			status: failed ? "error" : "success",
-			duration: 5000,
+			duration: duration,
 			isClosable: true,
 		});
 	}
@@ -40,6 +41,8 @@ const Classification = (props: ClassificationProps) => {
 
 		const file = acceptedFiles[0];
 
+		setUploadedFileName(file.name.slice(0, (-".csv".length)))
+
 		if (file.type !== "text/csv") {
 			showToast("File must be of type '.csv'.", true);
 			return;
@@ -49,14 +52,10 @@ const Classification = (props: ClassificationProps) => {
 			header: false,
 			skipEmptyLines: true,
 			complete: (result: { data: string[][] }) => {
-				setUploadedNames(Object.values(result.data).map(value => value[0]));
 				setClassificationRunning(true);
 
-				// 3 second delay for dramatic effect
-				//setTimeout(() => {
-				classifyNames();
-				//}, 3000);
-				
+				const uploadedNames = Object.values(result.data).map(value => value[0]);
+				classifyNames(uploadedNames);				
 			},
 			error: (error: any) => {
 				showToast(`File upload failed. Error: ${error.message}`, true);
@@ -65,7 +64,22 @@ const Classification = (props: ClassificationProps) => {
 		});
 	}
 
-	const classifyNames = () => {
+	const downloadPredictionCSV = (prediction: (string | number)[][]) => {
+		const csv = Papa.unparse(prediction);
+		const blob = new Blob([csv], { type: "text/csv" });
+		const url = URL.createObjectURL(blob);
+
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = `${uploadedFileName}-classified.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+
+		URL.revokeObjectURL(url);
+	}
+
+	const classifyNames = (uploadedNames: string[]) => {
 		controllerRef.current = new AbortController();
 
         axios.post(`${BACKEND_URL}/classify`, {
@@ -80,19 +94,36 @@ const Classification = (props: ClassificationProps) => {
 			},
 			signal: controllerRef.current.signal
 		},
-		)
-            .then((_response: AxiosResponse) => {
-				showToast("Downloading result...", false);
-				setClassificationRunning(false);
-            })
-            .catch((_error: AxiosError) => {
-				if (controllerRef.current?.signal.aborted) {
-					return;
-				}
-				showToast("An unexpected error occured.", true);
-				setClassificationRunning(false);
-				controllerRef.current = null;
-            });
+		).then((response: AxiosResponse) => {
+			if (entireDistribution) {
+				const prediction = response.data as DistributionClassificationResponseType;
+
+				const allClasses = Object.keys(Object.values(prediction)[0]);
+				let predictionTable = Object.entries(prediction).map(([name, prediction]) => [name, ...Object.values(prediction)]);
+				predictionTable.unshift(["name", ...allClasses]);
+				downloadPredictionCSV(predictionTable);
+			}
+			else {
+				const prediction = response.data as BasicClassificationResponseType;
+
+				let predictionTable = Object.entries(prediction).map(([name, prediction]) => [name, ...prediction]);
+				predictionTable.unshift(["name", "ethnicity", "score"]);
+				downloadPredictionCSV(predictionTable);
+			}
+			
+			showToast("Downloading result...", false, 2500);
+			setClassificationRunning(false);
+		})
+		.catch((error: AxiosError) => {
+			controllerRef.current?.signal.aborted ?
+				showToast("Cancelled by user.", true)
+			:
+				showToast("An unexpected error occured.", true)
+			
+			console.log(`Classification error:\n${error}`)	
+			setClassificationRunning(false);
+			controllerRef.current = null;
+		});
     }
 	
 
@@ -141,7 +172,7 @@ const Classification = (props: ClassificationProps) => {
 					<HStack
 						width="full"
 						borderRadius="7px"
-						marginTop="2"
+						marginTop="auto"
 						cursor="pointer"
 					>
 						<Button

@@ -114,17 +114,11 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 	
 
 	const sendModelRequest = () => {
-		if (modelName.length === 0 || modelDescription.length === 0 || selectedClasses.length < 2) {
+		if (modelName.length === 0 || selectedClasses.length < 2) {
 			if (modelName.length === 0) {
 				setValidationError((prevErrors) => ({
 					...prevErrors,
 					modelName: { failed: true, message: "Please provide a model name." }
-				}));
-			}
-			if (modelDescription.length === 0) {
-				setValidationError((prevErrors) => ({
-					...prevErrors,
-					modelDescription: { failed: true, message: "Please provide a description." }
 				}));
 			}
 			if (selectedClasses.length < 2) {
@@ -149,7 +143,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 				}
 			}
 		)
-			.then((response: AxiosResponse) => {
+			.then((_response: AxiosResponse) => {
 				// Reset all error states
 				setValidationError({
 					server: { failed: false, message: "" },
@@ -206,7 +200,6 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 			isCentered
 			isOpen={props.isOpen}
 			onClose={props.onCloseHandler}
-			marginX="10"
 			size="6xl"
 		>
 			<ModalOverlay
@@ -268,7 +261,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 
 								<FormControl
 									isInvalid={validationError.modelName.failed}
-                >
+                				>
 									<Input
 										placeholder="Give your model a descriptive name!"
 										value={modelName}
@@ -303,7 +296,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 								/>
 								
 								<Text>
-									Use-Cases of ethnicity classification require ethical attention. We would be happy to know what you are aiming to use your model for. Be as specific as you want.
+									Use-Cases of ethnicity classification require ethical attention. We would be happy to know what you are aiming to use your model for. &#40;voluntary&#41;
 								</Text>
 
 								<FormControl
@@ -312,7 +305,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 									<Textarea
 										placeholder="What will you use this model for?"
 										value={modelDescription}
-										onChange={(e: React.ChangeEvent<HTMLInputElement>) => setModelDescription(e.target.value)}
+										onChange={(e) => setModelDescription(e.target.value)}
 										onFocus={() => {
 											setValidationError((prevErrors) => ({
 												...prevErrors, modelDescription: { failed: false, message: "" }
@@ -324,7 +317,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 									{
 										validationError.modelDescription.failed ?
 											<FieldErrorMessage message={validationError.modelDescription.message} />
-									: null
+										: null
 									}
 								</FormControl>
 								
@@ -411,7 +404,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 													textAlign="center"
 													display="inline-block"
 													height="auto"
-													title={amount}
+													title={amount.toString()}
 													_hover={{
 														bg: isSelected ? "primaryBlue.200" : "secondaryBlue.200"
 													}}
@@ -445,6 +438,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 								width="full"
 								alignItems="left"
 								gap="1"
+								mt="auto"
 							>
 								<Text color="primaryBlue.100"><b>Total amount of names to train on:</b> {smallestNameAmount * selectedClasses.length}</Text>
 								{

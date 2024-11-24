@@ -9,7 +9,7 @@ const MODEL_COLORS = ["#FFA7A7", "#F8D78F", "#8AB0F5", "#91E489", "#CCA4EF", "#F
 
 interface ModelSelectionProps {
 	models: ModelType[],
-    selectedModel: ModelType,
+    selectedModel?: ModelType,
     selectModelHandler: (selectedModel: ModelType) => void
 }
 
@@ -69,6 +69,7 @@ const ModelSelectionList = (props: ModelSelectionProps) => {
                             paddingY="10px"
                             paddingX="3"
                             gap="3"
+                            key={key}
                             maxWidth="300px"
                             transition="100ms ease-in-out"
                             boxShadow="sm"
