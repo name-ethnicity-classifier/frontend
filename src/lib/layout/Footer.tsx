@@ -42,7 +42,7 @@ const FooterColumn = (props: FooterColumnProps) => {
           >
             <HStack>
               {linkChild.icon}
-              <Text fontSize="xs" color="white">
+              <Text fontSize="xs" color="white" fontWeight="normal">
                 {linkChild.name}
               </Text>
             </HStack>
@@ -68,7 +68,7 @@ const Footer = () => {
       <Flex
         width="full"
         marginX="auto"
-        maxWidth={1500}
+        maxWidth={1750}
         paddingX={{ base: "5", md: "10", lg: "50", xl: "100" }}
         paddingY={{ base: "5", md: "10" }}
         flexDirection={{ base: "column", md: "row" }}

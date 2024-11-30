@@ -244,6 +244,17 @@ export const theme = extendTheme({
       },
     },
   },
+  styles: {
+    global: {
+      ".no-scrollbar": {
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
+        "-ms-overflow-style": "none",
+        "scrollbar-width": "none",
+      },
+    },
+  },
   
   config,
 });

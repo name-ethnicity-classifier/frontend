@@ -32,7 +32,7 @@ const Layout = ({ children }: LayoutProps) => {
       
       <Flex
         width="full"
-        maxWidth={1500}
+        maxWidth={1750}
         paddingX={{ base: "5", md: "10", lg: "50", xl: "100" }}
         marginX="auto"
         flexDirection="row"

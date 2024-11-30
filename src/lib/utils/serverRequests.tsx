@@ -18,6 +18,7 @@ export const fetchModels = (callback: (customModels: ModelType[], defaultModels:
 			response.data.data?.customModels?.forEach((model: any) => {
 				customModels.push({
 					name: model.name,
+					description: model.description,
 					accuracy: model.accuracy,
 					isCustom: true,
 					scores: model.scores,

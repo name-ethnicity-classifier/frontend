@@ -1,6 +1,5 @@
 import { Flex, Box, Text, VStack, Spacer, Image, Button, useBreakpointValue } from "@chakra-ui/react";
 import { LuArrowRight } from "react-icons/lu";
-import PrimaryButton from "~/lib/components/PrimaryButton";
 
 
 const CallToAction = () => {
@@ -14,7 +13,7 @@ const CallToAction = () => {
       width="full"
     >
       <Flex
-        maxWidth={1500}
+        maxWidth={1750}
         paddingX={{ base: "5", md: "10", lg: "50", xl: "100" }}
         marginX="auto"
         flexDirection="row"

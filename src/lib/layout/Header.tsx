@@ -134,7 +134,7 @@ const Header = (props: HeaderProps) => {
       <Flex
         width="full"
         marginX="auto"
-        maxWidth={1500}
+        maxWidth={1750}
         paddingX={{ base: "2.5", md: "10", lg: "50", xl: "100" }}
         alignSelf="center"
         justifyContent="space-between"

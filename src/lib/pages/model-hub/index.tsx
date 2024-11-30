@@ -70,7 +70,7 @@ const ModelHub = () => {
 			title: "Failed to reach server",
 			description: "We are sorry for the inconvenience. Please try again later.",
 			status: "error",
-			duration: 100000,
+			duration: 60000,
 			isClosable: false,
 		});
 	}
@@ -88,7 +88,6 @@ const ModelHub = () => {
 			marginY="4"
 			marginBottom="100"
 			alignItems="top"
-			minHeight="calc(100vh - 60px)"
 		>
 			{
 				!isMediumViewPort ?

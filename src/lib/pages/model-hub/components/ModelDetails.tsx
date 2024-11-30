@@ -114,6 +114,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 						borderRadius="7px"
 						flexDirection="column"
 						alignItems="center"
+						minHeight={{ base: 100, md: "auto" }}
 						justifyContent="center"
 					>
 						<Heading color="primaryBlue.100" fontSize={{ base: "32px", md: "64px" }}>
@@ -130,6 +131,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 						borderRadius="7px"
 						flexDirection="column"
 						alignItems="center"
+						minHeight={{ base: 100, md: "auto" }}
 						justifyContent="center"
 					>
 						<HStack

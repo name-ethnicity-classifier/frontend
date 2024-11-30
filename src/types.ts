@@ -16,6 +16,7 @@ export interface DefaultModelsResponseType {
 
 export interface ModelType {
 	name: string,
+	description?: string,
 	accuracy: number,
 	isCustom: boolean,
 	scores: number[],

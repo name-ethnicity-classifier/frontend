@@ -61,7 +61,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 	const [selectedClasses, setSelectedClasses] = useState<string[]>([]);
 	const [smallestNameAmount, setSmallestNameAmount] = useState<number>(0);
 	const [modelName, setModelName] = useState<string>("");
-	const [modelDescription, setModelDescription] = useState<string>("");
+	const [modelDescription, setModelDescription] = useState<string | undefined>(undefined);
 	const [requestSuccessful, setRequestSuccessful] = useState<boolean>(false);
 	const [validationError, setValidationError] = useState<ValidationError>(
 		{
@@ -134,6 +134,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 		axios.post(
 			`${BACKEND_URL}/models`, {
 					name: modelName,
+					description: modelDescription,
 					nationalities: selectedClasses
 			},
 			{
@@ -190,7 +191,6 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 						}));
 						break;
 					}
-					// TODO add description field to backend and evaluate
 				}
 			})
 	}
@@ -301,10 +301,13 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 
 								<FormControl
 									isInvalid={validationError.modelDescription.failed}
+									flex="1"
+        							width="full"
 								>
 									<Textarea
 										placeholder="What will you use this model for?"
 										value={modelDescription}
+										maxLength={300}		
 										onChange={(e) => setModelDescription(e.target.value)}
 										onFocus={() => {
 											setValidationError((prevErrors) => ({
