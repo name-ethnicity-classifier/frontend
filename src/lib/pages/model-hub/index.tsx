@@ -178,13 +178,7 @@ const ModelHub = () => {
 								/>
 							</HStack>
 						:
-							<Badge
-								color="primaryBlue.100"
-								bg="secondaryBlue.100"
-								borderRadius="full"
-								px="2">
-									default
-							</Badge>
+							null
 
 					}
 				</Flex>
