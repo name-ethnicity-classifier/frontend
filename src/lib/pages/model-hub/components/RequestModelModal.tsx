@@ -1,6 +1,6 @@
 import { Input, Heading, Checkbox, Textarea, Flex, Button, FormErrorMessage, FormControl, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalCloseButton, ModalBody, Box, Text, VStack, Spacer, Image, Link, HStack, useBreakpointValue } from "@chakra-ui/react";
 import { ReactNode, useState, ChangeEvent, useEffect, ReactElement } from "react";
-import { LuPencil, LuPointer } from "react-icons/lu";
+import { LuLock, LuPencil, LuPointer } from "react-icons/lu";
 import { NationalityDataType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
 import { EmailIcon } from "@chakra-ui/icons";
@@ -191,6 +191,20 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 						}));
 						break;
 					}
+					case "MODEL_NAME_INVALID": {
+						setValidationError((prevErrors) => ({
+							...prevErrors,
+							modelName: { failed: true, message: "Model name too long." },
+						}));
+						break;
+					}
+					case "MODEL_DESCRIPTION_INVALID": {
+						setValidationError((prevErrors) => ({
+							...prevErrors,
+							modelName: { failed: true, message: "Model description too long." },
+						}));
+						break;
+					}
 				}
 			})
 	}
@@ -265,7 +279,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 									<Input
 										placeholder="Give your model a descriptive name!"
 										value={modelName}
-										onChange={(e: React.ChangeEvent<HTMLInputElement>) => setModelName(e.target.value)}
+										onChange={(e: React.ChangeEvent<HTMLInputElement>) => setModelName(e.target.value.trim())}
 										width="full"
 										onFocus={() => {
 											setValidationError((prevErrors) => ({
@@ -457,7 +471,6 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 					<Button
 						width="full"
 						paddingY="16px"
-						leftIcon={<EmailIcon />}
 						isLoading={requestSuccessful}
 						onClick={sendModelRequest}
 					>

@@ -11,13 +11,10 @@ import {
 	HStack,
 	VStack,
 	useBreakpointValue,
-	Popover,
-	PopoverTrigger,
-	PopoverContent,
-	PopoverBody,
-	useToast
+	useToast,
+	Badge
 } from "@chakra-ui/react";
-import { DeleteIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
 import { fetchDefaultModels, fetchModels } from "~/lib/utils/serverRequests";
 import DeleteModal from "~/lib/components/DeleteModal";
@@ -26,6 +23,7 @@ import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
 import ModelSelectionList from "./components/ModelSelectionList";
 import { deleteModel } from "~/lib/utils/serverRequests";
+import ModelSelectionPopver from "./components/ModelSelectionPopver";
 
 
 const ModelHub = () => {
@@ -35,10 +33,11 @@ const ModelHub = () => {
 	const isMediumViewPort = useBreakpointValue({ base: true, lg: false });
 	const isSmallViewPort = useBreakpointValue({ base: true, md: false });
 
-	const { isOpen, onOpen, onClose } = useDisclosure()
-	const { isOpen: isPopoverOpen, onToggle, onClose: onPopoverClose } = useDisclosure();
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
 	const [selectedModel, setSelectedModel] = useState<ModelType | null>(null);
 	const [models, setModels] = useState<ModelType[]>([]);
+	const [maxModelsReached, setMaxModelsReached] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (isLoggedIn === undefined) {
@@ -48,6 +47,10 @@ const ModelHub = () => {
 		if (isLoggedIn) {
 			fetchModels(
 				(customModels: ModelType[], defaultModels: ModelType[]) => {
+					if (customModels.length >= 10) {
+						setMaxModelsReached(true);
+					}
+
 					setModels(defaultModels.concat(customModels));
 					setSelectedModel(defaultModels[0]);
 				},
@@ -99,7 +102,7 @@ const ModelHub = () => {
 						<Flex
 							width="full"
 							bg="surfaceBlue.100"
-							padding="4"
+							padding="3"
 							gap="5"
 							alignItems="center"
 							borderRadius="7px"
@@ -115,59 +118,30 @@ const ModelHub = () => {
 							selectModelHandler={(model: ModelType) => {
 								setSelectedModel(model)
 							}}
+							maxModelsReached={maxModelsReached}
 						/>
 					</VStack>
 				:
 					null
 			}
+			
 			<VStack flex="4" gap="4">
 				<Flex
 					width="full"
 					bg="surfaceBlue.100"
-					padding="4"
+					padding="3"
 					gap="5"
 					alignItems="center"
 					borderRadius="7px"
 				>
 					{
 						isMediumViewPort ?
-							<Popover
-								isOpen={isPopoverOpen}
-								onClose={onPopoverClose}
-								closeOnBlur={true}
-								placement="bottom-start"
-							>
-								<PopoverTrigger>
-									<Button
-										padding="1"
-										onClick={onToggle}
-									>
-										<HamburgerIcon
-											variant="text"
-											color="white"
-											size="sm"
-										/>
-									</Button>
-								</PopoverTrigger>
-								<PopoverContent
-									maxWidth="fit-content"
-									borderColor="lightGray"
-									boxShadow="lg"
-									marginTop="2"
-									width="auto"
-								>
-									<PopoverBody display="flex" flexDirection="column">
-										<ModelSelectionList
-											models={models}
-											selectedModel={selectedModel}
-											selectModelHandler={(model: ModelType) => {
-												onToggle();
-												setSelectedModel(model)
-											}}
-										/>
-									</PopoverBody>
-								</PopoverContent>
-							</Popover>
+							<ModelSelectionPopver
+								models={models}
+								selectedModel={selectedModel}
+								modelSelectionHandler={(model: ModelType) => setSelectedModel(model)}
+								maxModelsReached={maxModelsReached}
+							/>
 						:
 							null	
 					}
@@ -179,10 +153,11 @@ const ModelHub = () => {
 						:
 							null
 					}
-					<Text fontSize="xs">
+
+					<Text fontSize="xs" isTruncated>
 						{selectedModel?.name}
 					</Text>
-
+					
 					{
 						isLoggedIn && selectedModel?.isCustom ?
 							<HStack
@@ -202,7 +177,15 @@ const ModelHub = () => {
 									onClick={onOpen}
 								/>
 							</HStack>
-						: null
+						:
+							<Badge
+								color="primaryBlue.100"
+								bg="secondaryBlue.100"
+								borderRadius="full"
+								px="2">
+									default
+							</Badge>
+
 					}
 				</Flex>
 				
@@ -226,51 +209,49 @@ const ModelHub = () => {
 								color="secondaryBlue.200"
 								maxWidth="500px"
 							>
-								This model is currently queued to be trained. Check in again tomorrow!
+								This model is currently queued to be trained. Check in again later!
 							</Heading>
 						</VStack>
 				}
 					
 			</VStack>
 
-			{isOpen && (
-				<DeleteModal
-					deleteEntitiyName="model"
-					deleteText={`Are you sure you want to delete the model '${selectedModel?.name}'? This action cannot be undone.`}
-					onDeleteConfirm={() => {
-						if (!selectedModel) {
-							return;
+			<DeleteModal
+				deleteEntitiyName="model"
+				deleteText={`Are you sure you want to delete the model '${selectedModel?.name}'? This action cannot be undone.`}
+				onDeleteConfirm={() => {
+					if (!selectedModel) {
+						return;
+					}
+					deleteModel(
+						selectedModel.name,
+						() => {
+							onClose();
+							toast({
+								title: `Successfully deleted the model ${selectedModel.name}.`,
+								status: "success",
+								duration: 3000,
+								isClosable: true,
+							});
+							setModels(
+								(prevModels: ModelType[]) => prevModels.filter((model: ModelType) => model.name !== selectedModel.name)
+							);
+							setSelectedModel(models[0])
+						},
+						(errorCode: string) => {
+							toast({
+								title: "Failed to delete model.",
+								description: errorCode,
+								status: "error",
+								duration: 5000,
+								isClosable: true
+							});
 						}
-						deleteModel(
-							selectedModel.name,
-							() => {
-								onClose();
-								toast({
-									title: `Successfully deleted the model ${selectedModel.name}.`,
-									status: "success",
-									duration: 3000,
-									isClosable: true,
-								});
-								setModels(
-									(prevModels: ModelType[]) => prevModels.filter((model: ModelType) => model.name !== selectedModel.name)
-								);
-								setSelectedModel(models[0])
-							},
-							(errorCode: string) => {
-								toast({
-									title: "Failed to delete model.",
-									description: errorCode,
-									status: "error",
-									duration: 5000,
-									isClosable: true
-								});
-							}
-						);
-					}}
-					isOpen={isOpen}
-					onClose={onClose}
-				/>
-			)}
+					);
+				}}
+				isOpen={isOpen}
+				onClose={onClose}
+			/>
 
 		</HStack>
 	);

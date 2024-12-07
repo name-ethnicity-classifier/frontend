@@ -152,10 +152,9 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
   const name = "theodor peifer";
   const role = "student";
   const email = "teddypeifer@gmail.com";
-  const api_key = "nf043th4gbew0b430gj34";
 
   const maintainerName = "Theodor Peifer";
-  const maintainerEmail = "theodorpeifer@gmail.com";
+  const maintainerEmail = "theodorpeifer[at]gmail.com";
   const maintainerGitHub = "https://github.com/theopfr";
 
   const { isOpen, onOpen, onClose } = useDisclosure();

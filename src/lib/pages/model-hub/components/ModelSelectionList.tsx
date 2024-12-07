@@ -1,8 +1,9 @@
-import { Text, Button, Box, HStack, VStack } from "@chakra-ui/react";
+import { Text, Button, Box, HStack, VStack, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { ModelType } from "~/types";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import RequestModelModal from "./RequestModelModal";
+import { LuLock } from "react-icons/lu";
 
 
 const MODEL_COLORS = ["#FFA7A7", "#F8D78F", "#8AB0F5", "#91E489", "#CCA4EF", "#F396B0", "#85DCEC", "#EBEB75", "#ED94EB", "#AA8EEA"];
@@ -10,7 +11,8 @@ const MODEL_COLORS = ["#FFA7A7", "#F8D78F", "#8AB0F5", "#91E489", "#CCA4EF", "#F
 interface ModelSelectionProps {
 	models: ModelType[],
     selectedModel?: ModelType,
-    selectModelHandler: (selectedModel: ModelType) => void
+    selectModelHandler: (selectedModel: ModelType) => void,
+    maxModelsReached: boolean
 }
 
 
@@ -18,31 +20,39 @@ const ModelSelectionList = (props: ModelSelectionProps) => {
 	const [showRequestModal, setShowRequestModal] = useState<boolean>(false);
 
     const { isLoggedIn } = useAuth();
+	const toast = useToast();
 
 	return (
         <VStack
             borderRadius="7px"
             bg="surfaceBlue.100"
             width="full"
-            padding="4"
-            gap="4"
+            padding="3"
+            gap="3"
         >
             {
                 isLoggedIn ?
                     <Button
                         width="full"
                         onClick={() => {
-                            setShowRequestModal(true)
+                            props.maxModelsReached ?
+                                toast({
+                                    title: "Maximum amount of custom models reached!",
+                                    status: "error",
+                                    duration: 5000,
+                                    isClosable: true
+                                })
+                            : setShowRequestModal(true)
                         }}
                     >
-                        + Request custom model
+                        + request custom model
                     </Button>
                 :
                     null
             }
 
             <VStack
-                gap="4"
+                gap="3"
                 width="full"
                 overflowY="auto"
                 className="no-scrollbar"

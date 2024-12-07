@@ -1,10 +1,13 @@
-import { Flex, HStack, VStack, Image, Text, useBreakpointValue, Link } from "@chakra-ui/react";
+import { Flex, HStack, VStack, Image, Text, useBreakpointValue, Link, Input, Button } from "@chakra-ui/react";
 import {
   LuShieldCheck,
   LuScroll,
   LuGithub,
   LuGift,
   LuHeart,
+  LuArrowRight,
+  LuMailOpen,
+  LuMail,
 } from "react-icons/lu";
 
 interface FooterLinkChild {
@@ -63,91 +66,121 @@ const Footer = () => {
       align="center"
       alignSelf="flex-end"
       justifyContent="center"
+      flexDirection="column"
       backgroundColor="primaryBlue.100"
     >
-      <Flex
+      <VStack
+        maxWidth={1750}
         width="full"
         marginX="auto"
-        maxWidth={1750}
         paddingX={{ base: "5", md: "10", lg: "50", xl: "100" }}
         paddingY={{ base: "5", md: "10" }}
-        flexDirection={{ base: "column", md: "row" }}
-        alignSelf="flex-start"
-        justifyContent="space-between"
-        gap={{ base: "7", md: "5" }}
+        gap="10"
       >
-        <VStack align="flex-start" gap="2">
-          <HStack gap="3">
-            <Image src="/assets/logo-white.svg" size="sm" />
-            <Text fontWeight="bold" color="white" fontSize="xs">
-              NAME-TO-ETHNICITY
+        <Flex
+          width="full"
+          flexDirection={{ base: "column", md: "row" }}
+          alignSelf="flex-start"
+          justifyContent="space-between"
+          gap={{ base: "7", md: "5" }}
+        >
+          <VStack align="flex-start" gap="4">
+            <HStack gap="3">
+              <Image src="/assets/logo-white.svg" />
+              <Text fontWeight="bold" color="white" fontSize="xs">
+                NAME-TO-ETHNICITY
+              </Text>
+            </HStack>
+            <Text color="white" fontSize="xs" whiteSpace="pre-wrap">
+              {"© copyright 2024, Theodor Peifer"}
+              {!isMobile ? "\n": ", "}
+              {"theodorpeifer[at]gmail.com"}
             </Text>
-          </HStack>
-          <Text color="white" fontSize="xs" whiteSpace="pre-wrap">
-            {"© copyright 2024, Theodor Peifer"}
-            {!isMobile ? "\n": ", "}
-            {"theodorpeifer@gmail.com"}
-          </Text>
-        </VStack>
-        
-        <FooterColumn
-          title="LINKS"
-          linkChildren={[
-            {
-              name: "GitHub",
-              link: "https://www.github.com",
-              icon: <LuGithub color="white" />,
-              isExternal: true,
-            },
-            {
-              name: "Donate",
-              link: "https://www.github.com",
-              icon: <LuGift color="white" />,
-              isExternal: true,
-            },
-          ]}
-        />
-        <FooterColumn
-          title="LEGAL"
-          linkChildren={[
-            {
-              name: "Privacy & Imprint",
-              link: "/",
-              icon: <LuShieldCheck color="white" />,
-              isExternal: false,
-            },
-            {
-              name: "Terms of Service",
-              link: "/",
-              icon: <LuScroll color="white" />,
-              isExternal: false,
-            },
-          ]}
-        />
-        <FooterColumn
-          title="TEAM"
-          linkChildren={[
-            {
-              name: "Theodor Peifer",
-              link: "https://www.linkedin.com",
-              icon: <LuHeart color="white" />,
-              isExternal: true,
-            },
-            {
-              name: "Lena Hafner",
-              link: "https://www.linkedin.com",
-              icon: <LuHeart color="white" />,
-              isExternal: true,
-            },
-            {
-              name: "Franziska Hafner",
-              link: "https://www.linkedin.com",
-              icon: <LuHeart color="white" />,
-              isExternal: true,
-            },
-          ]}
-        />
-      </Flex>
+
+            <VStack alignItems="flex-start">
+              <Text
+                color="white"
+              >
+                You have an inquiry or want to collaborate?
+              </Text>
+              <Button
+                bg="white"
+                color="primaryBlue.100"
+                size="xs"
+                leftIcon={<LuMail color="var(--chakra-colors-primaryBlue-100" />}
+                _hover={{
+                  bg: "white"
+                }}
+                onClick={() => {
+                  window.location.href = "mailto:theodorpeifer@gmail.com?subject=Name-to-Ethnicity Inquiry"
+                }}
+              >
+                send us an email
+              </Button>
+            </VStack>
+
+          </VStack>
+          
+          <FooterColumn
+            title="LINKS"
+            linkChildren={[
+              {
+                name: "GitHub",
+                link: "https://www.github.com",
+                icon: <LuGithub color="white" />,
+                isExternal: true,
+              },
+              {
+                name: "Donate",
+                link: "https://www.github.com",
+                icon: <LuGift color="white" />,
+                isExternal: true,
+              },
+            ]}
+          />
+          <FooterColumn
+            title="LEGAL"
+            linkChildren={[
+              {
+                name: "Privacy & Imprint",
+                link: "/",
+                icon: <LuShieldCheck color="white" />,
+                isExternal: false,
+              },
+              {
+                name: "Terms of Service",
+                link: "/",
+                icon: <LuScroll color="white" />,
+                isExternal: false,
+              },
+            ]}
+          />
+          <FooterColumn
+            title="TEAM"
+            linkChildren={[
+              {
+                name: "Theodor Peifer",
+                link: "https://www.linkedin.com",
+                icon: <LuHeart color="white" />,
+                isExternal: true,
+              },
+              {
+                name: "Lena Hafner",
+                link: "https://www.linkedin.com",
+                icon: <LuHeart color="white" />,
+                isExternal: true,
+              },
+              {
+                name: "Franziska Hafner",
+                link: "https://www.linkedin.com",
+                icon: <LuHeart color="white" />,
+                isExternal: true,
+              },
+            ]}
+          />
+        </Flex>
+
+      </VStack>
     </Flex>
   );
 };

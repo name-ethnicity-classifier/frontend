@@ -53,7 +53,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 					flex="5"
 					bg="surfaceBlue.100"
 					borderRadius="7px"
-					padding="4"
+					padding="3"
 					flexDirection="column"
 				>
 					<Box

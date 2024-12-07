@@ -54,73 +54,71 @@ const DeleteModal = (props: DeleteModalProps) => {
 	};
 
 	return (
-		<>
-			<Modal
-				isOpen={props.isOpen}
-				onClose={props.onClose}
-				isCentered
-				preserveScrollBarGap
-			>
-				<ModalOverlay
-					bg="blackAlpha.300"
-					backdropFilter="blur(10px)"
-				/>
-					<ModalContent
-						padding={{ base: "5", md: "10" }}
-						maxHeight="80vh"
-						overflow="hidden"
-						margin={{ base: "5", md: "none" }}
-					>
+		<Modal
+			isOpen={props.isOpen}
+			onClose={props.onClose}
+			isCentered
+			preserveScrollBarGap
+		>
+			<ModalOverlay
+				bg="blackAlpha.300"
+				backdropFilter="blur(10px)"
+			/>
+				<ModalContent
+					padding={{ base: "5", md: "10" }}
+					maxHeight="80vh"
+					overflow="hidden"
+					margin={{ base: "5", md: "none" }}
+				>
 
-					<ModalBody padding="0">
-						<VStack gap="5" align="stretch">
+				<ModalBody padding="0">
+					<VStack gap="5" align="stretch">
 
-							<HStack>
-								<DeleteIcon size="23px" color="primaryBlue.100" />
-								<Heading variant="h2" color="primaryBlue.100">
-									Delete {props.deleteEntitiyName}
-								</Heading>
-							</HStack>
+						<HStack>
+							<DeleteIcon size="23px" color="primaryBlue.100" />
+							<Heading variant="h2" color="primaryBlue.100">
+								Delete {props.deleteEntitiyName}
+							</Heading>
+						</HStack>
 
-							<Text>
-								{props.deleteText}
-							</Text>
-							<HStack padding="10px" bg="surfaceBlue.100" borderRadius="7px">
-								<Input
-									placeholder="Type DELETE to confirm"
-									value={confirmationText}
-									onChange={(e) => setConfirmationText(e.target.value)}
-								/>
-							</HStack>
-
-
-							<HStack gap="5">
-								<Button
-									flex="1"
-									variant="secondary"
-									isDisabled={isDeleting}
-									onClick={props.onClose}
-								>
-									Cancel
-								</Button>
-								<Button
-									flex="1"
-									variant="cautious"
-									isDisabled={confirmationText !== "DELETE"}
-									onClick={handleDelete}
-									isLoading={isDeleting}
-								>
-									Delete {props.deleteEntitiyName}
-								</Button>
-							</HStack>
-						</VStack>
+						<Text>
+							{props.deleteText}
+						</Text>
+						<HStack padding="10px" bg="surfaceBlue.100" borderRadius="7px">
+							<Input
+								placeholder="Type DELETE to confirm"
+								value={confirmationText}
+								onChange={(e) => setConfirmationText(e.target.value)}
+							/>
+						</HStack>
 
 
+						<HStack gap="5">
+							<Button
+								flex="1"
+								variant="secondary"
+								isDisabled={isDeleting}
+								onClick={props.onClose}
+							>
+								Cancel
+							</Button>
+							<Button
+								flex="1"
+								variant="cautious"
+								isDisabled={confirmationText !== "DELETE"}
+								onClick={handleDelete}
+								isLoading={isDeleting}
+							>
+								Delete {props.deleteEntitiyName}
+							</Button>
+						</HStack>
+					</VStack>
 
-					</ModalBody>
-				</ModalContent>
-			</Modal>
-		</>
+
+
+				</ModalBody>
+			</ModalContent>
+		</Modal>
 	);
 };
 
