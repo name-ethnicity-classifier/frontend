@@ -58,7 +58,7 @@ const Home = () => {
       >
         <NumberCard
           cardTitle="nationalities to choose from"
-          modalData={nationalityData || []}
+          modalData={nationalityData || {}}
           modalColumns={["Nationality", "Names"]}
           modalTitle="Our dataset"
           modalSearchBar={true}

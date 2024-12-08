@@ -70,7 +70,7 @@ const ListModal = (props: ListModalProps) => {
 
 				<ModalBody padding="0">
 					<VStack gap="5">
-						<VStack alignItems="left">
+						<VStack alignItems="left" width="full">
 							{props.description}
 						</VStack>
 

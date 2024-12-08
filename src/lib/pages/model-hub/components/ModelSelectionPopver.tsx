@@ -1,4 +1,4 @@
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import {
 	Flex,
 	Text,
@@ -44,12 +44,28 @@ const ModelSelectionPopver = (props: ModelSelectionPopoverProps) => {
                 <Button
                     padding="1"
                     onClick={onToggle}
+                    width={{base: "full", sm: "auto"}}
+                    justifyContent="left"
+
                 >
-                    <HamburgerIcon
-                        variant="text"
-                        color="white"
-                        size="sm"
-                    />
+                    <HStack gap="3" paddingX="3" >
+                        {
+                            isPopoverOpen ? 
+                                <ChevronUpIcon
+                                    boxSize="5"
+                                    color="white"
+                                    marginY="auto"
+                                />
+                            :
+                                <ChevronDownIcon
+                                    boxSize="5"
+                                    color="white"
+                                    marginY="auto"
+                                />
+                        }
+                        <Text color="white" variant="bold">{props.selectedModel?.name}</Text>
+                    </HStack>
+                    
                 </Button>
             </PopoverTrigger>
             <PopoverContent

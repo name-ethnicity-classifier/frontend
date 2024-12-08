@@ -7,12 +7,13 @@ import {
 interface BadgeProps {
     text: string,
     icon?: any,
-    onClick?: () => void
+    interactive?: boolean
 }
 
 
+
 const Pill = (props: BadgeProps) => {
-    const interactive: boolean = props.onClick !== undefined;
+    const interactive: boolean = props.interactive === true;
     const color: string = "primaryBlue.100";
     const backgroundColor: string = "secondaryBlue.100";
     const backgroundColorHover: string = "secondaryBlue.200";
@@ -25,19 +26,21 @@ const Pill = (props: BadgeProps) => {
             paddingX="2"
             paddingY="1px"
             gap="1"
-            onClick={props.onClick}
             _hover={{
-                bg: interactive ? backgroundColorHover : backgroundColor
+                bg: interactive ? backgroundColorHover : backgroundColor,
+                cursor: interactive ? "pointer" : "default"
             }}
         >
-            {props.icon ? props.icon : null}
+            {props.icon}
+
             <Text
-                fontSize={{ base: "2xs", sm: "xs" }}
+                fontSize="xs"
                 fontWeight="bold"
                 color={color}
             >
                 {props.text.toUpperCase()}
             </Text>
+            
         </HStack>
 	);
 };

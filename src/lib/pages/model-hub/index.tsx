@@ -24,6 +24,9 @@ import { ModelType } from "~/types";
 import ModelSelectionList from "./components/ModelSelectionList";
 import { deleteModel } from "~/lib/utils/serverRequests";
 import ModelSelectionPopver from "./components/ModelSelectionPopver";
+import Pill from "~/lib/components/Badge";
+import { LuEye } from "react-icons/lu";
+import ListModal from "~/lib/components/ListModal";
 
 
 const ModelHub = () => {
@@ -31,13 +34,15 @@ const ModelHub = () => {
 	const { isLoggedIn } = useAuth();
 
 	const isMediumViewPort = useBreakpointValue({ base: true, lg: false });
-	const isSmallViewPort = useBreakpointValue({ base: true, md: false });
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const [selectedModel, setSelectedModel] = useState<ModelType | null>(null);
 	const [models, setModels] = useState<ModelType[]>([]);
 	const [maxModelsReached, setMaxModelsReached] = useState<boolean>(false);
+
+	const [showNationalityList, setShowNationalityList] = useState<boolean>(false);
+	const [classScoreRecords, setClassScoreRecords] = useState<Record<string, number>>({});
 
 	useEffect(() => {
 		if (isLoggedIn === undefined) {
@@ -66,6 +71,15 @@ const ModelHub = () => {
 				() => showErrorToast()
 			);
 		}
+
+		if (selectedModel) {
+			const scoresPerClass: Record<string, number> = {};
+			for (let idx in selectedModel.nationalities) {
+				scoresPerClass[selectedModel.nationalities[idx]] = selectedModel.scores[idx];
+			}
+			setClassScoreRecords(scoresPerClass);
+		}
+		
 	}, [isLoggedIn]);
 
 	const showErrorToast = () => {
@@ -130,9 +144,10 @@ const ModelHub = () => {
 					width="full"
 					bg="surfaceBlue.100"
 					padding="3"
-					gap="5"
+					gap="3"
 					alignItems="center"
 					borderRadius="7px"
+					flexWrap="wrap"
 				>
 					{
 						isMediumViewPort ?
@@ -142,45 +157,84 @@ const ModelHub = () => {
 								modelSelectionHandler={(model: ModelType) => setSelectedModel(model)}
 								maxModelsReached={maxModelsReached}
 							/>
-						:
-							null	
+						:	
+							<>
+								<Text variant="bold" color="primaryBlue.100">
+									Selected:
+								</Text>
+								<Text fontSize="xs" isTruncated>
+									{selectedModel?.name}
+								</Text>
+							</>
 					}
-					{
-						!isSmallViewPort ?
-							<Text variant="bold" color="primaryBlue.100">
-								Selected:
-							</Text>
-						:
-							null
-					}
-
-					<Text fontSize="xs" isTruncated>
-						{selectedModel?.name}
-					</Text>
+	
 					
-					{
-						isLoggedIn && selectedModel?.isCustom ?
-							<HStack
-								marginLeft="auto"
-								height="100%"
-								aspectRatio="1"
-								borderRadius="4px"
-								justifyContent="center"
-							>
-								<DeleteIcon
-									color="primaryBlue.100"
-									margin="2px"
-									cursor="pointer"
-									_hover={{
-										color: "primaryBlue.200",
-									}}
-									onClick={onOpen}
-								/>
-							</HStack>
-						:
-							null
 
-					}
+					<HStack
+						marginLeft={{base: "none", sm: "auto"}}
+						width={{base: "full", sm: "auto"}}
+						gap={{base: "2", sm: "3"}}
+					>
+
+						<Pill text={selectedModel?.isCustom ? "custom" : "default"}/>
+
+						<Box onClick={() => setShowNationalityList(true)}>
+							<Pill
+								text="details"
+								icon={<LuEye color="var(--chakra-colors-primaryBlue-100" />}
+								interactive={true}
+							/>
+
+							<ListModal
+								isOpen={showNationalityList}
+								onCloseHandler={() => { setShowNationalityList(false) }}
+								title={"Model Details"}
+								description={
+									<>
+										<Text>
+											<b>Created:</b>&nbsp;&nbsp;28.10.2003
+										</Text>
+										<Text>
+											<b>Description:</b>&nbsp;&nbsp;
+											{
+												selectedModel?.isCustom ? selectedModel.description || <i>none</i>
+												: "This is one of our custom models - already trained and ready to use!"
+											}
+										</Text>
+									</>
+								}
+								data={classScoreRecords}
+								columns={["Class", "Accuracy"]}
+								searchBar={false}
+							/>
+						</Box>
+
+						{
+							isLoggedIn && selectedModel?.isCustom ?
+								<Flex
+									bg="transparent"
+									borderRadius="full"
+									justifyContent="center"
+									alignItems="center"
+									padding="2px"
+									marginLeft="auto"
+								>
+									<DeleteIcon
+										color="primaryBlue.100"
+										margin="2px"
+										cursor="pointer"
+										_hover={{
+											color: "primaryBlue.200",
+										}}
+										onClick={onOpen}
+									/>
+								</Flex>
+							:
+								null
+						}
+
+					</HStack>
+
 				</Flex>
 				
 				{

@@ -1,9 +1,9 @@
-import { Flex, Text, Link, Button, Heading, Box, HStack, VStack, Badge } from "@chakra-ui/react";
+import { Flex, Text, Link, Button, Heading, Box, HStack, VStack, Badge, Popover, PopoverBody, PopoverContent, PopoverTrigger } from "@chakra-ui/react";
 import { Bar } from "react-chartjs-2";
 import { DeleteIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
 import Classification from "./Classification";
-import Pill from "~/lib/components/Badge";
+import Pill, { PillPopover } from "~/lib/components/Badge";
 
 import {
     Chart as ChartJS,
@@ -17,6 +17,7 @@ import {
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
 import { LuEye } from "react-icons/lu";
+import ListModal from "~/lib/components/ListModal";
 
 
 ChartJS.register(
@@ -37,97 +38,35 @@ interface ModelDetailsProps {
 const ModelDetails = (props: ModelDetailsProps) => {
 	const { isLoggedIn } = useAuth();
 
-	const [isRendered, setIsRendered] = useState(false);
+	const [isRendered, setIsRendered] = useState<boolean>(false);
+	const [showNationalityList, setShowNationalityList] = useState<boolean>(false);
+	const [classScoreRecords, setClassScoreRecords] = useState<Record<string, number>>({});
 
 	useEffect(() => {
 		setIsRendered(true);
+
+		const scoresPerClass: Record<string, number> = {};
+		for (let idx in props.selectedModel.nationalities) {
+			scoresPerClass[props.selectedModel.nationalities[idx]] = props.selectedModel.scores[idx];
+		}
+		setClassScoreRecords(scoresPerClass);
 	}, []);
 
 	return (
 		<VStack gap="4">
-			{/*<VStack width="full" bg="surfaceBlue.100" borderRadius="7px" padding="3" alignItems="flex-start">	
-				<Text variant="bold">Details</Text>
-				<HStack gap="4">
-					<Badge
-						color="primaryBlue.100"
-						bg="secondaryBlue.100"
-						borderRadius="full"
-						px="2">
-							default
-					</Badge>
-					<Badge
-						color="primaryBlue.100"
-						bg="secondaryBlue.100"
-						borderRadius="full"
-						px="2">
-							read description
-					</Badge>
-					<Badge
-						color="primaryBlue.100"
-						bg="secondaryBlue.100"
-						borderRadius="full"
-						px="2">
-							see nationalities
-					</Badge>
-					<Badge
-						color="primaryBlue.100"
-						bg="secondaryBlue.100"
-						borderRadius="full"
-						px="2">
-							28.10.2003
-					</Badge>
-				</HStack>
-			</VStack>*/}
 			<Flex
 				flexDirection={{ base: "column", md: "row" }}
 				width="full"
 				gap="4"
 			>
-				<Flex
+				<Box
 					flex="5"
-					gap="3"
 					bg="surfaceBlue.100"
 					borderRadius="7px"
 					padding="3"
-					flexDirection="column"
-				>	
-					<Flex maxHeight="15%" gap="3" justifyContent="flex-start" flexWrap="wrap">
-						<HStack gap="3">
-							<Text>Type:</Text>
-							<Pill text={props.selectedModel.isCustom ? "custom" : "default"}/>
-						</HStack>
-
-						<HStack gap="3">
-							<Text>Created:</Text>
-							<Pill text="28.10.2003"/>
-						</HStack>
-
-						{
-							props.selectedModel.description ?
-								<HStack gap="3">
-									<Text>Description:</Text>
-									<Pill
-										text="read"
-										icon={<LuEye color="var(--chakra-colors-primaryBlue-100"/>}
-										onClick={() => alert("hi")}
-									/>							
-								</HStack>
-							: null
-						}
-
-						<HStack gap="3">
-							<Text>Ethnicities:</Text>
-							<Pill
-								text="see"
-								icon={<LuEye color="var(--chakra-colors-primaryBlue-100" />}
-								onClick={() => alert("hi")}
-							/>							
-						</HStack>
-						
-					</Flex>
+				>
 					<Box
-						marginBottom="auto"
-						height="85%"
+						height="99%"
 						width="99%"
 						minHeight="200px"
 					>
@@ -171,7 +110,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 							: null
 						}
 					</Box>
-				</Flex>
+				</Box>
 				<Flex
 					flex="1"
 					flexDirection={{ base: "row", md: "column" }}
