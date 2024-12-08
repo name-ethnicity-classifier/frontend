@@ -42,7 +42,7 @@ const ModelHub = () => {
 	const [maxModelsReached, setMaxModelsReached] = useState<boolean>(false);
 
 	const [showNationalityList, setShowNationalityList] = useState<boolean>(false);
-	const [classScoreRecords, setClassScoreRecords] = useState<Record<string, number>>({});
+	const [classScoreRecords, setClassScoreRecords] = useState<Record<string, number | string>>({});
 
 	useEffect(() => {
 		if (isLoggedIn === undefined) {
@@ -52,7 +52,7 @@ const ModelHub = () => {
 		if (isLoggedIn) {
 			fetchModels(
 				(customModels: ModelType[], defaultModels: ModelType[]) => {
-					if (customModels.length >= 10) {
+					if (customModels.length >= 3) {
 						setMaxModelsReached(true);
 					}
 
@@ -71,16 +71,16 @@ const ModelHub = () => {
 				() => showErrorToast()
 			);
 		}
-
-		if (selectedModel) {
-			const scoresPerClass: Record<string, number> = {};
-			for (let idx in selectedModel.nationalities) {
-				scoresPerClass[selectedModel.nationalities[idx]] = selectedModel.scores[idx];
-			}
-			setClassScoreRecords(scoresPerClass);
-		}
-		
 	}, [isLoggedIn]);
+
+	useEffect(() => {
+		if (!selectedModel) return;
+
+		selectedModel.scores ?
+			setClassScoreRecords(Object.fromEntries(selectedModel.nationalities.map((class_, idx) => [class_, selectedModel.scores[idx]])))
+		:
+			setClassScoreRecords(Object.fromEntries(selectedModel.nationalities.map(class_ => [class_, "training..."])));
+	}, [selectedModel]);
 
 	const showErrorToast = () => {
 		toast({

@@ -3,7 +3,6 @@ import { Bar } from "react-chartjs-2";
 import { DeleteIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
 import Classification from "./Classification";
-import Pill, { PillPopover } from "~/lib/components/Badge";
 
 import {
     Chart as ChartJS,
@@ -16,9 +15,6 @@ import {
 } from "chart.js";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
-import { LuEye } from "react-icons/lu";
-import ListModal from "~/lib/components/ListModal";
-
 
 ChartJS.register(
     CategoryScale,
@@ -39,17 +35,9 @@ const ModelDetails = (props: ModelDetailsProps) => {
 	const { isLoggedIn } = useAuth();
 
 	const [isRendered, setIsRendered] = useState<boolean>(false);
-	const [showNationalityList, setShowNationalityList] = useState<boolean>(false);
-	const [classScoreRecords, setClassScoreRecords] = useState<Record<string, number>>({});
 
 	useEffect(() => {
 		setIsRendered(true);
-
-		const scoresPerClass: Record<string, number> = {};
-		for (let idx in props.selectedModel.nationalities) {
-			scoresPerClass[props.selectedModel.nationalities[idx]] = props.selectedModel.scores[idx];
-		}
-		setClassScoreRecords(scoresPerClass);
 	}, []);
 
 	return (
