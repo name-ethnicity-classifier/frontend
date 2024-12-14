@@ -24,25 +24,27 @@ import { ModelType } from "~/types";
 import ModelSelectionList from "./components/ModelSelectionList";
 import { deleteModel } from "~/lib/utils/serverRequests";
 import ModelSelectionPopver from "./components/ModelSelectionPopver";
-import Pill from "~/lib/components/Badge";
+import Pill from "~/lib/components/Pill";
 import { LuEye } from "react-icons/lu";
 import ListModal from "~/lib/components/ListModal";
+import { useSearchParams } from "react-router-dom";
 
 
 const ModelHub = () => {
+
+	const [queryParams, setQueryParams] = useSearchParams();
 	const toast = useToast();
 	const { isLoggedIn } = useAuth();
-
 	const isMediumViewPort = useBreakpointValue({ base: true, lg: false });
-
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const [selectedModel, setSelectedModel] = useState<ModelType | null>(null);
 	const [models, setModels] = useState<ModelType[]>([]);
 	const [maxModelsReached, setMaxModelsReached] = useState<boolean>(false);
-
 	const [showNationalityList, setShowNationalityList] = useState<boolean>(false);
 	const [classScoreRecords, setClassScoreRecords] = useState<Record<string, number | string>>({});
+
+	const MAX_CUSTOM_MODELS = 3;
 
 	useEffect(() => {
 		if (isLoggedIn === undefined) {
@@ -52,12 +54,8 @@ const ModelHub = () => {
 		if (isLoggedIn) {
 			fetchModels(
 				(customModels: ModelType[], defaultModels: ModelType[]) => {
-					if (customModels.length >= 3) {
-						setMaxModelsReached(true);
-					}
-
-					setModels(defaultModels.concat(customModels));
-					setSelectedModel(defaultModels[0]);
+					const allModels = defaultModels.concat(customModels);
+					initialzeModels(allModels);
 				},
 				() => showErrorToast()
 			);
@@ -65,8 +63,7 @@ const ModelHub = () => {
 		else {
 			fetchDefaultModels(
 				(defaultModels: ModelType[]) => {
-					setModels(defaultModels);
-					setSelectedModel(defaultModels[0]);
+					initialzeModels(defaultModels);
 				},
 				() => showErrorToast()
 			);
@@ -74,13 +71,44 @@ const ModelHub = () => {
 	}, [isLoggedIn]);
 
 	useEffect(() => {
+		// Everytime a model gets added or deletes, check the max. amount of custom models
+		const customModelAmount = models.filter((model: ModelType) => model.isCustom);
+		setMaxModelsReached(customModelAmount.length >= MAX_CUSTOM_MODELS);
+
+	}, [models]);
+
+	useEffect(() => {
+		// When changing the model, create a dict. of its ethnicity names and their independent accuracy
 		if (!selectedModel) return;
 
-		selectedModel.scores ?
-			setClassScoreRecords(Object.fromEntries(selectedModel.nationalities.map((class_, idx) => [class_, selectedModel.scores[idx]])))
-		:
-			setClassScoreRecords(Object.fromEntries(selectedModel.nationalities.map(class_ => [class_, "training..."])));
+		setClassScoreRecords(
+			Object.fromEntries(selectedModel.nationalities.map((class_, idx) => {
+				return [class_, selectedModel.scores ? selectedModel.scores[idx] : "training..."]
+			}))
+		)
 	}, [selectedModel]);
+
+	const initialzeModels = (allModels: ModelType[]) => {
+		// Load all models and select the inital one based on the "model" query parameter
+		setModels(allModels);
+
+		let initiallySelectedModel = allModels[0];
+		const queriedModelName = queryParams.get("model");
+		
+		if (queriedModelName) {
+			const matchingNameModel = allModels.filter((model: ModelType) => model.name == queriedModelName);
+
+			if (matchingNameModel.length > 0) {
+				initiallySelectedModel = matchingNameModel[0];
+			}
+		}
+		selectModel(initiallySelectedModel);
+	}
+
+	const selectModel = (model: ModelType) => {
+		setSelectedModel(model);
+		setQueryParams({ model: model.name });
+	}
 
 	const showErrorToast = () => {
 		toast({
@@ -129,9 +157,7 @@ const ModelHub = () => {
 						<ModelSelectionList
 							models={models}
 							selectedModel={selectedModel}
-							selectModelHandler={(model: ModelType) => {
-								setSelectedModel(model)
-							}}
+							selectModelHandler={(model: ModelType) => selectModel(model)}
 							maxModelsReached={maxModelsReached}
 						/>
 					</VStack>
@@ -154,7 +180,7 @@ const ModelHub = () => {
 							<ModelSelectionPopver
 								models={models}
 								selectedModel={selectedModel}
-								modelSelectionHandler={(model: ModelType) => setSelectedModel(model)}
+								modelSelectionHandler={(model: ModelType) => selectModel(model)}
 								maxModelsReached={maxModelsReached}
 							/>
 						:	
@@ -167,71 +193,77 @@ const ModelHub = () => {
 								</Text>
 							</>
 					}
-	
-					
 
 					<HStack
-						marginLeft={{base: "none", sm: "auto"}}
+						flex="1"
+						marginLeft={{base: "none"}}
 						width={{base: "full", sm: "auto"}}
-						gap={{base: "2", sm: "3"}}
 					>
 
-						<Pill text={selectedModel?.isCustom ? "custom" : "default"}/>
+						<Pill
+							text={selectedModel?.isCustom ? "custom" : "default"}
+							colorPalette={selectedModel?.isCustom ? "turquoise" : "orange"}
+						/>
+						
+						<HStack marginLeft="auto" gap={{ base: "2", sm: "3" }}>
+							<Box onClick={() => setShowNationalityList(true)}>
+								<Pill
+									text="details"
+									icon={<LuEye color="var(--chakra-colors-primaryBlue-100" />}
+									interactive={true}
+								/>
 
-						<Box onClick={() => setShowNationalityList(true)}>
-							<Pill
-								text="details"
-								icon={<LuEye color="var(--chakra-colors-primaryBlue-100" />}
-								interactive={true}
-							/>
+								<ListModal
+									isOpen={showNationalityList}
+									onCloseHandler={() => { setShowNationalityList(false) }}
+									title={"Model Details"}
+									description={
+										<>
+											<Text>
+												<b>Name:</b>&nbsp;&nbsp;{selectedModel?.name}
+											</Text>
+											<Text>
+												<b>Created:</b>&nbsp;&nbsp;28.10.2003
+											</Text>
+											<Text>
+												<b>Description:</b>&nbsp;&nbsp;
+												{
+													selectedModel?.isCustom ? selectedModel.description || <i>none</i>
+													: "This is one of our custom models - already trained and ready to use!"
+												}
+											</Text>
+										</>
+									}
+									data={classScoreRecords}
+									columns={["Class", "Accuracy"]}
+									searchBar={false}
+								/>
+							</Box>
 
-							<ListModal
-								isOpen={showNationalityList}
-								onCloseHandler={() => { setShowNationalityList(false) }}
-								title={"Model Details"}
-								description={
-									<>
-										<Text>
-											<b>Created:</b>&nbsp;&nbsp;28.10.2003
-										</Text>
-										<Text>
-											<b>Description:</b>&nbsp;&nbsp;
-											{
-												selectedModel?.isCustom ? selectedModel.description || <i>none</i>
-												: "This is one of our custom models - already trained and ready to use!"
-											}
-										</Text>
-									</>
-								}
-								data={classScoreRecords}
-								columns={["Class", "Accuracy"]}
-								searchBar={false}
-							/>
-						</Box>
-
-						{
-							isLoggedIn && selectedModel?.isCustom ?
-								<Flex
-									bg="transparent"
-									borderRadius="full"
-									justifyContent="center"
-									alignItems="center"
-									padding="2px"
-									marginLeft="auto"
-								>
-									<DeleteIcon
-										color="primaryBlue.100"
-										margin="2px"
-										cursor="pointer"
-										_hover={{
-											color: "primaryBlue.200",
-										}}
-										onClick={onOpen}
-									/>
-								</Flex>
-							:
-								null
-						}
+							{
+								isLoggedIn && selectedModel?.isCustom ?
+									<Flex
+										bg="transparent"
+										borderRadius="full"
+										justifyContent="center"
+										alignItems="center"
+										padding="0px"
+										marginLeft="auto"
+									>
+										<DeleteIcon
+											color="primaryBlue.100"
+											margin="2px"
+											cursor="pointer"
+											_hover={{
+												color: "primaryBlue.200",
+											}}
+											onClick={onOpen}
+										/>
+									</Flex>
+								:
+									null
+							}
+						</HStack>
 
 					</HStack>
 
@@ -284,7 +316,8 @@ const ModelHub = () => {
 							setModels(
 								(prevModels: ModelType[]) => prevModels.filter((model: ModelType) => model.name !== selectedModel.name)
 							);
-							setSelectedModel(models[0])
+							
+							selectModel(models[0]);
 						},
 						(errorCode: string) => {
 							toast({

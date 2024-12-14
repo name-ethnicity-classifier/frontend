@@ -182,12 +182,6 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
       <DrawerContent maxWidth="500px" padding="5" gap="5">
         <DrawerHeader padding="0">
           <HStack gap="3">
-            {/*<SettingsIcon color="textDark" boxSize="25px" />
-            <Heading
-              variant="h2"
-            >
-              Settings
-            </Heading>*/}
             <DrawerCloseButton
               position="relative"
               top="unset"
@@ -217,9 +211,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
 
               <SettingsCardTable
                 rows={{
-                  Name: { text: name, type: "text" },
-                  Email: { text: email, type: "text" },
-                  Role: { text: role, type: "text" },
+                  Email: { text: Cookies.get("email"), type: "text" },
                   "API key": { text: Cookies.get("token"), type: "hidden" },
                 }}
               />

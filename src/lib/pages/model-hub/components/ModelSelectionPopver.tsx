@@ -1,24 +1,15 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
-	Flex,
 	Text,
-	IconButton,
-	Image,
 	Button,
-	Heading,
-	Box,
-	Checkbox,
 	useDisclosure,
-	HStack,
-	VStack,
 	Popover,
 	PopoverTrigger,
 	PopoverContent,
 	PopoverBody,
-	useToast
 } from "@chakra-ui/react";
-import ModelSelectionList from './ModelSelectionList';
-import { ModelType } from '~/types';
+import ModelSelectionList from "./ModelSelectionList";
+import { ModelType } from "~/types";
 
 
 
@@ -42,29 +33,33 @@ const ModelSelectionPopver = (props: ModelSelectionPopoverProps) => {
         >
             <PopoverTrigger>
                 <Button
-                    padding="1"
+                    paddingLeft="2"
+                    paddingRight="3"
                     onClick={onToggle}
-                    width={{base: "full", sm: "auto"}}
+                    width={{ base: "full", sm: "auto"}}
                     justifyContent="left"
-
+                    leftIcon={
+                        isPopoverOpen ? 
+                            <ChevronUpIcon
+                                boxSize="5"
+                                marginY="auto"
+                            />
+                        :
+                            <ChevronDownIcon
+                                boxSize="5"
+                                marginY="auto"
+                            />
+                    }
                 >
-                    <HStack gap="3" paddingX="3" >
-                        {
-                            isPopoverOpen ? 
-                                <ChevronUpIcon
-                                    boxSize="5"
-                                    color="white"
-                                    marginY="auto"
-                                />
-                            :
-                                <ChevronDownIcon
-                                    boxSize="5"
-                                    color="white"
-                                    marginY="auto"
-                                />
-                        }
-                        <Text color="white" variant="bold">{props.selectedModel?.name}</Text>
-                    </HStack>
+                    <Text
+                        textOverflow="ellipsis"
+                        color="white"
+                        whiteSpace="nowrap"
+                        overflow="hidden"
+                        maxWidth={{ base: "225px", xs: "auto" }}
+                    >
+                        {props.selectedModel?.name}
+                    </Text>
                     
                 </Button>
             </PopoverTrigger>

@@ -47,6 +47,22 @@ export const theme = extendTheme({
       100: "#FFB8B9",
       200: "#FFA1A3"
     },
+    primaryOrange: {
+      100: "#e39d07",
+      200: "#ebac00"
+    },
+    secondaryOrange: {
+      100: "#f5e3ae",
+      200: "#f5df9f"
+    },
+    primaryTurquoise: {
+      100: "#00bd7b",
+      200: "#"
+    },
+    secondaryTurquoise: {
+      100: "#abf5dc",
+      200: "#"
+    },
     textDark: "#3C406F",
     textLight: "#737695",
     lightGray: "#E6E6E6"

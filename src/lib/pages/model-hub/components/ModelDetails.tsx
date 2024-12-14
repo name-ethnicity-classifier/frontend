@@ -1,30 +1,11 @@
-import { Flex, Text, Link, Button, Heading, Box, HStack, VStack, Badge, Popover, PopoverBody, PopoverContent, PopoverTrigger } from "@chakra-ui/react";
-import { Bar } from "react-chartjs-2";
-import { DeleteIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { Flex, Text, Link, Button, Heading, Box, HStack, VStack } from "@chakra-ui/react";
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
 import Classification from "./Classification";
+import ClassScoresChart from "./ClassScoresChart";
 
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from "chart.js";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
-
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
-
 
 interface ModelDetailsProps {
 	selectedModel: ModelType
@@ -53,51 +34,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 					borderRadius="7px"
 					padding="3"
 				>
-					<Box
-						height="99%"
-						width="99%"
-						minHeight="200px"
-					>
-						{
-							isRendered ?
-								<Bar
-									height={100} 
-									width={400}
-									data={{
-										labels: props.selectedModel.nationalities,
-										datasets: [
-											{
-												label: "Accuracies",
-												data: props.selectedModel.scores,
-												backgroundColor: "rgba(0, 47, 255, 0.55)",
-												order: 2
-											}
-										]
-									}} 
-									options={{
-										maintainAspectRatio: false,
-										scales: {
-											yAxes: [{
-												ticks: {
-													beginAtZero: true,
-													min: 0
-												}
-											}],
-											xAxes: [{
-												tooltips: {
-													callbacks: {
-														title: function (tooltipItems: { index: string | number; }[], data: { labels: { [x: string]: any; }; }) {
-															return data.labels[tooltipItems[0].index]
-														}
-													}
-												}
-											}]
-										}
-									}}
-								/>
-							: null
-						}
-					</Box>
+					<ClassScoresChart classes={props.selectedModel.nationalities} scores={props.selectedModel.scores}/>
 				</Box>
 				<Flex
 					flex="1"
