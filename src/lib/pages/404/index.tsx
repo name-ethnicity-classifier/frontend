@@ -1,4 +1,4 @@
-import { Flex, Text, Button } from "@chakra-ui/react";
+import { Flex, Text, Button, Image, VStack, Heading } from "@chakra-ui/react";
 import { LuArrowLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
@@ -11,21 +11,26 @@ const Page404 = () => {
     <Flex
       textAlign="center"
       flexDirection="column"
-      gap="4"
       align="center"
       justifyContent="center"
       marginX="auto"
       height="calc(100vh - 60px)"
+      gap="5"
     >
-      <Text
-        fontSize={{base: "75px", md: "128px" }}
-        fontWeight="bold"
-        color="textLight"
-      >
-        404 :&#40;
-      </Text>
+        <Image
+          src="/assets/page-not-found-illustration.svg"
+          height={{ base: "30%", md: "45%"}}
+        />
+        <Heading
+          variant="h3"
+          color="secondaryBlue.200"
+          maxWidth="500px"
+        >
+          This page has been abducted by Aliens!
+        </Heading>
 
       <Button
+      marginTop="4"
         leftIcon={<LuArrowLeft color="white" />}
         onClick={() => handleBackToHome() }
       >

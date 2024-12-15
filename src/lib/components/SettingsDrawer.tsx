@@ -259,8 +259,8 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
 
               <SettingsCardTable
                 rows={{
-                  "Terms of Services": { text: "read", type: "link" },
-                  "Privacy Policy": { text: "read", type: "link" },
+                  "Terms of Services": { text: "read", type: "link", link: "/terms-of-service" },
+                  "Privacy Policy": { text: "read", type: "link", link: "/privacy-policy" },
                 }}
               />
             </VStack>

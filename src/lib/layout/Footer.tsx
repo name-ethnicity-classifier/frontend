@@ -143,13 +143,13 @@ const Footer = () => {
             linkChildren={[
               {
                 name: "Privacy & Imprint",
-                link: "/",
+                link: "/privacy-policy",
                 icon: <LuShieldCheck color="white" />,
                 isExternal: false,
               },
               {
                 name: "Terms of Service",
-                link: "/",
+                link: "/terms-of-service",
                 icon: <LuScroll color="white" />,
                 isExternal: false,
               },
