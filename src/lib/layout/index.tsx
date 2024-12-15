@@ -24,7 +24,7 @@ const Layout = ({ children }: LayoutProps) => {
 
       {
         // Render call-to-action section in here because it
-        // shouldnt be affected by the layouts hori. padding
+        // shouldnt be affected by the layouts horizontal padding
         location.pathname === "/" && (
           <CallToAction />
         )

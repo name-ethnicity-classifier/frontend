@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, GridItem, HStack, Heading, Link, Text, VStack } from "@chakra-ui/react";
+import { Button, Flex, Grid, GridItem, HStack, Heading, Link, Text, VStack, Image, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import HowToSection from "./components/HowToSection";
 import LinkCard from "./components/LinkCard";
@@ -10,6 +10,7 @@ import { ModelType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
 import { HiHeart } from "react-icons/hi";
 import { BiSolidDonateHeart } from "react-icons/bi";
+import SupportWidget from "../model-hub/components/SupportWidget";
 
 const Home = () => {
 	const { isLoggedIn } = useAuth();
@@ -230,42 +231,6 @@ const Home = () => {
             />
           </Flex>          
         </VStack>
-
-        <VStack
-          gap="5"
-          align="left"
-        >
-          <Heading
-            variant="h3"
-          >
-            ... supporting us 
-          </Heading>
-
-        <VStack
-            alignItems="flex-start"
-            bg="surfaceBlue.100"
-            borderRadius="7"
-            padding="4"
-            gap="4"
-            marginX="auto"
-            maxWidth={{ base: "full", lg: "600" }}
-          >
-            <HStack>
-              <BiSolidDonateHeart color="var(--chakra-colors-primaryBlue-100)" size="25" />
-              <Text variant="bold" color="primaryBlue.100">Donating</Text>
-            </HStack>
-
-            <Text>N2E is an open-source project, which means we cover server and maintainance fees ourselves. If you find N2E useful and would like to support us, consider donating. </Text>
-          
-            <Button
-              variant="cautious"
-              rightIcon={<HiHeart color="primaryRed.100" size="18" />}
-            >
-              SUpport us
-            </Button>
-          </VStack>
-
-        </VStack>
       </VStack>
 
       <VStack
@@ -284,9 +249,12 @@ const Home = () => {
         </Heading>
 
         <HowToSection />
-        
       </VStack>
-
+ 
+      <Box paddingTop={sectionGap}>
+        <SupportWidget />
+      </Box>
+      
     </Flex>
   );
 };
