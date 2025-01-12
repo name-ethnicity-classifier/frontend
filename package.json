@@ -45,7 +45,8 @@
     "react-dropzone": "^14.2.3",
     "react-helmet": "^6.1.0",
     "react-icons": "^5.2.1",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "vanilla-cookieconsent": "^3.0.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",

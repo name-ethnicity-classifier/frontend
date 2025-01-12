@@ -375,7 +375,9 @@ const SignupContainer = () => {
                 >
                     <Text
 						color={validationError.consented.failed ? "primaryRed.100" : "textLight"}
-					>Accept terms of service</Text>
+					>
+						I read and accept the <Link href="/terms-of-service" target="_blank">terms of service</Link>
+					</Text>
                 </Checkbox>
             </HStack>
             

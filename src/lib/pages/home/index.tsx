@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, GridItem, HStack, Heading, Link, Text, VStack, Image, Box } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Heading, Link, Text, VStack, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import HowToSection from "./components/HowToSection";
 import LinkCard from "./components/LinkCard";
@@ -8,9 +8,8 @@ import { useAuth } from "~/lib/contexts/AuthContext";
 import { fetchModels, fetchDefaultModels } from "~/lib/utils/serverRequests";
 import { ModelType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
-import { HiHeart } from "react-icons/hi";
-import { BiSolidDonateHeart } from "react-icons/bi";
 import SupportWidget from "../model-hub/components/SupportWidget";
+
 
 const Home = () => {
 	const { isLoggedIn } = useAuth();
@@ -254,7 +253,6 @@ const Home = () => {
       <Box paddingTop={sectionGap}>
         <SupportWidget />
       </Box>
-      
     </Flex>
   );
 };
