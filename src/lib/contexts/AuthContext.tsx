@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import Cookies from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 import { useToast } from "@chakra-ui/react";
@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }: LayoutProps) => {
   const logOut = () => {
     Cookies.remove("token");
     Cookies.remove("email");
+    Cookies.remove("cc_cookie");
     setIsLoggedIn(false);
   };
 

@@ -149,10 +149,6 @@ interface SettingsDrawerProps {
 const SettingsDrawer = (props: SettingsDrawerProps) => {
   const { logOut } = useAuth();
 
-  const name = "theodor peifer";
-  const role = "student";
-  const email = "teddypeifer@gmail.com";
-
   const maintainerName = "Theodor Peifer";
   const maintainerEmail = "theodorpeifer[at]gmail.com";
   const maintainerGitHub = "https://github.com/theopfr";

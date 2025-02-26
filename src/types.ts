@@ -1,17 +1,9 @@
 
 
 export interface ModelsResponseType {
-	data: {
-		customModels: ModelType[],
-		defaultModels: ModelType[]
-	}
+	customModels: ModelType[],
+	defaultModels: ModelType[]
 }
-
-
-export interface DefaultModelsResponseType {
-	data: ModelType[]
-}
-
 
 
 export interface ModelType {

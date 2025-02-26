@@ -160,7 +160,7 @@ const PrivacyPolicy = () => {
         <ListItem>
           <Text>- 
             <b>Service Notifications:</b> Emails from
-            necweb.noreply@gmail.com for important service-related notifications,
+            noreply[@]name-to-ethnicity.com for important service-related notifications,
             including account verification, security updates, and essential
             information about your account.
           </Text>
@@ -168,7 +168,7 @@ const PrivacyPolicy = () => {
         <ListItem>
           <Text>- 
             <b>Surveys and Feedback:</b> Occasional emails from
-            theodorpeifer[@]gmail.com for the purpose of surveys, user feedback, and
+            theodorpeifer[@]gmail.com or info[@]name-to-ethnicity.com for the purpose of surveys, user feedback, and
             improvements to enhance your experience with our services.
           </Text>
         </ListItem>

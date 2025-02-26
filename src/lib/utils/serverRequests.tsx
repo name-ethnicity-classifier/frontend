@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 import Cookies from "js-cookie";
-import { ModelType, ModelsResponseType, DefaultModelsResponseType, NationalityDataType } from "../../types";
+import { ModelType, ModelsResponseType, NationalityDataType } from "../../types";
 
 
 export const BACKEND_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/`
@@ -15,7 +15,7 @@ export const fetchModels = (callback: (customModels: ModelType[], defaultModels:
 	})
 		.then((response: AxiosResponse<ModelsResponseType>) => {
 			let customModels: ModelType[] = [];
-			response.data.data?.customModels?.forEach((model: any) => {
+			response.data?.customModels?.forEach((model: any) => {
 				customModels.push({
 					name: model.name,
 					description: model.description,
@@ -27,7 +27,7 @@ export const fetchModels = (callback: (customModels: ModelType[], defaultModels:
 			});
 
 			let defaultModels: ModelType[] = [];
-			response.data.data?.defaultModels?.forEach((model: any) => {
+			response.data?.defaultModels?.forEach((model: any) => {
 				defaultModels.push({
 					name: model.name,
 					accuracy: model.accuracy,
@@ -52,9 +52,9 @@ export const fetchDefaultModels = (callback: (defaultModels: ModelType[]) => voi
 			"Content-Type": "application/json"
 		}
 	})
-		.then((response: AxiosResponse<DefaultModelsResponseType>) => {
+		.then((response: AxiosResponse<ModelType[]>) => {
 			let models: ModelType[] = [];
-			response.data.data?.forEach((model: any) => {
+			response.data?.forEach((model: any) => {
 				models.push({
 					name: model.name,
 					accuracy: model.accuracy,
@@ -99,7 +99,7 @@ export const deleteModel = (modelName: string, callback: () => void, errorCallba
 			names: [modelName]
 		}
 	})
-		.then((response: AxiosResponse) => {
+		.then((_response: AxiosResponse) => {
 			callback();
 		})
 		.catch((error: AxiosError) => {

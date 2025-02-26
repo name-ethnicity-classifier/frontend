@@ -8,7 +8,7 @@ import { useAuth } from "~/lib/contexts/AuthContext";
 import { fetchModels, fetchDefaultModels } from "~/lib/utils/serverRequests";
 import { ModelType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
-import SupportWidget from "../model-hub/components/SupportWidget";
+import SupportWidget from "./components/SupportWidget";
 
 
 const Home = () => {
@@ -228,8 +228,12 @@ const Home = () => {
               linkedInLink="https://www.linkedin.com/in/theodor-peifer-ab6b77190/"
               imageURL="/assets/team-member-2.png"
             />
-          </Flex>          
+          </Flex>
+          
+          <SupportWidget />
+   
         </VStack>
+
       </VStack>
 
       <VStack
@@ -249,10 +253,7 @@ const Home = () => {
 
         <HowToSection />
       </VStack>
- 
-      <Box paddingTop={sectionGap}>
-        <SupportWidget />
-      </Box>
+      
     </Flex>
   );
 };

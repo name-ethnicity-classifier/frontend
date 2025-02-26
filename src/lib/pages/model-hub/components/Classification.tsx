@@ -82,10 +82,11 @@ const Classification = (props: ClassificationProps) => {
 	const classifyNames = (uploadedNames: string[]) => {
 		controllerRef.current = new AbortController();
 
-        axios.post(`${BACKEND_URL}/classify`, {
+		const classificationEndpoint = entireDistribution ? "classify-distribution" : "classify";
+
+        axios.post(`${BACKEND_URL}/${classificationEndpoint}`, {
 			modelName: props.selectedModelName,
-			names: uploadedNames,
-			getDistribution: entireDistribution
+			names: uploadedNames
 		},
 		{
 			headers: {

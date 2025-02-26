@@ -40,6 +40,7 @@ const ModelHub = () => {
 
 	const [selectedModel, setSelectedModel] = useState<ModelType | null>(null);
 	const [models, setModels] = useState<ModelType[]>([]);
+	const [modelsEmpty, setModelsEmpty] = useState<boolean>(false);
 	const [maxModelsReached, setMaxModelsReached] = useState<boolean>(false);
 	const [showNationalityList, setShowNationalityList] = useState<boolean>(false);
 	const [classScoreRecords, setClassScoreRecords] = useState<Record<string, number | string>>({});
@@ -92,6 +93,11 @@ const ModelHub = () => {
 		// Load all models and select the inital one based on the "model" query parameter
 		setModels(allModels);
 
+		if (allModels.length == 0) {
+			setModelsEmpty(true);
+			return;
+		};
+
 		let initiallySelectedModel = allModels[0];
 		const queriedModelName = queryParams.get("model");
 		
@@ -120,7 +126,10 @@ const ModelHub = () => {
 		});
 	}
 
-	if (models.length == 0) {
+	if (modelsEmpty) {
+		return <Box height="100vh"><Text>No models found :/ Please come back later!</Text></Box>
+	}
+	else if (models.length == 0) {
 		return <Box height="100vh"><Text>Loading...</Text></Box>
 	}
 

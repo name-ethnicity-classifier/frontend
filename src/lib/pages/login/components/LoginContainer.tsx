@@ -87,7 +87,7 @@ const LoginContainer = () => {
 					sameSite: "Strict" as "Strict" | "Lax" | "None",
 					secure: true,
 				};
-				Cookies.set("token", response.data.data["accessToken"], cookieOptions);
+				Cookies.set("token", response.data["accessToken"], cookieOptions);
 				Cookies.set("email", email, cookieOptions);
 				logIn();
 
