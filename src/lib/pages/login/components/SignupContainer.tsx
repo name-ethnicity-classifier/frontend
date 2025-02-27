@@ -1,6 +1,7 @@
 import { Box, Button, Checkbox, VStack, FormControl, Select, IconButton, InputGroup, InputRightElement, Heading, HStack, Input, Link as Link, Stack, Text, Image, Flex, useToast, FormErrorMessage } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios, { AxiosResponse, AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "~/lib/utils/serverRequests";
 
 import PasswordField from "./PasswordField";
@@ -27,7 +28,6 @@ interface ValidationError {
 }
 
 
-
 const FieldErrorMessage = (props: { message: string }) => {
 	return (
 		<FormErrorMessage fontSize="0.7em" marginTop="4px" marginLeft="5px">
@@ -37,8 +37,13 @@ const FieldErrorMessage = (props: { message: string }) => {
 }
 
 
+interface SignupContainerProps {
+	onSuccessfulSignup: () => void
+}
 
-const SignupContainer = () => {
+
+const SignupContainer = (props: SignupContainerProps) => {
+	const toast = useToast();
 
 	const [name, setName] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
@@ -46,9 +51,7 @@ const SignupContainer = () => {
 	const [password, setPassword] = useState<string>("");
 	const [confirmedPassword, setConfirmedPassword] = useState<string>("");
 	const [consented, setConsented] = useState<boolean>(false);
-
-	const [signupSuccessful, setSignupSuccessful] = useState<boolean>(false);
-
+	const [signupInProgress, setSignupInProgress] = useState<boolean>(false);
 	const [validationError, setValidationError] = useState<ValidationError>(
 		{
 			server: { failed: false, message: "" },
@@ -62,8 +65,6 @@ const SignupContainer = () => {
 	);
 
     const roles = ["Researcher", "Student", "Data Scientist", "Sociologist", "HR", "Educator", "Journalist", "Developer", "else"]
-
-	const toast = useToast();
 
 	useEffect(() => {
 		if (validationError.server.failed) {
@@ -111,7 +112,6 @@ const SignupContainer = () => {
 					confirmedPassword: { failed: true, message: "Please confirm password." }
 				}));
 			}
-			// Check password confirmation
 			if (confirmedPassword !== password) {
 				setValidationError((prevErrors) => ({
 					...prevErrors,
@@ -121,6 +121,8 @@ const SignupContainer = () => {
 
 			return;
 		}
+
+		setSignupInProgress(true);
 		
         let requestBody: SignupRequest = {
 			name: name,
@@ -130,7 +132,7 @@ const SignupContainer = () => {
 			consented: consented
         };
         axios.post(`${BACKEND_URL}/signup`, requestBody)
-            .then((response: AxiosResponse) => {
+            .then((_response: AxiosResponse) => {
 				// Reset all error states
 				setValidationError({
 					server: { failed: false, message: "" },
@@ -142,21 +144,21 @@ const SignupContainer = () => {
 					consented: { failed: false, message: "" }
 				});
 				
-				setSignupSuccessful(true);
-
 				toast({
-					title: "Sign up successful.",
-					description: "You will be redirected shortly.",
+					title: "Success! Please verify your account.",
+					description: "We have sent you an email to activate your account.",
 					status: "success",
-					duration: 2000,
+					duration: 60000,
 					isClosable: false,
 				});
 
 				setTimeout(() => {
-					window.location.href = "/login"
+					props.onSuccessfulSignup();
 				}, 2000);
             })
             .catch((error: AxiosError) => {
+				setSignupInProgress(false);
+
 				if (error.code === "ERR_NETWORK") {
 					setValidationError((prevErrors) => ({
 						...prevErrors,
@@ -282,8 +284,6 @@ const SignupContainer = () => {
                     }
 
 				</FormControl>
-	
-					
 
                 <FormControl
                     isInvalid={validationError.email.failed}
@@ -384,7 +384,7 @@ const SignupContainer = () => {
             <Button
                 width="full"
                 onClick={sendSignupData}
-				isLoading={signupSuccessful}
+				isLoading={signupInProgress}
             >
                 Sign up
             </Button>

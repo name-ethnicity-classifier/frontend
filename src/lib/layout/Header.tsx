@@ -32,7 +32,6 @@ interface NavigationButtonProps {
 
 const NavigationButton = (props: NavigationButtonProps) => {
   const navigate = useNavigate();
-  // const goToPage = () => navigate(props.page);
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
