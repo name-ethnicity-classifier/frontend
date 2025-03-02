@@ -5,7 +5,6 @@ import axios, { AxiosResponse, AxiosError } from "axios";
 import PasswordField from "./PasswordField";
 import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import { useAuth } from "~/lib/contexts/AuthContext";
-import { useLocation } from "react-router-dom";
 
 
 interface LoginRequest {
