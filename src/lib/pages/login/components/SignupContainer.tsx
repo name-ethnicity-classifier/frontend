@@ -423,7 +423,6 @@ const SignupContainer = (props: {onSuccessfulSignup: () => void}) => {
 				isOpen={ethicalOnboardingModalOpen}
 				includeInteractiveStages={true}
 				usageDescription={usageDescription}
-				onUsageDescriptionChange={setUsageDescription}
 				onComplete={description => {
 					setEthicalOnboardingModalOpen(false);
 					setEthicalOnboardingFinished(true);

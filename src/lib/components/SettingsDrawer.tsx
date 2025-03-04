@@ -35,11 +35,15 @@ import {
 import Cookies from "js-cookie";
 import DeleteModal from "./DeleteModal";
 import { useAuth } from "../contexts/AuthContext";
+import { useState } from "react";
+import EthicalGuidelineModal from "~/lib/components/EthicalGuidelinesModal";
+
 
 interface SettingValueType {
   text: string;
-  type: "text" | "hidden" | "link";
+  type: "text" | "hidden" | "link" | "button";
   link?: string;
+  onclick?: () => void
 }
 
 const SettingsCardTable = (props: {
@@ -94,6 +98,7 @@ const SettingsCardTable = (props: {
                   overflow="hidden"
                   textOverflow="ellipsis"
                   whiteSpace="nowrap"
+                  onClick={value.onclick}
                 >
                   {value.text}
                 </Text>
@@ -116,6 +121,7 @@ const SettingsCardTable = (props: {
               ) : value.type === "link" ? (
                 <Link
                   href={value.link}
+                  onClick={value.onclick}
                   isExternal
                   _hover={{
                     underline: "none",
@@ -130,6 +136,14 @@ const SettingsCardTable = (props: {
                     <LuArrowRight color="var(--chakra-colors-primaryBlue-100)" />
                   </HStack>
                 </Link>
+              ) : value.type === "button" ? (
+                <Button
+                  variant="secondary"
+                  width="full"
+                  onClick={value.onclick}
+                >
+                  {value.text}
+                </Button>
               ) : (
                 "-"
               )}
@@ -148,13 +162,15 @@ interface SettingsDrawerProps {
 
 const SettingsDrawer = (props: SettingsDrawerProps) => {
   const { logOut } = useAuth();
+  const toast = useToast();
 
   const maintainerName = "Theodor Peifer";
   const maintainerEmail = "theodorpeifer[at]gmail.com";
   const maintainerGitHub = "https://github.com/theopfr";
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast();
+  const [ethicalGuidelinesModalOpen, setEthicalGuidelinesModalOpen] = useState<boolean>(false);
+
 
   const handleDeleteConfirm = () => {
     logOut();
@@ -257,6 +273,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 rows={{
                   "Terms of Services": { text: "read", type: "link", link: "/terms-of-service" },
                   "Privacy Policy": { text: "read", type: "link", link: "/privacy-policy" },
+                  "Ethical Guidelines": { text: "read", type: "link", onclick: () => setEthicalGuidelinesModalOpen(true) },
                 }}
               />
             </VStack>
@@ -299,6 +316,15 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
           onClose={onClose}
         />
       )}
+
+      <EthicalGuidelineModal
+        isOpen={ethicalGuidelinesModalOpen}
+        includeInteractiveStages={false}
+        onComplete={() => {
+          setEthicalGuidelinesModalOpen(false);
+        }}
+        onClose={() => setEthicalGuidelinesModalOpen(false)}
+      />
     </Drawer>
   );
 };

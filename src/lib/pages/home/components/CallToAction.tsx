@@ -37,7 +37,7 @@ const CallToAction = () => {
           <Text
             fontSize={{ base: "xs", md: "sm" }}
           >
-            The non-profit N2E helps you uncover ethnic imbalances among your research, patients, clients, customers, and whatever other people you care for!
+            The non-profit N2E helps you uncover ethnic imbalances among your research, patients or whatever other people you care for!
           </Text>
 
           <Flex

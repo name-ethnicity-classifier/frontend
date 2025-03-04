@@ -1,4 +1,3 @@
-import { WarningTwoIcon } from "@chakra-ui/icons";
 import {
 	Button,
 	HStack,
@@ -18,7 +17,7 @@ import {
 	Box
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { LuPencil } from "react-icons/lu";
+import { LuPencil, LuHeartHandshake } from "react-icons/lu";
 import SectionTitle from "./SectionTitle";
 
 
@@ -44,8 +43,6 @@ const EthicalGuidelineListStage = () => {
 
 
 
-
-
 enum EthicalGuidelineStage {
 	GUIDLINE_LIST,
 	USAGE_DESCRIPTION
@@ -55,15 +52,14 @@ enum EthicalGuidelineStage {
 interface EthicalGuidelinesModalProps {
 	isOpen: boolean,
 	includeInteractiveStages: boolean,
-	usageDescription: string,
-	onUsageDescriptionChange: (description: string) => void,
+	usageDescription?: string,
 	onComplete: (description: string | undefined) => void,
 	onClose: () => void
 }
 
 
 const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
-	const [usageDescription, setUsageDescription] = useState<string>(props.usageDescription);
+	const [usageDescription, setUsageDescription] = useState<string>(props.usageDescription || "");
 	const [stage, setStage] = useState<number>(0);
 
 	const guidelineStages = props.includeInteractiveStages ? [EthicalGuidelineStage.GUIDLINE_LIST, EthicalGuidelineStage.USAGE_DESCRIPTION] : [EthicalGuidelineStage.GUIDLINE_LIST];
@@ -74,7 +70,7 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 			isOpen={props.isOpen}
 			onClose={() => {
 				props.onClose();
-				setUsageDescription(props.usageDescription);
+				setUsageDescription(props.usageDescription || "");
 			}}
 			size={"2xl"}
 			isCentered
@@ -95,8 +91,8 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 					<VStack gap="5" align="stretch">
 
 						<VStack gap="3">
-							<WarningTwoIcon boxSize="35px" color="primaryRed.100" />
-							<Heading variant={{ base: "h3", md: "h2" }} color="primaryRed.100" textAlign="center">
+							<LuHeartHandshake size="45px" color="var(--chakra-colors-primaryBlue-100)" />
+							<Heading variant={{ base: "h3", md: "h2" }} color="primaryBlue.100" textAlign="center">
 								Important notice on the ethical use of Name-Ethnicity classification
 							</Heading>
 						</VStack>

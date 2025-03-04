@@ -9,7 +9,7 @@ import { fetchModels, fetchDefaultModels } from "~/lib/utils/serverRequests";
 import { ModelType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
 import SupportWidget from "./components/SupportWidget";
-import { LuHeartHandshake } from "react-icons/lu";
+import EthicalGuidelineModal from "~/lib/components/EthicalGuidelinesModal";
 
 
 const Home = () => {
@@ -21,6 +21,8 @@ const Home = () => {
   const [nationalityData, setNationalityData] = useState<Record<string, number> | null>(null);
   const [nationalityAmount, setNationalityAmount] = useState<number>(0);
   const [nameAmount, setNameAmount] = useState<number>(0);
+
+	const [ethicalGuidelinesModalOpen, setEthicalGuidelinesModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -150,13 +152,27 @@ const Home = () => {
             Ethical disclaimer:
           </Heading>
 
-          <Text  color="primaryRed.200">
-            The ethnic origin of an individual cannot be reliably inferred from just their name, but when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities.
+          <Text color="primaryRed.200">
+            The ethnic origin of an individual cannot be reliably inferred from just their name, but only when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities.
           </Text>
-          <Button variant="cautious" maxWidth="fit-content" marginTop="auto">
+          <Button
+            variant="cautious"
+            maxWidth="fit-content"
+            marginTop="auto"
+            onClick={() => setEthicalGuidelinesModalOpen(true)}
+          >
             See ethical guidelines
           </Button>
         </VStack>
+
+        <EthicalGuidelineModal
+          isOpen={ethicalGuidelinesModalOpen}
+          includeInteractiveStages={false}
+          onComplete={() => {
+            setEthicalGuidelinesModalOpen(false);
+          }}
+          onClose={() => setEthicalGuidelinesModalOpen(false)}
+        />
       </Flex>
 
       <Grid
