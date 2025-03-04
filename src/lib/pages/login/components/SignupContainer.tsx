@@ -5,7 +5,7 @@ import axios, { AxiosResponse, AxiosError } from "axios";
 import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import { FaBookOpen } from "react-icons/fa";
 import PasswordField from "./PasswordField";
-import EthicalOnboardingModal from "./EthicalOnboardingModal";
+import EthicalGuidelineModal from "~/lib/components/EthicalGuidelinesModal";
 
 
 
@@ -419,14 +419,15 @@ const SignupContainer = (props: {onSuccessfulSignup: () => void}) => {
 				</Button>
             </VStack>
 
-			<EthicalOnboardingModal
+			<EthicalGuidelineModal
 				isOpen={ethicalOnboardingModalOpen}
+				includeInteractiveStages={true}
 				usageDescription={usageDescription}
 				onUsageDescriptionChange={setUsageDescription}
-				onComplete={(description: string) => {
+				onComplete={description => {
 					setEthicalOnboardingModalOpen(false);
 					setEthicalOnboardingFinished(true);
-					setUsageDescription(description);
+					setUsageDescription(description || "empty usage description");
 					setValidationError((prevErrors) => ({
 						...prevErrors, ethicalOnboarding: { failed: false, message: "" }
 					}));

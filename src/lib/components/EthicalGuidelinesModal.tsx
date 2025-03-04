@@ -17,12 +17,13 @@ import {
 	Textarea,
 	Box
 } from "@chakra-ui/react";
-import { ReactElement, useEffect, useState } from "react";
+import { useState } from "react";
 import { LuPencil } from "react-icons/lu";
+import SectionTitle from "./SectionTitle";
 
 
 
-const EthicalUseGuidelinesStage = () => {
+const EthicalGuidelineListStage = () => {
 	return (
 		<VStack gap="5">
 			<Text>
@@ -42,94 +43,30 @@ const EthicalUseGuidelinesStage = () => {
 }
 
 
-const SectionTitle = (props: { title: string, icon: ReactElement }) => {
-	return (
-		<HStack
-			width="full"
-			bg="secondaryBlue.100"
-			boxShadow="sm"
-			borderRadius="7"
-			paddingX="5"
-			paddingY="10px"
-			gap="4"
-		>
-			{props.icon}
-			<Text
-				width="full"
-				fontWeight="bold"
-				color="primaryBlue.100"
-				fontSize={{ base: "2xs", sm: "xs"}}
-			>
-				{props.title}
-			</Text>
-		</HStack>
-	);
+
+
+
+enum EthicalGuidelineStage {
+	GUIDLINE_LIST,
+	USAGE_DESCRIPTION
 }
 
 
-/*interface UsageDescriptionStageProps {
-	usageDescription: string,
-	onUsageDescriptionChange: (description: string) => void,
-	minUsageDescriptionCharacters: number
-}
-
-
-const UsageDescriptionStage = (props: UsageDescriptionStageProps) => {
-	return (
-		<VStack gap="3">
-			<Text>
-				To ensure ethical usage, we require users to briefly explain why they need access to this tool. Requests that are too vague or suggest unethical use may result in account suspension.
-			</Text>
-
-			<VStack
-				bg="surfaceBlue.100"
-				padding="10px"
-				flex="1"
-				width="full"
-				borderRadius="7px"
-				gap="3"
-				alignItems="left"
-			>
-				<SectionTitle
-					title="What do you aim to use this tool for?"
-					icon={<LuPencil color="var(--chakra-colors-primaryBlue-100"/>}
-				/>
-
-				<Textarea
-					placeholder={`Minimum of ${props.minUsageDescriptionCharacters} characters.`}
-					value={props.usageDescription}
-					maxLength={300}		
-					onChange={(e) => setUsageDescription(e.target.value)}
-					width="full"
-					flex="1"
-				/>
-			</VStack>
-			
-		</VStack>
-		);
-}*/
-
-
-enum EthicalUseStage {
-	GUIDLINES = 1,
-	USAGE_DESCRIPTION = 2
-}
-
-
-interface EthicalUseModalProps {
+interface EthicalGuidelinesModalProps {
 	isOpen: boolean,
+	includeInteractiveStages: boolean,
 	usageDescription: string,
 	onUsageDescriptionChange: (description: string) => void,
-	onComplete: (description: string) => void,
+	onComplete: (description: string | undefined) => void,
 	onClose: () => void
 }
 
 
-const EthicalOnboardingModal = (props: EthicalUseModalProps) => {
+const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 	const [usageDescription, setUsageDescription] = useState<string>(props.usageDescription);
-	const [stage, setStage] = useState<number>(EthicalUseStage.GUIDLINES);
+	const [stage, setStage] = useState<number>(0);
 
-	const lastEthicalUseStage = EthicalUseStage.USAGE_DESCRIPTION;
+	const guidelineStages = props.includeInteractiveStages ? [EthicalGuidelineStage.GUIDLINE_LIST, EthicalGuidelineStage.USAGE_DESCRIPTION] : [EthicalGuidelineStage.GUIDLINE_LIST];
 	const MIN_USAGE_DESCRIPTION_CHARACTERS = 40;
 
 	return (
@@ -166,9 +103,9 @@ const EthicalOnboardingModal = (props: EthicalUseModalProps) => {
 
 						
 						{
-							stage == EthicalUseStage.GUIDLINES ? 
-								<EthicalUseGuidelinesStage />
-							: stage == EthicalUseStage.USAGE_DESCRIPTION ? 
+							guidelineStages[stage] == EthicalGuidelineStage.GUIDLINE_LIST ? 
+								<EthicalGuidelineListStage />
+							: guidelineStages[stage] == EthicalGuidelineStage.USAGE_DESCRIPTION ? 
 								<VStack gap="3">
 									<Text>
 										To ensure ethical usage, we require users to briefly explain why they need access to this tool. Requests that are too vague or suggest unethical use may result in account suspension.
@@ -204,35 +141,43 @@ const EthicalOnboardingModal = (props: EthicalUseModalProps) => {
 						}
 
 
-						<HStack gap="5">
-							<Button
-								flex="1"
-								variant="cautious"
-								onClick={() => { window.location.href = "/" }}
-							>
-								I don't agree.
-							</Button>
+						{
+							guidelineStages.length > 1 &&
+							<HStack gap="5">
+								<Button
+									flex="1"
+									variant="secondary"
+									isDisabled={stage == 0}
+									onClick={() => {
+										if (stage > 0) {
+											setStage(stage - 1);
+										}
+									}}
+								>
+									Previous
+								</Button>
 
-							<Button
-								flex="1"
-								variant="secondary"
-								isDisabled={
-									stage as EthicalUseStage == EthicalUseStage.USAGE_DESCRIPTION && usageDescription.length < MIN_USAGE_DESCRIPTION_CHARACTERS
-								}
-								onClick={() => {
-									if (stage == lastEthicalUseStage) {
-										setStage(1 as EthicalUseStage);
-										props.onComplete(usageDescription);
+								<Button
+									flex="1"
+									variant="secondary"
+									isDisabled={
+										guidelineStages[stage] == EthicalGuidelineStage.USAGE_DESCRIPTION && usageDescription.length < MIN_USAGE_DESCRIPTION_CHARACTERS
 									}
-									else {
-										setStage((stage + 1) as EthicalUseStage);
-									}
-								}}
-							>
-								{stage == lastEthicalUseStage ? "Complete" : "Next"}
-							</Button>
-							
-						</HStack>
+									onClick={() => {
+										if (stage >= guidelineStages.length - 1) {
+											props.onComplete(usageDescription);
+											setStage(0);
+										}
+										else {
+											setStage(stage + 1);
+										}
+									}}
+								>
+									{stage == guidelineStages.length - 1 ? "Complete" : "Next"}
+								</Button>
+								
+							</HStack>
+						}
 					</VStack>
 
 				</ModalBody>
@@ -241,4 +186,4 @@ const EthicalOnboardingModal = (props: EthicalUseModalProps) => {
 	);
 };
 
-export default EthicalOnboardingModal;
+export default EthicalGuidelineModal;

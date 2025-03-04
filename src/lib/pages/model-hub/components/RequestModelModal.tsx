@@ -7,6 +7,7 @@ import { EmailIcon } from "@chakra-ui/icons";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import Cookies from "js-cookie";
+import SectionTitle from "~/lib/components/SectionTitle";
 
 
 interface ValidationError {
@@ -24,30 +25,6 @@ const FieldErrorMessage = (props: { message: string }) => {
 	);
 }
 
-
-const SectionTitle = (props: { title: string, icon: ReactElement }) => {
-	return (
-		<HStack
-			width="full"
-			bg="secondaryBlue.100"
-			boxShadow="sm"
-			borderRadius="7"
-			paddingX="5"
-			paddingY="10px"
-			gap="4"
-		>
-			{props.icon}
-			<Text
-				width="full"
-				fontWeight="bold"
-				color="primaryBlue.100"
-				fontSize={{ base: "2xs", sm: "xs"}}
-			>
-				{props.title}
-			</Text>
-		</HStack>
-	);
-}
 
 interface RequestModelModalProps {
 	isOpen: boolean,

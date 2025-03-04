@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Heading, Link, Text, VStack, Box } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Heading, Link, Text, VStack, Image, HStack, Button, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import HowToSection from "./components/HowToSection";
 import LinkCard from "./components/LinkCard";
@@ -9,6 +9,7 @@ import { fetchModels, fetchDefaultModels } from "~/lib/utils/serverRequests";
 import { ModelType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
 import SupportWidget from "./components/SupportWidget";
+import { LuHeartHandshake } from "react-icons/lu";
 
 
 const Home = () => {
@@ -117,6 +118,45 @@ const Home = () => {
             </>
           }
         />
+      </Flex>
+
+      <Flex
+        flexDirection={{ base: "column", lg: "row" }}
+        bg="linear-gradient(to right, #ffffff 0%, rgba(255, 0, 0, 0.1) 15%, rgba(255, 0, 0, 0.1) 85%, #ffffff 100%)"
+        marginX="auto"
+        paddingY="10"
+        paddingX={{ base: "10%", "2xl": "20%" }}
+        gap="5"
+        width={{ base: "100%", lg: "80%" }}
+        maxWidth="1250px"
+      >
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          width={{ base: "50px", lg: "auto" }}
+          flex="1"
+        >
+          <Image
+            src="/assets/ethics-illustration.png"
+          />
+        </Flex>
+        
+        <VStack
+          alignItems="left"
+          gap="2"
+          flex="4"
+        >
+          <Heading variant="h2" color="primaryRed.100">
+            Ethical disclaimer:
+          </Heading>
+
+          <Text  color="primaryRed.200">
+            The ethnic origin of an individual cannot be reliably inferred from just their name, but when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities.
+          </Text>
+          <Button variant="cautious" maxWidth="fit-content" marginTop="auto">
+            See ethical guidelines
+          </Button>
+        </VStack>
       </Flex>
 
       <Grid
