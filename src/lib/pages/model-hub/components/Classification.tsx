@@ -116,10 +116,23 @@ const Classification = (props: ClassificationProps) => {
 			setClassificationRunning(false);
 		})
 		.catch((error: AxiosError) => {
-			controllerRef.current?.signal.aborted ?
+			if (controllerRef.current?.signal.aborted) {
 				showToast("Cancelled by user.", true)
-			:
-				showToast("An unexpected error occured.", true)
+			}
+			else {
+				const responseData = error.response?.data as { errorCode?: string };
+				switch (responseData?.errorCode) {
+					case "RESTRICTED_ACCESS": {
+						showToast("Your access got restricted due to a possible terms-of-service violation or the suspicion of unethical use. Feel free to contact us via email.", true);
+						break;
+					}
+					default: {
+						showToast(`[${responseData?.errorCode}] An unexpected error occured. Please try again later.`, true);
+					}
+				}
+
+			}
+				
 			
 			console.log(`Classification error:\n${error}`)	
 			setClassificationRunning(false);

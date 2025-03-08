@@ -60,6 +60,16 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 		});
 	}, []);
 
+	const showToast = (message: string, failed: boolean = false, duration: number = 5000) => {
+		toast({
+			title: `Model request ${failed ? "failed" : "successful"}.`,
+			description: message,
+			status: failed ? "error" : "success",
+			duration: duration,
+			isClosable: true,
+		});
+	}
+
 	const getNameAmountByKey = (key: string): number => {
 		if (!nationalityData) return 0;
 
@@ -132,13 +142,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 					
 					setRequestSuccessful(true);
 
-					toast({
-						title: "Successfully created model.",
-						status: "success",
-						duration: 3000,
-						isClosable: false,
-					});
-
+					showToast("Your model was created successfully and is now queued for being trained.", false, 3000);
 					setTimeout(() => {
 						window.location.reload();
 					}, 2000);
@@ -181,6 +185,17 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 							modelName: { failed: true, message: "Model description too long." },
 						}));
 						break;
+					}
+					case "RESTRICTED_ACCESS": {
+						showToast(
+							"Your access got restricted due to a possible terms-of-service violation or the suspicion of unethical use. Feel free to contact us via email.",
+							true,
+							60000
+						);
+						break;
+					}
+					default: {
+						showToast(`[${responseData?.errorCode}] An unexpected error occured. Please try again later.`, true);
 					}
 				}
 			})

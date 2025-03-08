@@ -28,22 +28,40 @@ const TermsOfService = () => {
         <ListItem><Text>- remove any copyright or other proprietary notations from the materials</Text></ListItem>
         <ListItem><Text>- transferring the materials to another person or "mirror" the materials on any other server</Text></ListItem>
       </List>
-      <Text mt={4}>
-        This will let name-to-ethnicity terminate upon violations of any of these restrictions. Upon termination, your viewing right will also be terminated, and you should destroy any downloaded materials in your possession, whether it is printed or electronic format. These Terms of Service have been created with the help of the <Link href="https://www.termsofservicegenerator.net" isExternal>Terms Of Service Generator</Link>.
-      </Text>
 
       <Heading size="sm" mt={6} mb={2}>
-        Disclaimer
+        Disclaimer and Liability
       </Heading>
       <Text>
         All the materials on name-to-ethnicity's website are provided "as is". name-to-ethnicity makes no warranties, may it be expressed or implied, therefore negates all other warranties. Furthermore, name-to-ethnicity does not make any representations concerning the accuracy or reliability of the use of the materials on its website or otherwise relating to such materials or any sites linked to this website.
       </Text>
-
-      <Heading size="sm" mt={6} mb={2}>
-        Limitations
-      </Heading>
+      
+      <br />
+      <Text>
+        The results produced by this tool are not 100% accurate and should be interpreted as probabilistic estimates rather than definitive classifications. N2E provides this tool for research and analytical purposes, but we are not responsible for how individuals choose to use it.
+      </Text>
+      
+      <br />
       <Text>
         name-to-ethnicity or its suppliers will not be held accountable for any damages that will arise with the use or inability to use the materials on name-to-ethnicity's website, even if name-to-ethnicity or an authorized representative of this website has been notified, orally or written, of the possibility of such damage. Some jurisdictions do not allow limitations on implied warranties or limitations of liability for incidental damages; these limitations may not apply to you.
+      </Text>
+
+      <Heading size="sm" mt={6} mb={2}>
+        Ethical Guidelines
+      </Heading>
+      <Text>
+        By accessing and using this service, you agree to follow the ethical guidelines outlined in the onboarding process. Users are solely responsible for ensuring that their use of the tool complies with applicable laws, regulations, and ethical standards. Any misuse, including attempts to personally identify individuals or apply results in discriminatory ways, is strictly against our guidelines.
+      </Text>
+      <List spacing={2} mt={2}>
+        <ListItem><Text>- Research-Only Purpose: This tool is intended for studying demographic patterns, assessing diversity, and conducting research—whether in academia, journalism, or organizational analysis.</Text></ListItem>
+        <ListItem><Text>- Not for Personal Identification: The results should not be used to assign ethnicity to individuals in personal databases, hiring processes, customer profiling, or any private-sector decision-making.</Text></ListItem>
+        <ListItem><Text>- Ethical Responsibility: Misuse of this service for discriminatory, invasive, or unethical purposes may result in account suspension.</Text></ListItem>
+        <ListItem><Text>- Commitment to Fair Use: Users should apply this tool responsibly, promoting fairness, inclusivity, and transparency while avoiding any use that could lead to discrimination or harm.</Text></ListItem>
+      </List>
+      
+      <br />
+      <Text>
+        N2E reserves the right to restrict or revoke access to users who violate these principles.
       </Text>
 
       <Heading size="sm" mt={6} mb={2}>

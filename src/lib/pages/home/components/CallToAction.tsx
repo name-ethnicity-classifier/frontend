@@ -31,13 +31,13 @@ const CallToAction = () => {
             color="textDark"
             whiteSpace="pre-wrap"
           >
-            {"Classify Names into\ntheir Ethnicities"}
+            {"Classify names into their most\nlikely ethnic origins"}
           </Text>
           
           <Text
             fontSize={{ base: "xs", md: "sm" }}
           >
-            The non-profit N2E helps you uncover ethnic imbalances among your research, patients or whatever other people you care for!
+            This non-profit onomastics tool helps you uncover ethnic disparities and better understand the diversity within your data.
           </Text>
 
           <Flex

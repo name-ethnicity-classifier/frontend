@@ -24,18 +24,24 @@ import SectionTitle from "./SectionTitle";
 
 const EthicalGuidelineListStage = () => {
 	return (
-		<VStack gap="5">
+		<VStack gap="5" alignItems="left">
 			<Text>
 				Before proceeding, please read and acknowledge the following ethical guidelines regarding the use of this service:
 			</Text>
 			<Text>
-				✅ <b>Research-Only Purpose:</b> This tool is intended solely for research purposes to analyze correlations between ethnicity and other variables.
+				✅ <b>Research-Only Purpose:</b> This tool is intended for studying demographic patterns, assessing diversity, and conducting research—whether in academia, journalism, or organizational analysis.
 			</Text>
 			<Text>
 				🚫 <b>Not for Personal Identification:</b> The results should not be used to assign ethnicity to individuals in personal databases, hiring processes, customer profiling, or any private-sector decision-making.
 			</Text>
 			<Text>
-				🛑 <b>Ethical Responsibility:</b> Misuse of this service for discriminatory, invasive, or unethical purposes may result in <b>account suspension</b>.
+				🛑 <b>Ethical Responsibility:</b> Misuse of this service for discriminatory, invasive, or unethical purposes may result in account suspension.
+			</Text>
+			<Text>
+				⚖️ <b>Commitment to Fair Use:</b> Users should apply this tool responsibly, promoting fairness, inclusivity, and transparency while avoiding any use that could lead to discrimination or harm.
+			</Text>
+			<Text>
+				<i>You acknowlege these guidelines by accepting the terms of services.</i>
 			</Text>
 		</VStack>
 	);
@@ -87,12 +93,12 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 					margin={{ base: "5", md: "none" }}
 				>
 
-				<ModalBody padding="0">
+				<ModalBody padding="0" overflowY="auto">
 					<VStack gap="5" align="stretch">
 
 						<VStack gap="3">
-							<LuHeartHandshake size="45px" color="var(--chakra-colors-primaryBlue-100)" />
-							<Heading variant={{ base: "h3", md: "h2" }} color="primaryBlue.100" textAlign="center">
+							<LuHeartHandshake size="45px" color="var(--chakra-colors-primaryRed-100)" />
+							<Heading variant={{ base: "h3", md: "h2" }} textAlign="center">
 								Important notice on the ethical use of Name-Ethnicity classification
 							</Heading>
 						</VStack>
@@ -104,7 +110,7 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 							: guidelineStages[stage] == EthicalGuidelineStage.USAGE_DESCRIPTION ? 
 								<VStack gap="3">
 									<Text>
-										To ensure ethical usage, we require users to briefly explain why they need access to this tool. Requests that are too vague or suggest unethical use may result in account suspension.
+										To ensure ethical usage, we require users to briefly explain why they need access to this tool. Requests that suggest unethical use may result in account suspension.
 									</Text>
 
 									<VStack

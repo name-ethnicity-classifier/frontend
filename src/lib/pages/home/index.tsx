@@ -122,59 +122,6 @@ const Home = () => {
         />
       </Flex>
 
-      <Flex
-        flexDirection={{ base: "column", lg: "row" }}
-        bg="linear-gradient(to right, #ffffff 0%, rgba(255, 0, 0, 0.1) 15%, rgba(255, 0, 0, 0.1) 85%, #ffffff 100%)"
-        marginX="auto"
-        paddingY="10"
-        paddingX={{ base: "10%", "2xl": "20%" }}
-        gap="5"
-        width={{ base: "100%", lg: "80%" }}
-        maxWidth="1250px"
-      >
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          width={{ base: "50px", lg: "auto" }}
-          flex="1"
-        >
-          <Image
-            src="/assets/ethics-illustration.png"
-          />
-        </Flex>
-        
-        <VStack
-          alignItems="left"
-          gap="2"
-          flex="4"
-        >
-          <Heading variant="h2" color="primaryRed.100">
-            Ethical disclaimer:
-          </Heading>
-
-          <Text color="primaryRed.200">
-            The ethnic origin of an individual cannot be reliably inferred from just their name, but only when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities.
-          </Text>
-          <Button
-            variant="cautious"
-            maxWidth="fit-content"
-            marginTop="auto"
-            onClick={() => setEthicalGuidelinesModalOpen(true)}
-          >
-            See ethical guidelines
-          </Button>
-        </VStack>
-
-        <EthicalGuidelineModal
-          isOpen={ethicalGuidelinesModalOpen}
-          includeInteractiveStages={false}
-          onComplete={() => {
-            setEthicalGuidelinesModalOpen(false);
-          }}
-          onClose={() => setEthicalGuidelinesModalOpen(false)}
-        />
-      </Flex>
-
       <Grid
         templateRows={{ base: "auto auto", md: "auto auto" }}
         templateColumns={{ base: "1fr", md: "1fr 1fr" }}
@@ -214,8 +161,60 @@ const Home = () => {
             linkText="github.com"
           />
         </GridItem>
-
       </Grid>
+
+      <Flex
+        flexDirection={{ base: "column", lg: "row" }}
+        bg="linear-gradient(to right, #ffffff 0%, rgba(255, 0, 0, 0.1) 15%, rgba(255, 0, 0, 0.1) 85%, #ffffff 100%)"
+        marginX="auto"
+        paddingY="10"
+        paddingX={{ base: "10%", "2xl": "10%" }}
+        gap="5"
+        width={{ base: "100%", lg: "80%" }}
+        maxWidth="1250px"
+      >
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          width={{ base: "50px", lg: "auto" }}
+          flex="1"
+        >
+          <Image
+            src="/assets/ethics-illustration.png"
+          />
+        </Flex>
+        
+        <VStack
+          alignItems="left"
+          gap="2"
+          flex="5"
+        >
+          <Heading variant="h2" color="primaryRed.100">
+            Ethical disclaimer:
+          </Heading>
+
+          <Text color="primaryRed.200">
+            The ethnic origin of an individual cannot be reliably inferred from just their name, but only when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities. Please have this in mind for any use-case.
+          </Text>
+          <Button
+            variant="cautious"
+            maxWidth="fit-content"
+            marginTop="auto"
+            onClick={() => setEthicalGuidelinesModalOpen(true)}
+          >
+            See ethical guidelines
+          </Button>
+        </VStack>
+
+        <EthicalGuidelineModal
+          isOpen={ethicalGuidelinesModalOpen}
+          includeInteractiveStages={false}
+          onComplete={() => {
+            setEthicalGuidelinesModalOpen(false);
+          }}
+          onClose={() => setEthicalGuidelinesModalOpen(false)}
+        />
+      </Flex>
 
       <VStack
         borderTopWidth="1px"
