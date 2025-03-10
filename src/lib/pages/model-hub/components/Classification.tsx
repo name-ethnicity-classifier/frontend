@@ -120,10 +120,18 @@ const Classification = (props: ClassificationProps) => {
 				showToast("Cancelled by user.", true)
 			}
 			else {
-				const responseData = error.response?.data as { errorCode?: string };
-				switch (responseData?.errorCode) {
+				const responseData = error.response?.data as { errorCode: string, message: string };
+				switch (responseData.errorCode) {
 					case "RESTRICTED_ACCESS": {
 						showToast("Your access got restricted due to a possible terms-of-service violation or the suspicion of unethical use. Feel free to contact us via email.", true);
+						break;
+					}
+					case "TOO_MANY_NAMES": {
+						showToast(responseData.message, true);
+						break;
+					}
+					case "QUOTA_EXCEEDED": {
+						showToast(responseData.message, true);
 						break;
 					}
 					default: {
