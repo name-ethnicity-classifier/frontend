@@ -112,3 +112,23 @@ export const deleteModel = (modelName: string, callback: () => void, errorCallba
 			console.error(`Request failed. Error: ${error}`);
 		});
 }
+
+
+export const deleteAccount = (password: string, callback: () => void, onError?: () => void) => {
+	axios.delete(`${BACKEND_URL}/delete-user`, {
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${Cookies.get("token")}`
+		},
+		data: {
+			password: password
+		}
+	})
+		.then((_response: AxiosResponse) => {
+			callback();
+		})
+		.catch((error: AxiosError) => {
+			if (onError) onError();
+			console.error(`Request failed. Error: ${error}`);
+		});
+}

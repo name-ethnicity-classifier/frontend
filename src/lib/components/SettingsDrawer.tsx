@@ -17,7 +17,6 @@ import {
   Button,
   HStack,
   VStack,
-  IconButton,
   Table,
   Thead,
   Tbody,
@@ -37,11 +36,13 @@ import DeleteModal from "./DeleteModal";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 import EthicalGuidelineModal from "~/lib/components/EthicalGuidelinesModal";
+import { deleteAccount } from "../utils/serverRequests";
+import { ConfirmationType } from "./DeleteModal";
 
 
 interface SettingValueType {
   text: string;
-  type: "text" | "hidden" | "link" | "button";
+  type: "text" | "hidden" | "link";
   link?: string;
   onclick?: () => void
 }
@@ -136,14 +137,6 @@ const SettingsCardTable = (props: {
                     <LuArrowRight color="var(--chakra-colors-primaryBlue-100)" />
                   </HStack>
                 </Link>
-              ) : value.type === "button" ? (
-                <Button
-                  variant="secondary"
-                  width="full"
-                  onClick={value.onclick}
-                >
-                  {value.text}
-                </Button>
               ) : (
                 "-"
               )}
@@ -168,19 +161,33 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
   const maintainerEmail = "theodorpeifer[at]gmail.com";
   const maintainerGitHub = "https://github.com/theopfr";
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [ethicalGuidelinesModalOpen, setEthicalGuidelinesModalOpen] = useState<boolean>(false);
 
+  const handleDeleteConfirm = (password: string) => {
+    deleteAccount(password, () => {
+        toast({
+          title: "Account deleted.",
+          description: "Your account has been successfully deleted.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
 
-  const handleDeleteConfirm = () => {
-    logOut();
-    toast({
-      title: "Account deleted.",
-      description: "Your account has been successfully deleted.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
+        setTimeout(() => {
+          logOut();
+        }, 2000);
+      },
+      () => {
+        toast({
+          title: "Failed to delete account.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        setIsDeleteModalOpen(false);
+      }
+    );
   };
 
   return (
@@ -249,7 +256,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                   leftIcon={
                     <LuUserX color="var(--chakra-colors-primaryRed-100" />
                   }
-                  onClick={() => onOpen()}
+                  onClick={() => setIsDeleteModalOpen(true)}
                 >
                   Delete account
                 </Button>
@@ -307,13 +314,14 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
         </DrawerBody>
       </DrawerContent>
 
-      {isOpen && (
+      {isDeleteModalOpen && (
         <DeleteModal
-          deleteEntitiyName="account"
+          deleteEntityName="account"
           deleteText="Are you sure you want to delete your account? This action cannot be undone."
-          onDeleteConfirm={handleDeleteConfirm}
-          isOpen={isOpen}
-          onClose={onClose}
+          onDeleteConfirm={(password?: string) => handleDeleteConfirm(password || "")}
+          confirmationType={ConfirmationType.PASSWORD}
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
         />
       )}
 

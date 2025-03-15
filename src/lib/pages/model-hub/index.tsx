@@ -17,7 +17,7 @@ import {
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
 import { fetchDefaultModels, fetchModels } from "~/lib/utils/serverRequests";
-import DeleteModal from "~/lib/components/DeleteModal";
+import DeleteModal, { ConfirmationType } from "~/lib/components/DeleteModal";
 import ModelDetails from "./components/ModelDetails";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
@@ -308,6 +308,7 @@ const ModelHub = () => {
 			<DeleteModal
 				deleteEntitiyName="model"
 				deleteText={`Are you sure you want to delete the model '${selectedModel?.name}'? This action cannot be undone.`}
+				confirmationType={ConfirmationType.DELETE_PHRASE_MATCH}
 				onDeleteConfirm={() => {
 					if (!selectedModel) {
 						return;
