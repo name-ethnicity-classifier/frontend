@@ -54,10 +54,9 @@ import {
 		});
 		return;
 	  }
-  
+	  
 	  setIsDeleting(true);
   
-	  // Simulate async operation
 	  setTimeout(() => {
 		onDeleteConfirm(confirmationType === ConfirmationType.PASSWORD ? confirmationText : undefined);
 		setIsDeleting(false);
