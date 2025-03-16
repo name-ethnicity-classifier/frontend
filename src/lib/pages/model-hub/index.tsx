@@ -44,6 +44,7 @@ const ModelHub = () => {
 	const [maxModelsReached, setMaxModelsReached] = useState<boolean>(false);
 	const [showNationalityList, setShowNationalityList] = useState<boolean>(false);
 	const [classScoreRecords, setClassScoreRecords] = useState<Record<string, number | string>>({});
+	const [isDeletingModel, setIsDeletingModel] = useState<boolean>(false);
 
 	const MAX_CUSTOM_MODELS = 3;
 
@@ -306,16 +307,19 @@ const ModelHub = () => {
 			</VStack>
 
 			<DeleteModal
-				deleteEntitiyName="model"
+				deleteEntityName="model"
 				deleteText={`Are you sure you want to delete the model '${selectedModel?.name}'? This action cannot be undone.`}
 				confirmationType={ConfirmationType.DELETE_PHRASE_MATCH}
+				isLoading={isDeletingModel}
 				onDeleteConfirm={() => {
 					if (!selectedModel) {
 						return;
 					}
+					setIsDeletingModel(true);
 					deleteModel(
 						selectedModel.name,
 						() => {
+							setIsDeletingModel(false);
 							onClose();
 							toast({
 								title: `Successfully deleted the model ${selectedModel.name}.`,
@@ -330,6 +334,7 @@ const ModelHub = () => {
 							selectModel(models[0]);
 						},
 						(errorCode: string) => {
+							setIsDeletingModel(false);
 							toast({
 								title: "Failed to delete model.",
 								description: errorCode,

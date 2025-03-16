@@ -163,8 +163,10 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [ethicalGuidelinesModalOpen, setEthicalGuidelinesModalOpen] = useState<boolean>(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState<boolean>(false);
 
   const handleDeleteConfirm = (password: string) => {
+    setIsDeletingAccount(true);
     deleteAccount(password, () => {
         toast({
           title: "Account deleted.",
@@ -175,6 +177,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
         });
 
         setTimeout(() => {
+          setIsDeleteModalOpen(false);
           logOut();
         }, 2000);
       },
@@ -185,6 +188,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
           duration: 5000,
           isClosable: true,
         });
+        setIsDeletingAccount(false);
         setIsDeleteModalOpen(false);
       }
     );
@@ -322,6 +326,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
           confirmationType={ConfirmationType.PASSWORD}
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
+          isLoading={isDeletingAccount}
         />
       )}
 
