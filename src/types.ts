@@ -28,3 +28,16 @@ export interface BasicClassificationResponseType {
 export interface DistributionClassificationResponseType {
 	[key: string]: Record<string, number>
 }
+
+
+export enum AccessLevel {
+	ADMIN = "admin",
+	FULL = "full",
+	PEDNING = "pending",
+	RESTRICTED = "restricted"
+}
+
+export interface AccessCheckRespnseType {
+	accessLevel: string,
+	accessLevelReason: string
+}

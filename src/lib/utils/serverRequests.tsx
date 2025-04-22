@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 import Cookies from "js-cookie";
-import { ModelType, ModelsResponseType, NationalityDataType } from "../../types";
+import { AccessCheckRespnseType, ModelType, ModelsResponseType, NationalityDataType } from "../../types";
 
 
 export const BACKEND_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/`
@@ -85,6 +85,26 @@ export const fetchNationalityData = (callback: (nationalityData: NationalityData
 		})
 		.catch((error: unknown) => {
 			console.error(`Request failed. Error: ${error}`);
+		});
+}
+
+
+export const authAndAccessCheck = (callback: (accessLevel: string, accessLevelReason: string) => void, errorCallback: () => void) => {
+	axios.get(`${BACKEND_URL}/check`, {
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": `Bearer ${Cookies.get("token")}`
+		}
+	})
+		.then((response: AxiosResponse<AccessCheckRespnseType>) => {
+			callback(response.data.accessLevel, response.data.accessLevelReason);
+		})
+		.catch((error: AxiosError) => {
+			if (error.status != 401) {
+				console.error(`Request failed. Error: ${error}`);
+			}
+
+			errorCallback();
 		});
 }
 

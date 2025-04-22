@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ModelType } from "~/types";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import RequestModelModal from "./RequestModelModal";
-import { LuLock } from "react-icons/lu";
+import { LuClock2, LuLock } from "react-icons/lu";
 
 
 const MODEL_COLORS = ["#FFA7A7", "#F8D78F", "#8AB0F5", "#91E489", "#CCA4EF", "#F396B0", "#85DCEC", "#EBEB75", "#ED94EB", "#AA8EEA"];
@@ -48,7 +48,14 @@ const ModelSelectionList = (props: ModelSelectionProps) => {
                         + request custom model
                     </Button>
                 :
-                    null
+                    <Button
+                        width="full"
+                        variant="secondary"
+                        onClick={() => { window.location.href = "/login" }}
+                        leftIcon={<LuLock />}
+                    >
+                        Log in to request models
+                    </Button>
             }
 
             <VStack

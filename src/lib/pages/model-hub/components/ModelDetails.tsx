@@ -6,6 +6,7 @@ import ClassScoresChart from "./ClassScoresChart";
 
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
+import { LuLock } from "react-icons/lu";
 
 interface ModelDetailsProps {
 	selectedModel: ModelType
@@ -131,6 +132,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 									variant="secondary"
 									width="fit-content"
 									margin="auto"
+									leftIcon={<LuLock />}
 									onClick={() => { window.location.href = "/login" }}
 								>
 									Log in to classify names
