@@ -33,7 +33,7 @@ export interface DistributionClassificationResponseType {
 export enum AccessLevel {
 	ADMIN = "admin",
 	FULL = "full",
-	PEDNING = "pending",
+	PENDING = "pending",
 	RESTRICTED = "restricted"
 }
 

@@ -123,7 +123,11 @@ const Classification = (props: ClassificationProps) => {
 				const responseData = error.response?.data as { errorCode: string, message: string };
 				switch (responseData.errorCode) {
 					case "RESTRICTED_ACCESS": {
-						showToast("Your access got restricted due to a possible terms-of-service violation or the suspicion of unethical use. Feel free to contact us via email.", true);
+						showToast(responseData.message, true, 120000);
+						break;
+					}
+					case "PENDING_ACCESS": {
+						showToast(responseData.message, true, 120000);
 						break;
 					}
 					case "TOO_MANY_NAMES": {
@@ -138,9 +142,7 @@ const Classification = (props: ClassificationProps) => {
 						showToast(`[${responseData?.errorCode}] An unexpected error occured. Please try again later.`, true);
 					}
 				}
-
 			}
-				
 			
 			console.log(`Classification error:\n${error}`)	
 			setClassificationRunning(false);
@@ -169,7 +171,7 @@ const Classification = (props: ClassificationProps) => {
 					isChecked={!entireDistribution}
 					onChange={() => setEntireDistribution(false)}
 				>
-					<Text lineHeight="15px">Give me only the most likely ethnicity per name</Text>
+					<Text lineHeight="15px">Give me only the most likely ethnicity per name.</Text>
 				</Checkbox>
 				<Checkbox
 					sx={{
@@ -185,7 +187,7 @@ const Classification = (props: ClassificationProps) => {
 					isChecked={entireDistribution}
 					onChange={() => setEntireDistribution(true)}
 				>
-					<Text lineHeight="15px">Give me the entire ethnicity-likelyhood distribution per name</Text>
+					<Text lineHeight="15px">Give me the entire ethnicity-likelyhood distribution per name.</Text>
 				</Checkbox>
 			</VStack>
 			
@@ -219,7 +221,11 @@ const Classification = (props: ClassificationProps) => {
 						</Button>
 					</HStack>
 				:
-					<Dropzone onDrop={fileUploadHandler} accept={{"text/csv": [".csv"]}} maxFiles={1}>
+					<Dropzone
+						onDrop={fileUploadHandler}
+						accept={{"text/csv": [".csv"]}}
+						maxFiles={1}
+					>
 						{({getRootProps, getInputProps}) => (
 							<Box
 								{...getRootProps()}

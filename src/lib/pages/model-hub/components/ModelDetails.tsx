@@ -3,6 +3,7 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
 import Classification from "./Classification";
 import ClassScoresChart from "./ClassScoresChart";
+import Cookies from "js-cookie";
 
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
@@ -126,7 +127,18 @@ const ModelDetails = (props: ModelDetailsProps) => {
 						
 						{
 							isLoggedIn ?
-								<Classification selectedModelName={props.selectedModel.name} />
+								Cookies.get("access") != "full" ?
+									<Button
+										variant="secondary"
+										width="fit-content"
+										margin="auto"
+										leftIcon={<LuLock />}
+										onClick={() => { window.location.reload() }}
+									>
+										Access not yet granted.
+									</Button>
+								:
+									<Classification selectedModelName={props.selectedModel.name} />
 							:
 								<Button
 									variant="secondary"
@@ -135,7 +147,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 									leftIcon={<LuLock />}
 									onClick={() => { window.location.href = "/login" }}
 								>
-									Log in to classify names
+									Log in to classify names.
 								</Button>
 						}
 					</VStack>

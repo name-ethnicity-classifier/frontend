@@ -156,7 +156,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 					return;
 				}
 
-				const responseData = (error as AxiosError).response?.data as { errorCode?: string };
+				const responseData = error.response?.data as { errorCode: string, message: string };
 				switch (responseData?.errorCode) {
 					case "MODEL_NAME_EXISTS": {
 						setValidationError((prevErrors) => ({
@@ -187,11 +187,11 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 						break;
 					}
 					case "RESTRICTED_ACCESS": {
-						showToast(
-							"Your access got restricted due to a possible terms-of-service violation or the suspicion of unethical use. Feel free to contact us via email.",
-							true,
-							60000
-						);
+						showToast(responseData?.message, true, 120000);
+						break;
+					}
+					case "PENDING_ACCESS": {
+						showToast(responseData?.message, true, 120000);
 						break;
 					}
 					default: {

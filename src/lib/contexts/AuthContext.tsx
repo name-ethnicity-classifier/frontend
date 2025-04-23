@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { authAndAccessCheck } from "../utils/serverRequests";
 import { AccessLevel } from "~/types";
 
+
 export const AuthContext = createContext({
   isLoggedIn: false,
   logIn: () => { },
@@ -51,16 +52,16 @@ export const AuthProvider = ({ children }: LayoutProps) => {
         const accountRestrictedTitle = "Account access restricted.";
         const accountRestrictedDescription = (
           <>
-            <p>After reviewing the usage description you provided, we have decided to withhold you access to our models. Please update your usage description in the user settings or contact us per email.</p>
+            <p>Since May 2025, we require users to provide a description of how they are using our service to ensure ethical compliance. Your usage description is either missing or insufficient (see the reason below). Please update it in your user settings or contact us via email.</p>
             <br />
-            <p><b>Reason:</b> {accessLevelReason}</p>
+            <p><b>Access restriction reason:</b> {accessLevelReason}</p>
           </>
         ); 
 
-        if (accessLevel == AccessLevel.PEDNING.toString() || accessLevel == AccessLevel.RESTRICTED.toString()) {
+        if (accessLevel == AccessLevel.PENDING.toString() || accessLevel == AccessLevel.RESTRICTED.toString()) {
           toast({
-            title: accessLevel == AccessLevel.PEDNING.toString() ? accountPendingTitle : accountRestrictedTitle,
-            description: accessLevel == AccessLevel.PEDNING.toString() ? accountPendingDescription : accountRestrictedDescription,
+            title: accessLevel == AccessLevel.PENDING.toString() ? accountPendingTitle : accountRestrictedTitle,
+            description: accessLevel == AccessLevel.PENDING.toString() ? accountPendingDescription : accountRestrictedDescription,
             status: "warning",
             duration: 120000,
             isClosable: true,
