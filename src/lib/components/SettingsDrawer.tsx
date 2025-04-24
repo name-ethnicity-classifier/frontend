@@ -36,7 +36,7 @@ import DeleteModal from "./DeleteModal";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 import EthicalGuidelineModal from "~/lib/components/EthicalGuidelinesModal";
-import { deleteAccount } from "../utils/serverRequests";
+import { deleteAccount, updateUsageDescription } from "../utils/serverRequests";
 import { ConfirmationType } from "./DeleteModal";
 
 
@@ -162,8 +162,11 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
   const maintainerGitHub = "https://github.com/theopfr";
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const [ethicalGuidelinesModalOpen, setEthicalGuidelinesModalOpen] = useState<boolean>(false);
   const [isDeletingAccount, setIsDeletingAccount] = useState<boolean>(false);
+
+  const [ethicalGuidelinesModalOpen, setEthicalGuidelinesModalOpen] = useState<boolean>(false);
+  const [ethicalGuidelinesInteractive, setEthicalGuidelinesInteractive] = useState<boolean>(false);
+  const [updatedDescription, setUpdatedDescription] = useState<string>("");
 
   const handleDeleteConfirm = (password: string) => {
     setIsDeletingAccount(true);
@@ -236,6 +239,10 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 rows={{
                   Email: { text: Cookies.get("email"), type: "text" },
                   "API key": { text: Cookies.get("token"), type: "hidden" },
+                  "Usage description": { text: "update", type: "link", onclick: () => {
+                    setEthicalGuidelinesInteractive(true);
+                    setEthicalGuidelinesModalOpen(true);
+                  }},
                 }}
               />
 
@@ -284,7 +291,10 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 rows={{
                   "Terms of Services": { text: "read", type: "link", link: "/terms-of-service" },
                   "Privacy Policy": { text: "read", type: "link", link: "/privacy-policy" },
-                  "Ethical Guidelines": { text: "read", type: "link", onclick: () => setEthicalGuidelinesModalOpen(true) },
+                  "Ethical Guidelines": { text: "read", type: "link", onclick: () => {
+                    setEthicalGuidelinesInteractive(false);
+                    setEthicalGuidelinesModalOpen(true);
+                  }},
                 }}
               />
             </VStack>
@@ -332,8 +342,20 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
 
       <EthicalGuidelineModal
         isOpen={ethicalGuidelinesModalOpen}
-        includeInteractiveStages={false}
-        onComplete={() => {
+        includeInteractiveStages={ethicalGuidelinesInteractive}
+        submitText={"Update"}
+        onComplete={(usageDescription: string | undefined) => {
+          if (usageDescription) {
+            updateUsageDescription(usageDescription, () => {
+              toast({
+                title: "Usage description updated.",
+                description: "We will review your provided description and then grant you access to our models. Please be patient and check in again later!",
+                status: "success",
+                duration: 10000,
+                isClosable: true,
+              });
+            });
+          }
           setEthicalGuidelinesModalOpen(false);
         }}
         onClose={() => setEthicalGuidelinesModalOpen(false)}

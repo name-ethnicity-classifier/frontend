@@ -14,6 +14,7 @@ import {
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 
+
 export enum ConfirmationType {
 	DELETE_PHRASE_MATCH,
 	PASSWORD,

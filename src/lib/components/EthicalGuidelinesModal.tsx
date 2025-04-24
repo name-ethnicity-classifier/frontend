@@ -60,7 +60,8 @@ interface EthicalGuidelinesModalProps {
 	includeInteractiveStages: boolean,
 	usageDescription?: string,
 	onComplete: (description: string | undefined) => void,
-	onClose: () => void
+	onClose: () => void,
+	submitText?: string;
 }
 
 
@@ -70,6 +71,7 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 
 	const guidelineStages = props.includeInteractiveStages ? [EthicalGuidelineStage.GUIDLINE_LIST, EthicalGuidelineStage.USAGE_DESCRIPTION] : [EthicalGuidelineStage.GUIDLINE_LIST];
 	const MIN_USAGE_DESCRIPTION_CHARACTERS = 40;
+	const MAX_USAGE_DESCRIPTION_CHARACTERS = 500;
 
 	return (
 		<Modal
@@ -130,8 +132,8 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 										<Textarea
 											placeholder={`Minimum of ${MIN_USAGE_DESCRIPTION_CHARACTERS} characters.`}
 											value={usageDescription}
-											maxLength={300}		
-											onChange={(e) => setUsageDescription(e.target.value)}
+											maxLength={MAX_USAGE_DESCRIPTION_CHARACTERS}		
+											onChange={(e: any) => setUsageDescription(e.target.value)}
 											width="full"
 											flex="1"
 										/>
@@ -175,7 +177,11 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 										}
 									}}
 								>
-									{stage == guidelineStages.length - 1 ? "Complete" : "Next"}
+									{
+										stage != guidelineStages.length - 1 ? "Next" :
+										props.submitText ? props.submitText :
+										"Complete"
+									}
 								</Button>
 								
 							</HStack>

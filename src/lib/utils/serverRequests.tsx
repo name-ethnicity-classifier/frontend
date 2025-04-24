@@ -152,3 +152,25 @@ export const deleteAccount = (password: string, callback: () => void, onError?: 
 			console.error(`Request failed. Error: ${error}`);
 		});
 }
+
+
+export const updateUsageDescription = (usageDescription: string, callback: () => void, onError?: () => void) => {
+	axios.put(`${BACKEND_URL}/update-usage-description`,
+		{
+			"usageDescription": usageDescription
+		},
+		{
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${Cookies.get("token")}`
+			}
+
+		})
+		.then((_response: AxiosResponse) => {
+			callback();
+		})
+		.catch((error: AxiosError) => {
+			if (onError) onError();
+			console.error(`Request failed. Error: ${error}`);
+		});
+}
