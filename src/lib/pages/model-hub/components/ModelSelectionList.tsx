@@ -39,7 +39,7 @@ const ModelSelectionList = (props: ModelSelectionProps) => {
                             width="full"
                             margin="auto"
                             leftIcon={<LuLock />}
-                            onClick={() => { window.location.reload() }}
+                            onClick={() => {}}
                         >
                             Access not yet granted.
                         </Button>

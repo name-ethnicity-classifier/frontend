@@ -40,7 +40,6 @@ export const AuthProvider = ({ children }: LayoutProps) => {
     const email = Cookies.get("email");
 
     if (token && email) {
-      console.log("TRIGGERED")
       const decodedToken: { exp: number } = jwtDecode(token);
       if (decodedToken.exp < Date.now() / 1000) {
         logOutUser();
@@ -59,19 +58,21 @@ export const AuthProvider = ({ children }: LayoutProps) => {
         ); 
 
         if (accessLevel == AccessLevel.PENDING.toString() || accessLevel == AccessLevel.RESTRICTED.toString()) {
-          toast({
-            title: accessLevel == AccessLevel.PENDING.toString() ? accountPendingTitle : accountRestrictedTitle,
-            description: accessLevel == AccessLevel.PENDING.toString() ? accountPendingDescription : accountRestrictedDescription,
-            status: "warning",
-            duration: 120000,
-            isClosable: true,
-            position: "top",
-          });
-
-          Cookies.set("access", "restricted");
+          if (window.location.pathname === "/") {
+            toast.closeAll();          
+            toast({
+              title: accessLevel == AccessLevel.PENDING.toString() ? accountPendingTitle : accountRestrictedTitle,
+              description: accessLevel == AccessLevel.PENDING.toString() ? accountPendingDescription : accountRestrictedDescription,
+              status: "warning",
+              duration: 120000,
+              isClosable: true,
+              position: "top",
+            });
+          }
+          Cookies.set("access", AccessLevel.RESTRICTED);
         }
         else {
-          Cookies.set("access", "full");
+          Cookies.set("access", AccessLevel.FULL);
         }
       },
       () => {

@@ -101,7 +101,7 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 						<VStack gap="3">
 							<LuHeartHandshake size="45px" color="var(--chakra-colors-primaryRed-100)" />
 							<Heading variant={{ base: "h3", md: "h2" }} textAlign="center">
-								Important notice on the ethical use of Name-Ethnicity classification
+								Notice on the ethical use of Name-Ethnicity classification
 							</Heading>
 						</VStack>
 
@@ -112,7 +112,7 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 							: guidelineStages[stage] == EthicalGuidelineStage.USAGE_DESCRIPTION ? 
 								<VStack gap="3">
 									<Text>
-										To ensure ethical usage, we require users to briefly explain why they need access to this tool. Requests that suggest unethical use may result in account suspension.
+										To ensure ethical usage, we require users to briefly explain why they need access to this tool. Upon your registration we will review your description and see if it aligns with our ethical use standard. <b>Only after we reviewed your request, your account will be able to use our models.</b>
 									</Text>
 
 									<VStack

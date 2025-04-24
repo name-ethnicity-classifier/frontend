@@ -194,7 +194,9 @@ const Home = () => {
           </Heading>
 
           <Text color="primaryRed.200">
-            The ethnic origin of an individual cannot be reliably inferred from just their name, but only when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities. Please have this in mind for any use-case.
+            The ethnic origin of an individual cannot be reliably inferred from just their name, but only when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities.
+          
+            We require users to provide a description of how they are using our service to ensure ethical compliance.
           </Text>
           <Button
             variant="cautious"

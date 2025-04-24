@@ -133,7 +133,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 										width="fit-content"
 										margin="auto"
 										leftIcon={<LuLock />}
-										onClick={() => { window.location.reload() }}
+										onClick={() => {}}
 									>
 										Access not yet granted.
 									</Button>
