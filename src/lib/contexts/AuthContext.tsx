@@ -5,6 +5,7 @@ import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { authAndAccessCheck } from "../utils/serverRequests";
 import { AccessLevel } from "~/types";
+import { acessAlertToast } from "../utils/toasts";
 
 
 export const AuthContext = createContext({
@@ -46,30 +47,12 @@ export const AuthProvider = ({ children }: LayoutProps) => {
       }
 
       authAndAccessCheck((accessLevel: string, accessLevelReason: string) => {
-        const accountPendingTitle = "Account under review.";
-        const accountPendingDescription = "We are currently reviewing your account and the usage description you have provided. Currently you don't have access to use our models. Please check in later!";
-        const accountRestrictedTitle = "Account access restricted.";
-        const accountRestrictedDescription = (
-          <>
-            <p>Since May 2025, we require users to provide a description of how they are using our service to ensure ethical compliance. Your usage description is either missing or insufficient (see the reason below). Please update it in your user settings or contact us via email.</p>
-            <br />
-            <p><b>Access restriction reason:</b> {accessLevelReason}</p>
-          </>
-        ); 
-
         if (accessLevel == AccessLevel.PENDING.toString() || accessLevel == AccessLevel.RESTRICTED.toString()) {
-          if (window.location.pathname === "/") {
-            toast.closeAll();          
-            toast({
-              title: accessLevel == AccessLevel.PENDING.toString() ? accountPendingTitle : accountRestrictedTitle,
-              description: accessLevel == AccessLevel.PENDING.toString() ? accountPendingDescription : accountRestrictedDescription,
-              status: "warning",
-              duration: 120000,
-              isClosable: true,
-              position: "top",
-            });
-          }
           Cookies.set("access", AccessLevel.RESTRICTED);
+          Cookies.set("access_level_reason", accessLevelReason);
+          if (window.location.pathname === "/") {
+            acessAlertToast(toast);
+          }
         }
         else {
           Cookies.set("access", AccessLevel.FULL);
@@ -90,6 +73,8 @@ export const AuthProvider = ({ children }: LayoutProps) => {
   const logOut = () => {
     Cookies.remove("token");
     Cookies.remove("email");
+    Cookies.remove("access");
+    Cookies.remove("access_level_reason");
     Cookies.remove("cc_cookie");
     setIsLoggedIn(false);
   };

@@ -166,7 +166,6 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
 
   const [ethicalGuidelinesModalOpen, setEthicalGuidelinesModalOpen] = useState<boolean>(false);
   const [ethicalGuidelinesInteractive, setEthicalGuidelinesInteractive] = useState<boolean>(false);
-  const [updatedDescription, setUpdatedDescription] = useState<string>("");
 
   const handleDeleteConfirm = (password: string) => {
     setIsDeletingAccount(true);

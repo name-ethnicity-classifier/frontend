@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { AccessCheckRespnseType, ModelType, ModelsResponseType, NationalityDataType } from "../../types";
 
 
-export const BACKEND_URL = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/`
+export const BACKEND_URL = `${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}/`
 
 
 export const fetchModels = (callback: (customModels: ModelType[], defaultModels: ModelType[]) => void, onError?: () => void) => {

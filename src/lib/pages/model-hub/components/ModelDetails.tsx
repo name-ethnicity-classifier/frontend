@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import Classification from "./Classification";
 import ClassScoresChart from "./ClassScoresChart";
 import Cookies from "js-cookie";
+import { useToast } from "@chakra-ui/react";
 
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
 import { LuLock } from "react-icons/lu";
+import { acessAlertToast } from "~/lib/utils/toasts";
 
 interface ModelDetailsProps {
 	selectedModel: ModelType
@@ -16,6 +18,7 @@ interface ModelDetailsProps {
 
 const ModelDetails = (props: ModelDetailsProps) => {
 	const { isLoggedIn } = useAuth();
+	const toast = useToast();
 
 	const [isRendered, setIsRendered] = useState<boolean>(false);
 
@@ -133,7 +136,9 @@ const ModelDetails = (props: ModelDetailsProps) => {
 										width="fit-content"
 										margin="auto"
 										leftIcon={<LuLock />}
-										onClick={() => {}}
+										onClick={() => {
+											acessAlertToast(toast);
+										}}
 									>
 										Access not yet granted.
 									</Button>
