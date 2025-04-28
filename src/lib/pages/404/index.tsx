@@ -17,7 +17,7 @@ const Page404 = () => {
       height="calc(100vh - 60px)"
     >
         <Image
-          src="public/assets/page-not-found-illustration.svg"
+          src="/assets/page-not-found-illustration.svg"
           height={{ base: "40%", md: "45%"}}
         />
 

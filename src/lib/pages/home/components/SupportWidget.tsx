@@ -31,7 +31,7 @@ const SupportWidget = () => {
                     bg: "#ffe74d"
                 }}
             >
-                <Image src="public/assets/bmc-logo.svg" height="25px" />
+                <Image src="/assets/bmc-logo.svg" height="25px" />
                 <Text color="textDark">Buy Me a Coffee</Text>
             </Button>
         </Link>

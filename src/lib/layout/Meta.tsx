@@ -1,12 +1,12 @@
 import { Helmet } from "react-helmet";
 
-const APP_NAME = "vite-react-chakra-starter";
+const APP_NAME = "name-to-ethnicity";
 
 const Meta = () => {
   return (
     <Helmet>
-      <title>Vite React Chakra Starter</title>
-      <meta name="description" content="Vite React Chakra Starter Template" />
+      <title>N2E</title>
+      <meta name="description" content="name-to-ethnicity official website" />
 
       <meta name="application-name" content={APP_NAME} />
       <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -16,7 +16,7 @@ const Meta = () => {
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="theme-color" content="#FFFFFF" />
 
-      <link rel="shortcut icon" href="/assets/favicon.svg" />
+      <link rel="shortcut icon" href="/favicon.ico" />
     </Helmet>
   );
 };
