@@ -10,6 +10,7 @@ import { ModelType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
 import SupportWidget from "./components/SupportWidget";
 import EthicalGuidelineModal from "~/lib/components/EthicalGuidelinesModal";
+import InfoBanner from "./components/InfoBanner";
 
 
 const Home = () => {
@@ -163,60 +164,22 @@ const Home = () => {
         </GridItem>
       </Grid>
 
-      <Flex
-        flexDirection={{ base: "column", lg: "row" }}
-        bg="linear-gradient(to right, #ffffff 0%, rgba(255, 0, 0, 0.1) 15%, rgba(255, 0, 0, 0.1) 85%, #ffffff 100%)"
-        marginX="auto"
-        paddingY="10"
-        paddingX={{ base: "10%", "2xl": "10%" }}
-        gap="5"
-        width={{ base: "100%", lg: "80%" }}
-        maxWidth="1250px"
-      >
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          width={{ base: "50px", lg: "auto" }}
-          flex="1"
-        >
-          <Image
-            src="/assets/ethics-illustration.png"
-          />
-        </Flex>
-        
-        <VStack
-          alignItems="left"
-          gap="2"
-          flex="5"
-        >
-          <Heading variant="h2" color="primaryRed.100">
-            Ethical disclaimer:
-          </Heading>
+      <InfoBanner
+        title="Ethical disclaimer"
+        description="The ethnic origin of an individual cannot be reliably inferred from just their name, but only when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities. We require users to provide a description of how they are using our service to ensure ethical compliance."
+        iconUrl="/assets/ethics-illustration.png"
+        onClick={() => setEthicalGuidelinesModalOpen(true)}
+        buttonDescription="See ethical guidelines"
+      />
 
-          <Text color="primaryRed.200">
-            The ethnic origin of an individual cannot be reliably inferred from just their name, but only when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities.
-          
-            We require users to provide a description of how they are using our service to ensure ethical compliance.
-          </Text>
-          <Button
-            variant="cautious"
-            maxWidth="fit-content"
-            marginTop="auto"
-            onClick={() => setEthicalGuidelinesModalOpen(true)}
-          >
-            See ethical guidelines
-          </Button>
-        </VStack>
-
-        <EthicalGuidelineModal
-          isOpen={ethicalGuidelinesModalOpen}
-          includeInteractiveStages={false}
-          onComplete={() => {
-            setEthicalGuidelinesModalOpen(false);
-          }}
-          onClose={() => setEthicalGuidelinesModalOpen(false)}
-        />
-      </Flex>
+      <EthicalGuidelineModal
+        isOpen={ethicalGuidelinesModalOpen}
+        includeInteractiveStages={false}
+        onComplete={() => {
+          setEthicalGuidelinesModalOpen(false);
+        }}
+        onClose={() => setEthicalGuidelinesModalOpen(false)}
+      />
 
       <VStack
         borderTopWidth="1px"
