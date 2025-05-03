@@ -271,19 +271,19 @@ const Home = () => {
               description="BSc. Student in Computer Science and Design, Munich University of Applied Sciences"
               linkedInLink="https://www.linkedin.com/in/theodor-peifer-ab6b77190/"
               githubLink="https://github.com/theopfr"
-              imageURL="/assets/team-member-2.png"
+              imageURL="/assets/member-t.svg"
             />
             <TeamMemberCard
               name="Lena Hafner"
               description="Phd. Candidate in Politics and International Studies, University of Cambridge"
-              linkedInLink="https://www.linkedin.com/in/theodor-peifer-ab6b77190/"
-              imageURL="/assets/team-member-2.png"
+              linkedInLink="https://www.linkedin.com/in/lena-folonica-hafner/"
+              imageURL="/assets/member-l.svg"
             />
             <TeamMemberCard
               name="Franziska Hafner"
-              description="MSc, Student in Social Data Science, University of Oxford"
-              linkedInLink="https://www.linkedin.com/in/theodor-peifer-ab6b77190/"
-              imageURL="/assets/team-member-2.png"
+              description="MSc. Student in Social Data Science, University of Oxford"
+              linkedInLink="https://www.linkedin.com/in/franziska-hafner/"
+              imageURL="/assets/member-f.svg"
             />
           </Flex>
           

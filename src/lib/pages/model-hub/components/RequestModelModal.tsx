@@ -301,8 +301,8 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 									icon={<LuPencil color="var(--chakra-colors-primaryBlue-100"/>}
 								/>
 								
-								<Text>
-									Use-Cases of ethnicity classification require ethical attention. We would be happy to know what you are aiming to use your model for. &#40;voluntary&#41;
+								<Text width="full">
+									Description of this model and it's usecase &#40;voluntary&#41;.
 								</Text>
 
 								<FormControl
@@ -321,6 +321,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 											}));
 										}}
 										width="full"
+										height="full"
 										flex="1"
 									/>
 									{
