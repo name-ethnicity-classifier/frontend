@@ -178,7 +178,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 						</Text>
 
 						<Link
-							href={import.meta.env.VITE_API_DOCS_URL}
+							href={window.env.API_DOC_URL}
 							_hover={{
 								underline: "none",
 								paddingLeft: "3"

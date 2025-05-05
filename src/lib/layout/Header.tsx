@@ -126,7 +126,7 @@ const Header = (props: HeaderProps) => {
       <NavigationButton
         text="API"
         iconName="api"
-        page={import.meta.env.VITE_API_DOCS_URL}
+        page={window.env.API_DOC_URL}
         isExternal={true}
       />
     </>
