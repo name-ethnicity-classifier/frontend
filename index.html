@@ -7,7 +7,12 @@
     <title>N2E</title>
   </head>
   <body>
-    <script src="/config.js"></script>
+    <script>
+      const script = document.createElement("script");
+      script.src = `/config.js?v=${Date.now()}`;
+      document.head.appendChild(script);
+    </script>
+    
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>

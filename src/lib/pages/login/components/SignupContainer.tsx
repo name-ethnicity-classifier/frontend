@@ -249,7 +249,7 @@ const SignupContainer = (props: {onSuccessfulSignup: () => void}) => {
 						<Input
 							id="name"
 							type="text"
-							placeholder="Name"
+							placeholder="Full name"
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 								setName(e.target.value);
 							}}
