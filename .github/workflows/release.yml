@@ -37,11 +37,7 @@ jobs:
             API_DOCS_URL: "https://docs.name-to-ethnicity.com"
         run: |
           IMAGE_NAME=ghcr.io/name-ethnicity-classifier/n2e-frontend
-          docker build \
-            --build-arg VITE_BACKEND_HOST=${{ env.BACKEND_HOST }} \
-            --build-arg VITE_BACKEND_PORT=${{ env.BACKEND_PORT }} \
-            --build-arg VITE_API_DOCS_URL=${{ env.API_DOCS_URL }} \
-            -t $IMAGE_NAME:$VERSION -t $IMAGE_NAME:latest .
+          docker build -t $IMAGE_NAME:$VERSION -t $IMAGE_NAME:latest .
           
           docker push $IMAGE_NAME:$VERSION
           docker push $IMAGE_NAME:latest
