@@ -18,7 +18,6 @@ const Classification = (props: ClassificationProps) => {
 	const toast = useToast();
 
 	const [entireDistribution, setEntireDistribution] = useState<boolean>(false);
-	const [uploadedFileName, setUploadedFileName] = useState<string>("");
 	const [classificationRunning, setClassificationRunning] = useState<boolean>(false);
 
 	const controllerRef = useRef<AbortController | null>(null);
@@ -41,7 +40,8 @@ const Classification = (props: ClassificationProps) => {
 
 		const file = acceptedFiles[0];
 
-		setUploadedFileName(file.name.slice(0, (-".csv".length)))
+		const fileNameWithoutExt = file.name.slice(0, (-".csv".length));
+		const outputFileName = `${fileNameWithoutExt}-classified.csv`
 
 		if (file.type !== "text/csv") {
 			showToast("File must be of type '.csv'.", true);
@@ -55,7 +55,7 @@ const Classification = (props: ClassificationProps) => {
 				setClassificationRunning(true);
 
 				const uploadedNames = Object.values(result.data).map(value => value[0]);
-				classifyNames(uploadedNames);				
+				classifyNames(uploadedNames, outputFileName);				
 			},
 			error: (error: any) => {
 				showToast(`File upload failed. Error: ${error.message}`, true);
@@ -64,14 +64,14 @@ const Classification = (props: ClassificationProps) => {
 		});
 	}
 
-	const downloadPredictionCSV = (prediction: (string | number)[][]) => {
+	const downloadPredictionCSV = (prediction: (string | number)[][], outputFileName: string) => {
 		const csv = Papa.unparse(prediction);
 		const blob = new Blob([csv], { type: "text/csv" });
 		const url = URL.createObjectURL(blob);
 
 		const a = document.createElement("a");
 		a.href = url;
-		a.download = `${uploadedFileName}-classified.csv`;
+		a.download = outputFileName;
 		document.body.appendChild(a);
 		a.click();
 		document.body.removeChild(a);
@@ -79,13 +79,14 @@ const Classification = (props: ClassificationProps) => {
 		URL.revokeObjectURL(url);
 	}
 
-	const classifyNames = (uploadedNames: string[]) => {
+	const classifyNames = (uploadedNames: string[], outputFileName: string) => {
 		controllerRef.current = new AbortController();
 
-        axios.post(`${BACKEND_URL}/classify`, {
+		const classificationEndpoint = entireDistribution ? "classify-distribution" : "classify";
+
+        axios.post(`${BACKEND_URL}/${classificationEndpoint}`, {
 			modelName: props.selectedModelName,
-			names: uploadedNames,
-			getDistribution: entireDistribution
+			names: uploadedNames
 		},
 		{
 			headers: {
@@ -95,30 +96,52 @@ const Classification = (props: ClassificationProps) => {
 			signal: controllerRef.current.signal
 		},
 		).then((response: AxiosResponse) => {
+			let predictionTable;
 			if (entireDistribution) {
 				const prediction = response.data as DistributionClassificationResponseType;
-
 				const allClasses = Object.keys(Object.values(prediction)[0]);
-				let predictionTable = Object.entries(prediction).map(([name, prediction]) => [name, ...Object.values(prediction)]);
+				predictionTable = Object.entries(prediction).map(([name, prediction]) => [name, ...Object.values(prediction)]);
 				predictionTable.unshift(["name", ...allClasses]);
-				downloadPredictionCSV(predictionTable);
 			}
 			else {
 				const prediction = response.data as BasicClassificationResponseType;
-
-				let predictionTable = Object.entries(prediction).map(([name, prediction]) => [name, ...prediction]);
+				predictionTable = Object.entries(prediction).map(([name, prediction]) => [name, ...prediction]);
 				predictionTable.unshift(["name", "ethnicity", "score"]);
-				downloadPredictionCSV(predictionTable);
 			}
+
+			downloadPredictionCSV(predictionTable, outputFileName);
 			
 			showToast("Downloading result...", false, 2500);
 			setClassificationRunning(false);
 		})
 		.catch((error: AxiosError) => {
-			controllerRef.current?.signal.aborted ?
+			if (controllerRef.current?.signal.aborted) {
 				showToast("Cancelled by user.", true)
-			:
-				showToast("An unexpected error occured.", true)
+			}
+			else {
+				const responseData = error.response?.data as { errorCode: string, message: string };
+				switch (responseData.errorCode) {
+					case "RESTRICTED_ACCESS": {
+						showToast(responseData.message, true, 120000);
+						break;
+					}
+					case "PENDING_ACCESS": {
+						showToast(responseData.message, true, 120000);
+						break;
+					}
+					case "TOO_MANY_NAMES": {
+						showToast(responseData.message, true);
+						break;
+					}
+					case "QUOTA_EXCEEDED": {
+						showToast(responseData.message, true);
+						break;
+					}
+					default: {
+						showToast(`[${responseData?.errorCode}] An unexpected error occured. Please try again later.`, true);
+					}
+				}
+			}
 			
 			console.log(`Classification error:\n${error}`)	
 			setClassificationRunning(false);
@@ -147,7 +170,7 @@ const Classification = (props: ClassificationProps) => {
 					isChecked={!entireDistribution}
 					onChange={() => setEntireDistribution(false)}
 				>
-					<Text lineHeight="15px">Give me only the most likely ethnicity per name</Text>
+					<Text lineHeight="15px">Give me only the most likely ethnicity per name.</Text>
 				</Checkbox>
 				<Checkbox
 					sx={{
@@ -163,7 +186,7 @@ const Classification = (props: ClassificationProps) => {
 					isChecked={entireDistribution}
 					onChange={() => setEntireDistribution(true)}
 				>
-					<Text lineHeight="15px">Give me the entire ethnicity-likelyhood distribution per name</Text>
+					<Text lineHeight="15px">Give me the entire ethnicity-likelyhood distribution per name.</Text>
 				</Checkbox>
 			</VStack>
 			
@@ -197,7 +220,11 @@ const Classification = (props: ClassificationProps) => {
 						</Button>
 					</HStack>
 				:
-					<Dropzone onDrop={fileUploadHandler} accept={{"text/csv": [".csv"]}} maxFiles={1}>
+					<Dropzone
+						onDrop={fileUploadHandler}
+						accept={{"text/csv": [".csv"]}}
+						maxFiles={1}
+					>
 						{({getRootProps, getInputProps}) => (
 							<Box
 								{...getRootProps()}

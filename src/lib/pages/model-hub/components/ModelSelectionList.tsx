@@ -4,6 +4,8 @@ import { ModelType } from "~/types";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import RequestModelModal from "./RequestModelModal";
 import { LuLock } from "react-icons/lu";
+import Cookies from "js-cookie";
+import { acessAlertToast } from "~/lib/utils/toasts";
 
 
 const MODEL_COLORS = ["#FFA7A7", "#F8D78F", "#8AB0F5", "#91E489", "#CCA4EF", "#F396B0", "#85DCEC", "#EBEB75", "#ED94EB", "#AA8EEA"];
@@ -32,23 +34,41 @@ const ModelSelectionList = (props: ModelSelectionProps) => {
         >
             {
                 isLoggedIn ?
+                    Cookies.get("access") != "full" ?
+                        <Button
+                            variant="secondary"
+                            width="full"
+                            margin="auto"
+                            leftIcon={<LuLock />}
+                            onClick={() => acessAlertToast(toast)}
+                        >
+                            Access not yet granted.
+                        </Button>
+                    :
+                        <Button
+                            width="full"
+                            onClick={() => {
+                                props.maxModelsReached ?
+                                    toast({
+                                        title: "Maximum amount of custom models reached!",
+                                        status: "error",
+                                        duration: 5000,
+                                        isClosable: true
+                                    })
+                                : setShowRequestModal(true)
+                            }}
+                        >
+                            + request custom model
+                        </Button>
+                :
                     <Button
                         width="full"
-                        onClick={() => {
-                            props.maxModelsReached ?
-                                toast({
-                                    title: "Maximum amount of custom models reached!",
-                                    status: "error",
-                                    duration: 5000,
-                                    isClosable: true
-                                })
-                            : setShowRequestModal(true)
-                        }}
+                        variant="secondary"
+                        onClick={() => { window.location.href = "/login" }}
+                        leftIcon={<LuLock />}
                     >
-                        + request custom model
+                        Log in to request models
                     </Button>
-                :
-                    null
             }
 
             <VStack

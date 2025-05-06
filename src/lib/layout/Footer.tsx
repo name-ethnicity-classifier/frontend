@@ -1,20 +1,21 @@
-import { Flex, HStack, VStack, Image, Text, useBreakpointValue, Link, Input, Button } from "@chakra-ui/react";
+import { Flex, HStack, VStack, Image, Text, useBreakpointValue, Link, Button } from "@chakra-ui/react";
 import {
   LuShieldCheck,
   LuScroll,
   LuGithub,
   LuGift,
   LuHeart,
-  LuArrowRight,
-  LuMailOpen,
   LuMail,
+  LuCookie,
 } from "react-icons/lu";
 
 interface FooterLinkChild {
   name: string;
-  link: string;
+  link?: string;
   icon?: any;
-  isExternal: boolean;
+  isExternal?: boolean;
+  onClick?: () => void;
+  opensCookieManager?: boolean;
 }
 
 interface FooterColumnProps {
@@ -43,7 +44,10 @@ const FooterColumn = (props: FooterColumnProps) => {
             _hover={{ underline: "none" }}
             isExternal={linkChild.isExternal}
           >
-            <HStack>
+            <HStack
+              onClick={linkChild.onClick}
+              data-cc={linkChild.opensCookieManager ? "show-consentModal" : undefined}
+            >
               {linkChild.icon}
               <Text fontSize="xs" color="white" fontWeight="normal">
                 {linkChild.name}
@@ -152,6 +156,11 @@ const Footer = () => {
                 link: "/terms-of-service",
                 icon: <LuScroll color="white" />,
                 isExternal: false,
+              },
+              {
+                name: "Cookie Management",
+                icon: <LuCookie color="white" />,
+                opensCookieManager: true
               },
             ]}
           />

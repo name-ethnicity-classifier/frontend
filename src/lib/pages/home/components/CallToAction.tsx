@@ -1,5 +1,7 @@
-import { Flex, Box, Text, VStack, Spacer, Image, Button, useBreakpointValue } from "@chakra-ui/react";
-import { LuArrowRight } from "react-icons/lu";
+import { Flex, Box, Text, VStack, Spacer, Image, Button, useBreakpointValue, HStack } from "@chakra-ui/react";
+import { BiSolidMegaphone } from "react-icons/bi";
+import { LuArrowRight, LuMegaphone } from "react-icons/lu";
+import Pill from "~/lib/components/Pill";
 
 
 const CallToAction = () => {
@@ -25,19 +27,27 @@ const CallToAction = () => {
           justifyContent="center"
           paddingY="auto"
         >
+          <Pill
+            colorPalette="turquoise"
+            keepCasing={true}
+            icon={<BiSolidMegaphone color="var(--chakra-colors-primaryTurquoise-100)"/>}
+            text={"name-to-ethnicity 2.0"}
+          />
+
           <Text
             fontSize={{ base: "22px", sm: "27px", md: "35px", xl: "45px" }}
             fontWeight="bold"
             color="textDark"
             whiteSpace="pre-wrap"
+            lineHeight={1.2}
           >
-            {"Classify Names into\ntheir Ethnicities"}
+            {"Classify names into their most likely ethnic origins"}
           </Text>
           
           <Text
             fontSize={{ base: "xs", md: "sm" }}
           >
-            The non-profit N2E helps you uncover ethnic imbalances among your research, patients, clients, customers, and whatever other people you care for!
+            This non-profit onomastics tool helps you uncover ethnic disparities and better understand the diversity within your research data.
           </Text>
 
           <Flex
@@ -75,7 +85,7 @@ const CallToAction = () => {
           
         </VStack>
 
-        <Spacer flex={{ base: "0.0", sm: "0.5", md: "1", "2xl": "2" }} />
+        <Spacer flex={{ base: "0.0", sm: "0.5", md: "0.5", "2xl": "2" }} />
         
         { 
           !changeLayout ?

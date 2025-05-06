@@ -1,7 +1,5 @@
-import { Box, Button, Checkbox, VStack, FormControl, useDisclosure, IconButton, InputGroup, InputRightElement, Heading, HStack, Input, Link as Link, Stack, Text, Image, Flex, useToast, FormErrorMessage } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
-import axios, { AxiosResponse, AxiosError } from "axios";
+import { Box, Button, Checkbox, VStack, Heading, HStack, Input, Link as Link, Stack, Text, Image, Flex, useToast, FormErrorMessage } from "@chakra-ui/react";
+import { useState } from "react";
 import { LuLogIn, LuUserPlus } from "react-icons/lu";
 import LoginContainer from "./components/LoginContainer";
 import SignupContainer from "./components/SignupContainer";
@@ -9,6 +7,7 @@ import SignupContainer from "./components/SignupContainer";
 
 const Login = () => {
     const [isSignup, setIsSignup] = useState<boolean>(false);
+    const [showLoginVerificationMessage, setShowLoginVerificationMessage] = useState<boolean>(false);
 
 	return (
         <Flex
@@ -71,11 +70,12 @@ const Login = () => {
                                 
                         {
                             isSignup ?
-                                <SignupContainer />
+                                <SignupContainer onSuccessfulSignup={() => {
+                                    setIsSignup(false)
+                                }}/>
                             :
                                 <LoginContainer />
                         }
-                        
                         
                     </VStack>
                 </VStack>

@@ -160,7 +160,7 @@ const PrivacyPolicy = () => {
         <ListItem>
           <Text>- 
             <b>Service Notifications:</b> Emails from
-            necweb.noreply@gmail.com for important service-related notifications,
+            noreply[@]name-to-ethnicity.com for important service-related notifications,
             including account verification, security updates, and essential
             information about your account.
           </Text>
@@ -168,7 +168,7 @@ const PrivacyPolicy = () => {
         <ListItem>
           <Text>- 
             <b>Surveys and Feedback:</b> Occasional emails from
-            theodorpeifer[@]gmail.com for the purpose of surveys, user feedback, and
+            theodorpeifer[@]gmail.com or info[@]name-to-ethnicity.com for the purpose of surveys, user feedback, and
             improvements to enhance your experience with our services.
           </Text>
         </ListItem>
@@ -211,7 +211,7 @@ const PrivacyPolicy = () => {
         Use of Cookies
       </Heading>
       <Text>
-        We use “cookies” for authentication purposes only. A cookie is a small piece of data that our website stores on your computer, and accesses each time you visit in order to log you into your account. 
+        We use “cookies” for authentication and alanytics purposes only. A cookie is a small piece of data that our website stores on your computer, and accesses each time you visit. 
       </Text>
       <Text>
         List of Cookies in use:
@@ -219,7 +219,7 @@ const PrivacyPolicy = () => {
       <List spacing={2} mt={2}>
         <ListItem><Text>- <b>email</b>: This cookie stores your email to facilitate requests and secure account access.</Text></ListItem>
         <ListItem><Text>- <b>token</b>: This cookie holds an authorization token, functioning as a secure key for authorized account access.</Text></ListItem>
-        <ListItem><Text>- <b>cookie-consent</b>: This cookie is set if the user accepted to the cookies.</Text></ListItem>
+        <ListItem><Text>- <b>cc_cookie</b>: This cookie stores the users cookie preferences.</Text></ListItem>
       </List>
 
       <Heading size="sm" mt={6} mb={2}>

@@ -17,7 +17,6 @@ import {
   Button,
   HStack,
   VStack,
-  IconButton,
   Table,
   Thead,
   Tbody,
@@ -35,11 +34,17 @@ import {
 import Cookies from "js-cookie";
 import DeleteModal from "./DeleteModal";
 import { useAuth } from "../contexts/AuthContext";
+import { useState } from "react";
+import EthicalGuidelineModal from "~/lib/components/EthicalGuidelinesModal";
+import { deleteAccount, updateUsageDescription } from "../utils/serverRequests";
+import { ConfirmationType } from "./DeleteModal";
+
 
 interface SettingValueType {
   text: string;
   type: "text" | "hidden" | "link";
   link?: string;
+  onclick?: () => void
 }
 
 const SettingsCardTable = (props: {
@@ -94,6 +99,7 @@ const SettingsCardTable = (props: {
                   overflow="hidden"
                   textOverflow="ellipsis"
                   whiteSpace="nowrap"
+                  onClick={value.onclick}
                 >
                   {value.text}
                 </Text>
@@ -116,6 +122,7 @@ const SettingsCardTable = (props: {
               ) : value.type === "link" ? (
                 <Link
                   href={value.link}
+                  onClick={value.onclick}
                   isExternal
                   _hover={{
                     underline: "none",
@@ -148,27 +155,45 @@ interface SettingsDrawerProps {
 
 const SettingsDrawer = (props: SettingsDrawerProps) => {
   const { logOut } = useAuth();
-
-  const name = "theodor peifer";
-  const role = "student";
-  const email = "teddypeifer@gmail.com";
+  const toast = useToast();
 
   const maintainerName = "Theodor Peifer";
   const maintainerEmail = "theodorpeifer[at]gmail.com";
   const maintainerGitHub = "https://github.com/theopfr";
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState<boolean>(false);
 
-  const handleDeleteConfirm = () => {
-    logOut();
-    toast({
-      title: "Account deleted.",
-      description: "Your account has been successfully deleted.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
+  const [ethicalGuidelinesModalOpen, setEthicalGuidelinesModalOpen] = useState<boolean>(false);
+  const [ethicalGuidelinesInteractive, setEthicalGuidelinesInteractive] = useState<boolean>(false);
+
+  const handleDeleteConfirm = (password: string) => {
+    setIsDeletingAccount(true);
+    deleteAccount(password, () => {
+        toast({
+          title: "Account deleted.",
+          description: "Your account has been successfully deleted.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+
+        setTimeout(() => {
+          setIsDeleteModalOpen(false);
+          logOut();
+        }, 2000);
+      },
+      () => {
+        toast({
+          title: "Failed to delete account.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        setIsDeletingAccount(false);
+        setIsDeleteModalOpen(false);
+      }
+    );
   };
 
   return (
@@ -213,6 +238,10 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 rows={{
                   Email: { text: Cookies.get("email"), type: "text" },
                   "API key": { text: Cookies.get("token"), type: "hidden" },
+                  "Usage description": { text: "update", type: "link", onclick: () => {
+                    setEthicalGuidelinesInteractive(true);
+                    setEthicalGuidelinesModalOpen(true);
+                  }},
                 }}
               />
 
@@ -237,7 +266,7 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                   leftIcon={
                     <LuUserX color="var(--chakra-colors-primaryRed-100" />
                   }
-                  onClick={() => onOpen()}
+                  onClick={() => setIsDeleteModalOpen(true)}
                 >
                   Delete account
                 </Button>
@@ -261,6 +290,10 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
                 rows={{
                   "Terms of Services": { text: "read", type: "link", link: "/terms-of-service" },
                   "Privacy Policy": { text: "read", type: "link", link: "/privacy-policy" },
+                  "Ethical Guidelines": { text: "read", type: "link", onclick: () => {
+                    setEthicalGuidelinesInteractive(false);
+                    setEthicalGuidelinesModalOpen(true);
+                  }},
                 }}
               />
             </VStack>
@@ -294,15 +327,38 @@ const SettingsDrawer = (props: SettingsDrawerProps) => {
         </DrawerBody>
       </DrawerContent>
 
-      {isOpen && (
+      {isDeleteModalOpen && (
         <DeleteModal
-          deleteEntitiyName="account"
+          deleteEntityName="account"
           deleteText="Are you sure you want to delete your account? This action cannot be undone."
-          onDeleteConfirm={handleDeleteConfirm}
-          isOpen={isOpen}
-          onClose={onClose}
+          onDeleteConfirm={(password?: string) => handleDeleteConfirm(password || "")}
+          confirmationType={ConfirmationType.PASSWORD}
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          isLoading={isDeletingAccount}
         />
       )}
+
+      <EthicalGuidelineModal
+        isOpen={ethicalGuidelinesModalOpen}
+        includeInteractiveStages={ethicalGuidelinesInteractive}
+        submitText={"Update"}
+        onComplete={(usageDescription: string | undefined) => {
+          if (usageDescription) {
+            updateUsageDescription(usageDescription, () => {
+              toast({
+                title: "Usage description updated.",
+                description: "We will review your provided description and then grant you access to our models. Please be patient and check in again later!",
+                status: "success",
+                duration: 10000,
+                isClosable: true,
+              });
+            });
+          }
+          setEthicalGuidelinesModalOpen(false);
+        }}
+        onClose={() => setEthicalGuidelinesModalOpen(false)}
+      />
     </Drawer>
   );
 };

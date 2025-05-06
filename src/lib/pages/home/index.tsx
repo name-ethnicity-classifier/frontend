@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, GridItem, HStack, Heading, Link, Text, VStack, Image, Box } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Heading, Link, Text, VStack, Image, HStack, Button, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import HowToSection from "./components/HowToSection";
 import LinkCard from "./components/LinkCard";
@@ -8,9 +8,10 @@ import { useAuth } from "~/lib/contexts/AuthContext";
 import { fetchModels, fetchDefaultModels } from "~/lib/utils/serverRequests";
 import { ModelType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
-import { HiHeart } from "react-icons/hi";
-import { BiSolidDonateHeart } from "react-icons/bi";
-import SupportWidget from "../model-hub/components/SupportWidget";
+import SupportWidget from "./components/SupportWidget";
+import EthicalGuidelineModal from "~/lib/components/EthicalGuidelinesModal";
+import InfoBanner from "./components/InfoBanner";
+
 
 const Home = () => {
 	const { isLoggedIn } = useAuth();
@@ -21,6 +22,8 @@ const Home = () => {
   const [nationalityData, setNationalityData] = useState<Record<string, number> | null>(null);
   const [nationalityAmount, setNationalityAmount] = useState<number>(0);
   const [nameAmount, setNameAmount] = useState<number>(0);
+
+	const [ethicalGuidelinesModalOpen, setEthicalGuidelinesModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -159,8 +162,24 @@ const Home = () => {
             linkText="github.com"
           />
         </GridItem>
-
       </Grid>
+
+      <InfoBanner
+        title="Ethical disclaimer"
+        description="The ethnic origin of an individual cannot be reliably inferred from just their name, but only when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities. We require users to provide a description of how they are using our service to ensure ethical compliance."
+        iconUrl="/assets/ethics-illustration.png"
+        onClick={() => setEthicalGuidelinesModalOpen(true)}
+        buttonDescription="See ethical guidelines"
+      />
+
+      <EthicalGuidelineModal
+        isOpen={ethicalGuidelinesModalOpen}
+        includeInteractiveStages={false}
+        onComplete={() => {
+          setEthicalGuidelinesModalOpen(false);
+        }}
+        onClose={() => setEthicalGuidelinesModalOpen(false)}
+      />
 
       <VStack
         borderTopWidth="1px"
@@ -215,22 +234,26 @@ const Home = () => {
               description="BSc. Student in Computer Science and Design, Munich University of Applied Sciences"
               linkedInLink="https://www.linkedin.com/in/theodor-peifer-ab6b77190/"
               githubLink="https://github.com/theopfr"
-              imageURL="/assets/team-member-2.png"
+              imageURL="/assets/member-t.svg"
             />
             <TeamMemberCard
               name="Lena Hafner"
               description="Phd. Candidate in Politics and International Studies, University of Cambridge"
-              linkedInLink="https://www.linkedin.com/in/theodor-peifer-ab6b77190/"
-              imageURL="/assets/team-member-2.png"
+              linkedInLink="https://www.linkedin.com/in/lena-folonica-hafner/"
+              imageURL="/assets/member-l.svg"
             />
             <TeamMemberCard
               name="Franziska Hafner"
-              description="MSc, Student in Social Data Science, University of Oxford"
-              linkedInLink="https://www.linkedin.com/in/theodor-peifer-ab6b77190/"
-              imageURL="/assets/team-member-2.png"
+              description="MSc. Student in Social Data Science, University of Oxford"
+              linkedInLink="https://www.linkedin.com/in/franziska-hafner/"
+              imageURL="/assets/member-f.svg"
             />
-          </Flex>          
+          </Flex>
+          
+          <SupportWidget />
+   
         </VStack>
+
       </VStack>
 
       <VStack
@@ -250,10 +273,6 @@ const Home = () => {
 
         <HowToSection />
       </VStack>
- 
-      <Box paddingTop={sectionGap}>
-        <SupportWidget />
-      </Box>
       
     </Flex>
   );

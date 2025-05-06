@@ -17,7 +17,7 @@ import {
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
 import { fetchDefaultModels, fetchModels } from "~/lib/utils/serverRequests";
-import DeleteModal from "~/lib/components/DeleteModal";
+import DeleteModal, { ConfirmationType } from "~/lib/components/DeleteModal";
 import ModelDetails from "./components/ModelDetails";
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
@@ -40,9 +40,11 @@ const ModelHub = () => {
 
 	const [selectedModel, setSelectedModel] = useState<ModelType | null>(null);
 	const [models, setModels] = useState<ModelType[]>([]);
+	const [modelsEmpty, setModelsEmpty] = useState<boolean>(false);
 	const [maxModelsReached, setMaxModelsReached] = useState<boolean>(false);
 	const [showNationalityList, setShowNationalityList] = useState<boolean>(false);
 	const [classScoreRecords, setClassScoreRecords] = useState<Record<string, number | string>>({});
+	const [isDeletingModel, setIsDeletingModel] = useState<boolean>(false);
 
 	const MAX_CUSTOM_MODELS = 3;
 
@@ -92,6 +94,11 @@ const ModelHub = () => {
 		// Load all models and select the inital one based on the "model" query parameter
 		setModels(allModels);
 
+		if (allModels.length == 0) {
+			setModelsEmpty(true);
+			return;
+		};
+
 		let initiallySelectedModel = allModels[0];
 		const queriedModelName = queryParams.get("model");
 		
@@ -120,7 +127,10 @@ const ModelHub = () => {
 		});
 	}
 
-	if (models.length == 0) {
+	if (modelsEmpty) {
+		return <Box height="100vh"><Text>No models found :/ Please come back later!</Text></Box>
+	}
+	else if (models.length == 0) {
 		return <Box height="100vh"><Text>Loading...</Text></Box>
 	}
 
@@ -297,15 +307,19 @@ const ModelHub = () => {
 			</VStack>
 
 			<DeleteModal
-				deleteEntitiyName="model"
+				deleteEntityName="model"
 				deleteText={`Are you sure you want to delete the model '${selectedModel?.name}'? This action cannot be undone.`}
+				confirmationType={ConfirmationType.DELETE_PHRASE_MATCH}
+				isLoading={isDeletingModel}
 				onDeleteConfirm={() => {
 					if (!selectedModel) {
 						return;
 					}
+					setIsDeletingModel(true);
 					deleteModel(
 						selectedModel.name,
 						() => {
+							setIsDeletingModel(false);
 							onClose();
 							toast({
 								title: `Successfully deleted the model ${selectedModel.name}.`,
@@ -320,6 +334,7 @@ const ModelHub = () => {
 							selectModel(models[0]);
 						},
 						(errorCode: string) => {
+							setIsDeletingModel(false);
 							toast({
 								title: "Failed to delete model.",
 								description: errorCode,

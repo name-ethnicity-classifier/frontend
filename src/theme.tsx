@@ -61,7 +61,7 @@ export const theme = extendTheme({
     },
     secondaryTurquoise: {
       100: "#abf5dc",
-      200: "#"
+      200: "#8ff2d1"
     },
     textDark: "#3C406F",
     textLight: "#737695",
@@ -75,18 +75,6 @@ export const theme = extendTheme({
     xl: '80em', 
     '2xl': '96em',
   },
-  /* space: {
-    px: "1px",
-    "0": "0px",
-    "5": "5px",
-    "2": "10px",
-    "3": "15px",
-    "3": "20px",
-    "4": "25px",
-    "8": "50px",
-    "9": "75px",
-    "10": "100px"
-  }, */
   components: {
     Text: {
       baseStyle: {
@@ -180,6 +168,20 @@ export const theme = extendTheme({
           _disabled: {
             _hover: {
               bg: "secondaryRed.100 !important",
+            },
+          },
+        },
+        success: {
+          bg: "secondaryTurquoise.100",
+          color: "primaryTurquoise.100",
+          fontSize: "xs",
+          borderRadius: "7px",
+          _hover: {
+            bg: "secondaryTurquoise.200"
+          },
+          _disabled: {
+            _hover: {
+              bg: "secondaryTurquoise.100 !important",
             },
           },
         },

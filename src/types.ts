@@ -1,17 +1,9 @@
 
 
 export interface ModelsResponseType {
-	data: {
-		customModels: ModelType[],
-		defaultModels: ModelType[]
-	}
+	customModels: ModelType[],
+	defaultModels: ModelType[]
 }
-
-
-export interface DefaultModelsResponseType {
-	data: ModelType[]
-}
-
 
 
 export interface ModelType {
@@ -35,4 +27,17 @@ export interface BasicClassificationResponseType {
 
 export interface DistributionClassificationResponseType {
 	[key: string]: Record<string, number>
+}
+
+
+export enum AccessLevel {
+	ADMIN = "admin",
+	FULL = "full",
+	PENDING = "pending",
+	RESTRICTED = "restricted"
+}
+
+export interface AccessCheckRespnseType {
+	accessLevel: string,
+	accessLevelReason: string
 }

@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, VStack, FormControl, useDisclosure, IconButton, InputGroup, InputRightElement, Heading, HStack, Input, Link as Link, Stack, Text, Image, Flex, useToast, FormErrorMessage } from "@chakra-ui/react";
+import { Button, Checkbox, VStack, FormControl, HStack, Input, Link as Link, Stack, Text, Image, Flex, useToast, FormErrorMessage } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios, { AxiosResponse, AxiosError } from "axios";
@@ -29,10 +29,10 @@ const FieldErrorMessage = (props: { message: string }) => {
 }
 
 
-
 const LoginContainer = () => {
 	const { logIn } = useAuth();
-	
+	const toast = useToast();
+
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -45,8 +45,6 @@ const LoginContainer = () => {
 			password: { failed: false, message: "" }
 		}
 	);
-
-	const toast = useToast();
 
 	useEffect(() => {
 		if (validationError.server.failed) {
@@ -61,7 +59,6 @@ const LoginContainer = () => {
 	}, [validationError, toast]);
 
     const sendLoginData = () => {
-		// Check for empty input fields
 		if (email.length === 0 || password.length === 0) {
 			if (email.length === 0) {
 				setValidationError((prevErrors) => ({
@@ -87,7 +84,7 @@ const LoginContainer = () => {
 					sameSite: "Strict" as "Strict" | "Lax" | "None",
 					secure: true,
 				};
-				Cookies.set("token", response.data.data["accessToken"], cookieOptions);
+				Cookies.set("token", response.data["accessToken"], cookieOptions);
 				Cookies.set("email", email, cookieOptions);
 				logIn();
 
@@ -142,6 +139,15 @@ const LoginContainer = () => {
 								message: `[${responseData?.errorCode}] We are sorry for the inconvenience. Please try again later.`
 							}
 						}));
+						break;
+					}
+					case "VERIFICATION_ERROR": {
+						toast({
+							title: "Email not verfied.",
+							description: "We've sent you another verification email. Check your inbox!",
+							status: "warning",
+							isClosable: true,
+						});
 						break;
 					}
 				}
@@ -208,10 +214,10 @@ const LoginContainer = () => {
                 <Checkbox
                     sx={{
 						".chakra-checkbox__control": {
-								borderWidth: "0px",
-								borderColor: "primaryBlue.200",
-								borderRadius: "3px",
-								bg: "secondaryBlue.100"
+							borderWidth: "0px",
+							borderColor: "primaryBlue.200",
+							borderRadius: "3px",
+							bg: "secondaryBlue.100"
 						}
 					}}
                     size="sm"

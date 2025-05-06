@@ -27,16 +27,21 @@ interface NavigationButtonProps {
   text: string;
   iconName: string;
   page: string;
+  isExternal: boolean;
   targetId?: string;
 }
 
 const NavigationButton = (props: NavigationButtonProps) => {
   const navigate = useNavigate();
-  // const goToPage = () => navigate(props.page);
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const handleNavigation = () => {
+    if (props.isExternal) {
+      window.open(props.page, "_blank");
+      return;
+    }
+    
     navigate(props.page);
 
     if (props.targetId) {
@@ -109,14 +114,21 @@ const Header = (props: HeaderProps) => {
         text="About"
         iconName="about"
         page="/"
+        isExternal={false}
         targetId="about-section"
       />
       <NavigationButton
         text="Model Hub"
         iconName="model-hub"
         page="/model-hub"
+        isExternal={false}
       />
-      <NavigationButton text="API" iconName="api" page="/api" />
+      <NavigationButton
+        text="API"
+        iconName="api"
+        page={window.env.API_DOC_URL}
+        isExternal={true}
+      />
     </>
   );
 

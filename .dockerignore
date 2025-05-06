@@ -1,0 +1,10 @@
+.gitignore
+.github/
+.vscode/
+.eslintrc.cjs
+commitlint.config.cjs
+LICENSE
+README.md
+node_modules/
+.prettierrc
+.example.env

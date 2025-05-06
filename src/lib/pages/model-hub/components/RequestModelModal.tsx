@@ -7,6 +7,7 @@ import { EmailIcon } from "@chakra-ui/icons";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import Cookies from "js-cookie";
+import SectionTitle from "~/lib/components/SectionTitle";
 
 
 interface ValidationError {
@@ -24,30 +25,6 @@ const FieldErrorMessage = (props: { message: string }) => {
 	);
 }
 
-
-const SectionTitle = (props: { title: string, icon: ReactElement }) => {
-	return (
-		<HStack
-			width="full"
-			bg="secondaryBlue.100"
-			boxShadow="sm"
-			borderRadius="7"
-			paddingX="5"
-			paddingY="10px"
-			gap="4"
-		>
-			{props.icon}
-			<Text
-				width="full"
-				fontWeight="bold"
-				color="primaryBlue.100"
-				fontSize={{ base: "2xs", sm: "xs"}}
-			>
-				{props.title}
-			</Text>
-		</HStack>
-	);
-}
 
 interface RequestModelModalProps {
 	isOpen: boolean,
@@ -82,6 +59,16 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 			});
 		});
 	}, []);
+
+	const showToast = (message: string, failed: boolean = false, duration: number = 5000) => {
+		toast({
+			title: `Model request ${failed ? "failed" : "successful"}.`,
+			description: message,
+			status: failed ? "error" : "success",
+			duration: duration,
+			isClosable: true,
+		});
+	}
 
 	const getNameAmountByKey = (key: string): number => {
 		if (!nationalityData) return 0;
@@ -155,13 +142,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 					
 					setRequestSuccessful(true);
 
-					toast({
-						title: "Successfully created model.",
-						status: "success",
-						duration: 3000,
-						isClosable: false,
-					});
-
+					showToast("Your model was created successfully and is now queued for being trained.", false, 3000);
 					setTimeout(() => {
 						window.location.reload();
 					}, 2000);
@@ -175,7 +156,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 					return;
 				}
 
-				const responseData = (error as AxiosError).response?.data as { errorCode?: string };
+				const responseData = error.response?.data as { errorCode: string, message: string };
 				switch (responseData?.errorCode) {
 					case "MODEL_NAME_EXISTS": {
 						setValidationError((prevErrors) => ({
@@ -204,6 +185,17 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 							modelName: { failed: true, message: "Model description too long." },
 						}));
 						break;
+					}
+					case "RESTRICTED_ACCESS": {
+						showToast(responseData?.message, true, 120000);
+						break;
+					}
+					case "PENDING_ACCESS": {
+						showToast(responseData?.message, true, 120000);
+						break;
+					}
+					default: {
+						showToast(`[${responseData?.errorCode}] An unexpected error occured. Please try again later.`, true);
 					}
 				}
 			})
@@ -309,8 +301,8 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 									icon={<LuPencil color="var(--chakra-colors-primaryBlue-100"/>}
 								/>
 								
-								<Text>
-									Use-Cases of ethnicity classification require ethical attention. We would be happy to know what you are aiming to use your model for. &#40;voluntary&#41;
+								<Text width="full">
+									Description of this model and it's usecase &#40;voluntary&#41;.
 								</Text>
 
 								<FormControl
@@ -329,6 +321,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 											}));
 										}}
 										width="full"
+										height="full"
 										flex="1"
 									/>
 									{

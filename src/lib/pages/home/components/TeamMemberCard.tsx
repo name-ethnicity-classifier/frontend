@@ -52,7 +52,7 @@ const TeamMemberCard = (props: TeamMemberCardProps) => {
       align="flex-start"
     >   
         <Box
-            flex={{base: "2", sm: "1", lg: "3" }}
+            flex={{base: "2", sm: "1", lg: "1.5" }}
         >
             <Image
                 src={props.imageURL}

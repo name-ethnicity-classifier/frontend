@@ -9,6 +9,7 @@ interface BadgeProps {
     text: string,
     icon?: any,
     interactive?: boolean,
+    keepCasing?: boolean;
     colorPalette?: "blue" | "orange" | "red" | "turquoise"
 }
 
@@ -39,11 +40,13 @@ const Pill = (props: BadgeProps) => {
             bg={color.background}
             paddingX="2"
             paddingY="0px"
+            paddingBottom={props.keepCasing ? "1px" : "0px"}
             gap="1"
             _hover={{
                 bg: props.interactive ? color.backgroundHover : color.background,
                 cursor: props.interactive ? "pointer" : "default"
             }}
+            width={"fit-content"}
         >
             {props.icon}
 
@@ -52,7 +55,7 @@ const Pill = (props: BadgeProps) => {
                 fontWeight="bold"
                 color={color.text}
             >
-                {props.text.toUpperCase()}
+                {props.keepCasing ? props.text : props.text.toUpperCase()}
             </Text>
             
         </HStack>

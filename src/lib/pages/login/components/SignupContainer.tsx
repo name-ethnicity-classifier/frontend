@@ -1,9 +1,11 @@
-import { Box, Button, Checkbox, VStack, FormControl, Select, IconButton, InputGroup, InputRightElement, Heading, HStack, Input, Link as Link, Stack, Text, Image, Flex, useToast, FormErrorMessage } from "@chakra-ui/react";
+import { Box, Button, Checkbox, VStack, FormControl, Select, IconButton, HStack, Input, Link as Link, Stack, Text, Image, Flex, useToast, FormErrorMessage } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { CheckCircleIcon } from "@chakra-ui/icons";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { BACKEND_URL } from "~/lib/utils/serverRequests";
-
+import { FaBookOpen } from "react-icons/fa";
 import PasswordField from "./PasswordField";
+import EthicalGuidelineModal from "~/lib/components/EthicalGuidelinesModal";
 
 
 
@@ -12,20 +14,20 @@ interface SignupRequest {
 	email: string,
 	role: string,
 	password: string,
-	consented: boolean
+	consented: boolean,
+	usageDescription: string
 }
 
 
 interface ValidationError {
 	server: { failed: boolean, message: string },
 	name: { failed: boolean, message: string },
-    role: { failed: boolean, message: string },
 	email: { failed: boolean, message: string },
 	password: { failed: boolean, message: string },
 	confirmedPassword: { failed: boolean, message: string },
-	consented: { failed: boolean, message: string }
+	consented: { failed: boolean, message: string },
+	ethicalOnboarding: { failed: boolean, message: string }
 }
-
 
 
 const FieldErrorMessage = (props: { message: string }) => {
@@ -38,7 +40,8 @@ const FieldErrorMessage = (props: { message: string }) => {
 
 
 
-const SignupContainer = () => {
+const SignupContainer = (props: {onSuccessfulSignup: () => void}) => {
+	const toast = useToast();
 
 	const [name, setName] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
@@ -46,24 +49,23 @@ const SignupContainer = () => {
 	const [password, setPassword] = useState<string>("");
 	const [confirmedPassword, setConfirmedPassword] = useState<string>("");
 	const [consented, setConsented] = useState<boolean>(false);
-
-	const [signupSuccessful, setSignupSuccessful] = useState<boolean>(false);
-
+	const [ethicalOnboardingModalOpen, setEthicalOnboardingModalOpen] = useState<boolean>(false);
+	const [ethicalOnboardingFinished, setEthicalOnboardingFinished] = useState<boolean>(false);
+	const [usageDescription, setUsageDescription] = useState<string>("");
+	const [signupInProgress, setSignupInProgress] = useState<boolean>(false);
 	const [validationError, setValidationError] = useState<ValidationError>(
 		{
 			server: { failed: false, message: "" },
 			name: { failed: false, message: "" },
-            role: { failed: false, message: "" },
 			email: { failed: false, message: "" },
 			password: { failed: false, message: "" },
 			confirmedPassword: { failed: false, message: "" },
-			consented: { failed: false, message: "" }
+			consented: { failed: false, message: "" },
+			ethicalOnboarding: { failed: false, message: "" }
 		}
 	);
 
-    const roles = ["Researcher", "Student", "Data Scientist", "Sociologist", "HR", "Educator", "Journalist", "Developer", "else"]
-
-	const toast = useToast();
+    const roles = ["Researcher", "Student", "Data Scientist", "Sociologist", "Educator", "Journalist", "Developer", "else"]
 
 	useEffect(() => {
 		if (validationError.server.failed) {
@@ -111,7 +113,6 @@ const SignupContainer = () => {
 					confirmedPassword: { failed: true, message: "Please confirm password." }
 				}));
 			}
-			// Check password confirmation
 			if (confirmedPassword !== password) {
 				setValidationError((prevErrors) => ({
 					...prevErrors,
@@ -121,42 +122,45 @@ const SignupContainer = () => {
 
 			return;
 		}
+
+		setSignupInProgress(true);
 		
         let requestBody: SignupRequest = {
 			name: name,
             email: email,
 			role: role,
 			password: password,
-			consented: consented
+			consented: consented,
+			usageDescription: usageDescription
         };
         axios.post(`${BACKEND_URL}/signup`, requestBody)
-            .then((response: AxiosResponse) => {
+            .then((_response: AxiosResponse) => {
 				// Reset all error states
 				setValidationError({
 					server: { failed: false, message: "" },
 					name: { failed: false, message: "" },
 					email: { failed: false, message: "" },
-                    role: { failed: false, message: "" },
 					password: { failed: false, message: "" },
 					confirmedPassword: { failed: false, message: "" },
-					consented: { failed: false, message: "" }
+					consented: { failed: false, message: "" },
+					ethicalOnboarding: { failed: false, message: "" }
 				});
 				
-				setSignupSuccessful(true);
-
 				toast({
-					title: "Sign up successful.",
-					description: "You will be redirected shortly.",
+					title: "Success! Please verify your account.",
+					description: "We have sent you an email to activate your account.",
 					status: "success",
-					duration: 2000,
+					duration: 60000,
 					isClosable: false,
 				});
 
 				setTimeout(() => {
-					window.location.href = "/login"
+					props.onSuccessfulSignup();
 				}, 2000);
             })
             .catch((error: AxiosError) => {
+				setSignupInProgress(false);
+
 				if (error.code === "ERR_NETWORK") {
 					setValidationError((prevErrors) => ({
 						...prevErrors,
@@ -189,7 +193,6 @@ const SignupContainer = () => {
 						break;
 					}
 					case "INVALID_ROLE": {
-						alert("WTF")
 						break;
 					}
 					case "PASSWORD_TOO_LONG": {
@@ -213,6 +216,13 @@ const SignupContainer = () => {
 						}));
 						break;
 					}
+					case "INVALID_USAGE_DESCRIPTION": {
+						setValidationError((prevErrors) => ({
+							...prevErrors,
+							ethicalOnboarding: { failed: true, message: "Please provide a reason why you need access to this tool." },
+						}));
+						break;
+					}
 					default: {
 						setValidationError((prevErrors) => ({
 							...prevErrors,
@@ -227,7 +237,6 @@ const SignupContainer = () => {
     }
 
 	return (
-        
         <VStack gap="5">
             <VStack width="300px">
 
@@ -240,7 +249,7 @@ const SignupContainer = () => {
 						<Input
 							id="name"
 							type="text"
-							placeholder="Name"
+							placeholder="Full name"
 							onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 								setName(e.target.value);
 							}}
@@ -253,16 +262,8 @@ const SignupContainer = () => {
 
 						<Select
 							placeholder="Select role"
-							onFocus={() => {
-								setValidationError((prevErrors) => ({
-									...prevErrors, role: { failed: false, message: "" }
-								}));
-							}}
 							onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 								setRole(e.target.value);
-								setValidationError((prevErrors) => ({
-									...prevErrors, role: { failed: false, message: "" }
-								}));
 							}}
 						>
 							{
@@ -282,8 +283,6 @@ const SignupContainer = () => {
                     }
 
 				</FormControl>
-	
-					
 
                 <FormControl
                     isInvalid={validationError.email.failed}
@@ -375,18 +374,65 @@ const SignupContainer = () => {
                 >
                     <Text
 						color={validationError.consented.failed ? "primaryRed.100" : "textLight"}
-					>Accept terms of service</Text>
+					>
+						I read and accept the <Link href="/terms-of-service" target="_blank">terms of service</Link>.
+					</Text>
                 </Checkbox>
             </HStack>
-            
-            <Button
-                width="full"
-                onClick={sendSignupData}
-				isLoading={signupSuccessful}
-            >
-                Sign up
-            </Button>
-            
+
+
+			<VStack width="full" gap="4">
+
+				<Button
+					width="full"
+					variant={
+						validationError.ethicalOnboarding.failed ? "cautious" :
+						ethicalOnboardingFinished ? "success" :
+						"secondary"
+					}
+					onFocus={() => {
+						setValidationError((prevErrors) => ({
+                            ...prevErrors, ethicalOnboarding: { failed: false, message: "" }
+                        }))
+					}}
+					onClick={() => setEthicalOnboardingModalOpen(true)}
+					leftIcon={
+						ethicalOnboardingFinished ?
+							<CheckCircleIcon color="primaryTurquoise.100"/>
+						:
+							<FaBookOpen
+								color={`var(--chakra-colors-primary${validationError.ethicalOnboarding.failed ? "Red" : "Blue"}-100)`}
+							/>
+					}
+				>
+					{
+						ethicalOnboardingFinished ? "Ethical onboarding completed!" : "Complete ethical onboarding"
+					}
+				</Button>
+				
+				<Button
+					width="full"
+					onClick={() => sendSignupData()}
+					isLoading={signupInProgress}
+				>
+					Sign up
+				</Button>
+            </VStack>
+
+			<EthicalGuidelineModal
+				isOpen={ethicalOnboardingModalOpen}
+				includeInteractiveStages={true}
+				usageDescription={usageDescription}
+				onComplete={description => {
+					setEthicalOnboardingModalOpen(false);
+					setEthicalOnboardingFinished(true);
+					setUsageDescription(description || "empty usage description");
+					setValidationError((prevErrors) => ({
+						...prevErrors, ethicalOnboarding: { failed: false, message: "" }
+					}));
+				}}
+				onClose={() => setEthicalOnboardingModalOpen(false)}
+			/>
         </VStack>
 	);
 }

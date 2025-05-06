@@ -3,9 +3,13 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
 import Classification from "./Classification";
 import ClassScoresChart from "./ClassScoresChart";
+import Cookies from "js-cookie";
+import { useToast } from "@chakra-ui/react";
 
 import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
+import { LuLock } from "react-icons/lu";
+import { acessAlertToast } from "~/lib/utils/toasts";
 
 interface ModelDetailsProps {
 	selectedModel: ModelType
@@ -14,6 +18,7 @@ interface ModelDetailsProps {
 
 const ModelDetails = (props: ModelDetailsProps) => {
 	const { isLoggedIn } = useAuth();
+	const toast = useToast();
 
 	const [isRendered, setIsRendered] = useState<boolean>(false);
 
@@ -125,15 +130,29 @@ const ModelDetails = (props: ModelDetailsProps) => {
 						
 						{
 							isLoggedIn ?
-								<Classification selectedModelName={props.selectedModel.name} />
+								Cookies.get("access") != "full" ?
+									<Button
+										variant="secondary"
+										width="fit-content"
+										margin="auto"
+										leftIcon={<LuLock />}
+										onClick={() => {
+											acessAlertToast(toast);
+										}}
+									>
+										Access not yet granted.
+									</Button>
+								:
+									<Classification selectedModelName={props.selectedModel.name} />
 							:
 								<Button
 									variant="secondary"
 									width="fit-content"
 									margin="auto"
+									leftIcon={<LuLock />}
 									onClick={() => { window.location.href = "/login" }}
 								>
-									Log in to classify names
+									Log in to classify names.
 								</Button>
 						}
 					</VStack>
@@ -159,7 +178,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 						</Text>
 
 						<Link
-							href={"/api"}
+							href={window.env.API_DOC_URL}
 							_hover={{
 								underline: "none",
 								paddingLeft: "3"
