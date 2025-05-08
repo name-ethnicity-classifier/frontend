@@ -166,7 +166,7 @@ const Home = () => {
 
       <InfoBanner
         title="Ethical disclaimer"
-        description="The ethnic origin of an individual cannot be reliably inferred from just their name, but only when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities. We require users to provide a description of how they are using our service to ensure ethical compliance."
+        description="The ethnic origin of an individual cannot be reliably inferred from their name alone. However, when analyzing names at scale, patterns can emerge that offer insights into social structures and inequalities. To ensure ethical compliance, we require users to provide a description of how they intend to use our service."
         iconUrl="/assets/ethics-illustration.png"
         onClick={() => setEthicalGuidelinesModalOpen(true)}
         buttonDescription="See ethical guidelines"

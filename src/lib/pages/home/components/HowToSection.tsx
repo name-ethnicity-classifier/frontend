@@ -16,6 +16,7 @@ const BulletSection = (props: BulletSectionProps) => {
             marginY="3"
             maxWidth={{ base: "none", sm: "75%", lg: "none" }}
             marginX="auto"
+            width="full"
         >
             <Flex
                 backgroundColor="secondaryBlue.100"
@@ -86,8 +87,9 @@ const HowToSection = () => {
                     </Text>
 
                     <BulletSection number={1} text={"... either use one of our already trained models or, if none fit your usecase, request a custom model trained on just the ethnicities you need."}/>
-                    <BulletSection number={2} text={"... classify your names using a .csv file upload or via API. If you choose the file upload just put all your names under one column and you are good to go. For using the API please refere to our documentation."}/>
-                    <BulletSection number={3} text={"... retrieve only the most likely ethnicity per name or get the probability distribution for all ethnicities per name."}/>
+                    <BulletSection number={2} text={"... classify your names using a .csv file upload or via API. If you choose the file upload just put all your names under one column and you are good to go. For using the API please refer to our documentation."}/>
+                    <BulletSection number={3} text={"... retrieve only the most likely ethnicity per name or get the full probability distribution across all ethnicities for each name."}/>
+                    <BulletSection number={4} text={"... classify names by specific nationalities or broader origin groups (e.g. 'asian' or 'scandinavian')."}/>
                 </VStack>
 
                 <VStack
@@ -107,20 +109,19 @@ const HowToSection = () => {
                         fontSize="xs"
                         textAlign="justify"
                     >
-                        With N2E, you can also request custom models tailored to specific origins on the ‘Model Hub’ page. You are able select the desired origins (including 'else' for unselected ones) and even origin groups.
+                        With N2E, you can also request custom models tailored to specific origins on the ‘Model Hub’ page. You can select the desired origins (including 'else' for unselected ones) and even origin groups.
                     </Text>
                     <Text
                         color="textLight"
                         fontSize="xs"
                         textAlign="justify"
                     >
-                        While creating a custom model keep in mind that ...
+                        While creating a custom model, keep in mind that...
                     </Text>
 
-                    <BulletSection number={1} text={"... ethnicity estimation is probabilistic and its performance highly dependent on the amount and kind of ethnicities. Compare your origin configuration with those of our already trained models to estimate how good your model might perform."}/>
-                    <BulletSection number={2} text={"... English speaking origins have similar names. Therefore, they will be mixed up by the classifier more often. The same principle can apply to other origins."}/>
-                    <BulletSection number={3} text={".... machine learning is prone to bias. To reduce bias, we balance training data across chosen origins. That means, we limit the amount of names of each selected origin to match the amount of names of the origin with the least occurences in our dataset. During model creation we will inform you with according numbers."}/>
-
+                    <BulletSection number={1} text={"... ethnicity estimation is probabilistic, and its performance is highly dependent on the number and type of selected origins. Compare your origin configuration with those of our already trained models to estimate how well your model might perform."}/>
+                    <BulletSection number={2} text={"... English-speaking origins often share similar names, so the classifier is more likely to confuse them. The same principle can apply to other origins."}/>
+                    <BulletSection number={3} text={"... machine learning is prone to bias. To reduce it, we balance the training data across the chosen origins. This means we limit the number of names per selected origin to match the origin with the fewest entries in our dataset. During model creation, we’ll inform you with the corresponding numbers."}/>
                 </VStack>
             </Flex>
 

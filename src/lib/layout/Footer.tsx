@@ -4,9 +4,9 @@ import {
   LuScroll,
   LuGithub,
   LuGift,
-  LuHeart,
   LuMail,
   LuCookie,
+  LuLinkedin
 } from "react-icons/lu";
 
 interface FooterLinkChild {
@@ -34,8 +34,8 @@ const FooterColumn = (props: FooterColumnProps) => {
       </Text>
       <Flex
         align="left"
-        flexDirection={{ base: "row", md: "column" }}
-        gap="5"
+        flexDirection="column"
+        gap="1"
       >
         {props.linkChildren.map((linkChild: FooterLinkChild, index: number) => (
           <Link
@@ -49,7 +49,14 @@ const FooterColumn = (props: FooterColumnProps) => {
               data-cc={linkChild.opensCookieManager ? "show-consentModal" : undefined}
             >
               {linkChild.icon}
-              <Text fontSize="xs" color="white" fontWeight="normal">
+              <Text
+                fontSize="xs"
+                color="white"
+                fontWeight="normal"
+                _hover={{
+                  color: "secondaryBlue.100"
+                }}
+              >
                 {linkChild.name}
               </Text>
             </HStack>
@@ -67,21 +74,14 @@ const Footer = () => {
     <Flex
       as="footer"
       width="full"
-      align="center"
-      alignSelf="flex-end"
-      justifyContent="center"
-      flexDirection="column"
       backgroundColor="primaryBlue.100"
     >
-      <VStack
-        maxWidth={1750}
-        width="full"
-        marginX="auto"
-        paddingX={{ base: "5", md: "10", lg: "50", xl: "100" }}
-        paddingY={{ base: "5", md: "10" }}
-        gap="10"
-      >
+
         <Flex
+          marginX="auto"
+          paddingX={{ base: "5", md: "10", lg: "50", xl: "100" }}
+          paddingY={{ base: "5", md: "10" }}
+          maxWidth={1750}
           width="full"
           flexDirection={{ base: "column", md: "row" }}
           alignSelf="flex-start"
@@ -113,7 +113,7 @@ const Footer = () => {
                 size="xs"
                 leftIcon={<LuMail color="var(--chakra-colors-primaryBlue-100" />}
                 _hover={{
-                  bg: "white"
+                  bg: "secondaryBlue.100"
                 }}
                 onClick={() => {
                   window.location.href = "mailto:theodorpeifer@gmail.com?subject=Name-to-Ethnicity Inquiry"
@@ -170,26 +170,24 @@ const Footer = () => {
               {
                 name: "Theodor Peifer",
                 link: "https://www.linkedin.com/in/theodor-peifer-ab6b77190/",
-                icon: <LuHeart color="white" />,
+                icon: <LuLinkedin color="white" />,
                 isExternal: true,
               },
               {
                 name: "Lena Hafner",
                 link: "https://www.linkedin.com/in/lena-folonica-hafner/",
-                icon: <LuHeart color="white" />,
+                icon: <LuLinkedin color="white" />,
                 isExternal: true,
               },
               {
                 name: "Franziska Hafner",
                 link: "https://www.linkedin.com/in/franziska-hafner/",
-                icon: <LuHeart color="white" />,
+                icon: <LuLinkedin color="white" />,
                 isExternal: true,
               },
             ]}
           />
         </Flex>
-
-      </VStack>
     </Flex>
   );
 };

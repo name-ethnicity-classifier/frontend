@@ -19,8 +19,8 @@ const SupportWidget = () => {
         <Text
             color="textDark"
             maxWidth={{ base: "full", lg: "75%", xl: "50%" }}
-            >
-            N2E is a free, open-source project which means we cover server and maintainance fees ourselves. If you find N2E useful and would like to support us, consider donating.
+        >
+            N2E is a free, open-source project which means we cover server and maintainance fees ourselves. If you find this tool useful and would like to support us, please consider donating!
         </Text>
     
         <Link href="https://buymeacoffee.com/theodorpfr" target="_blank">
