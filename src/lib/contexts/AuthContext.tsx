@@ -70,12 +70,16 @@ export const AuthProvider = ({ children }: LayoutProps) => {
     setIsLoggedIn(true);
   };
 
-  const logOut = () => {
+  const cleanCookies = () => {
     Cookies.remove("token");
     Cookies.remove("email");
     Cookies.remove("access");
     Cookies.remove("access_level_reason");
     Cookies.remove("cc_cookie");
+  }
+
+  const logOut = () => {
+    cleanCookies();
     setIsLoggedIn(false);
   };
 

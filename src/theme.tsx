@@ -131,6 +131,7 @@ export const theme = extendTheme({
           color: "white",
           fontSize: "xs",
           borderRadius: "7px",
+          lineHeight: "100%",
           _hover: {
             bg: "primaryBlue.200"
           },
@@ -146,6 +147,7 @@ export const theme = extendTheme({
         secondary: {
           bg: "secondaryBlue.100",
           color: "primaryBlue.100",
+          lineHeight: "100%",
           fontSize: "xs",
           borderRadius: "7px",
           _hover: {
@@ -162,6 +164,7 @@ export const theme = extendTheme({
           color: "primaryRed.100",
           fontSize: "xs",
           borderRadius: "7px",
+          lineHeight: "100%",
           _hover: {
             bg: "secondaryRed.200"
           },
@@ -176,6 +179,7 @@ export const theme = extendTheme({
           color: "primaryTurquoise.100",
           fontSize: "xs",
           borderRadius: "7px",
+          lineHeight: "100%",
           _hover: {
             bg: "secondaryTurquoise.200"
           },

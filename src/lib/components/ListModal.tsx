@@ -173,7 +173,7 @@ const ListModal = (props: ListModalProps) => {
 														color="textLight"
 														padding="5px"
 													>
-														No such nationality exists in our dataset!
+														No such origin exists in our dataset!
 													</Text>
 												: null
 											}

@@ -63,18 +63,18 @@ const Home = () => {
         gap={{ base: "5", md: "auto" }}
       >
         <NumberCard
-          cardTitle="nationalities to choose from"
+          cardTitle="origins to choose from"
           modalData={nationalityData || {}}
-          modalColumns={["Nationality", "Names"]}
+          modalColumns={["Origin", "Names"]}
           modalTitle="Our dataset"
           modalSearchBar={true}
           modalDescription={
             <>
               <Text>
-                We sampled our dataset from the UK Census Database, resulting in <b>{nameAmount}</b> names from <b>{nationalityAmount}</b> different nationalities.
+                We sampled our dataset from the UK Census Database, resulting in <b>{nameAmount}</b> names from <b>{nationalityAmount}</b> different origins.
               </Text>
               <Text>
-                Here is an overview of how those nationalities are distributed in the dataset:
+                Here is an overview of how those origins are distributed in the dataset:
               </Text>
             </>
           }
@@ -92,7 +92,7 @@ const Home = () => {
           modalDescription={
             <>
               <Text>
-                We have a growing amount of ready-to-go models which are each trained on a specific set of nationalities.
+                We have a growing amount of ready-to-go models which are each trained on a specific set of origins.
               </Text>
               <Text>
                 Take a look and see if one of them fits your use-case. If not, you can request a custom model at the <Link href="/model-hub" color="var(--chakra-colors-primaryBlue-100)">Model Hub</Link>!
@@ -113,7 +113,7 @@ const Home = () => {
           modalDescription={
             <>
               <Text>
-                If none of our default models fit your use-case you can request a custom one which will only be trained on the nationalities you specify.
+                If none of our default models fit your use-case you can request a custom one which will only be trained on the origins you specify.
               </Text>
               <Text>
                 Here is a list of your custom models:
@@ -166,7 +166,7 @@ const Home = () => {
 
       <InfoBanner
         title="Ethical disclaimer"
-        description="The ethnic origin of an individual cannot be reliably inferred from just their name, but only when analyzing names at scale, patterns emerge that provide insights into social structures and inequalities. We require users to provide a description of how they are using our service to ensure ethical compliance."
+        description="The ethnic origin of an individual cannot be reliably inferred from their name alone. However, when analyzing names at scale, patterns can emerge that offer insights into social structures and inequalities. To ensure ethical compliance, we require users to provide a description of how they intend to use our service."
         iconUrl="/assets/ethics-illustration.png"
         onClick={() => setEthicalGuidelinesModalOpen(true)}
         buttonDescription="See ethical guidelines"
@@ -210,7 +210,7 @@ const Home = () => {
           <Text
             textAlign="justify"
           >
-            Ethnic inequalities come in many shades, and uncovering them requires versatile research tools. Without knowledge about these inequalities, we have no basis for combating them. Embracing the shift within the social sciences from a 'colour-blind' to a 'colour-conscious' concept of justice, we've developed a name-ethnicity classification tool to infuse data with 'colour-consciousness'. This tool, available for free on our website, is customized to your research needs. You can choose relevant nationalities, and we automatically train a tailor-made machine learning classifier for you using a dataset from the UK government agency CompaniesHouse, which contains roughly 7.3 million names from across the globe. Check out our GitHub repository to see how we built this tool, and join us in opening our eyes to the coloured inequalities of our times.  
+            Ethnic inequalities come in many shades, and uncovering them requires versatile research tools. Without knowledge about these inequalities, we have no basis for combating them. Embracing the shift within the social sciences from a 'colour-blind' to a 'colour-conscious' concept of justice, we've developed a name-ethnicity classification tool to infuse data with 'colour-consciousness'. This tool, available for free on our website, is customized to your research needs. You can choose relevant origins, and we automatically train a tailor-made machine learning classifier for you using a dataset from the UK government agency CompaniesHouse, which contains roughly 7.3 million names from across the globe. Check out our GitHub repository to see how we built this tool, and join us in opening our eyes to the coloured inequalities of our times.  
           </Text>
         </VStack>
 

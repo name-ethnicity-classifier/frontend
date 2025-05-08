@@ -1,18 +1,14 @@
 import {
 	Flex,
 	Text,
-	IconButton,
 	Image,
-	Button,
 	Heading,
 	Box,
-	Checkbox,
 	useDisclosure,
 	HStack,
 	VStack,
 	useBreakpointValue,
 	useToast,
-	Badge
 } from "@chakra-ui/react";
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
@@ -233,7 +229,7 @@ const ModelHub = () => {
 												<b>Name:</b>&nbsp;&nbsp;{selectedModel?.name}
 											</Text>
 											<Text>
-												<b>Created:</b>&nbsp;&nbsp;28.10.2003
+												<b>Created:</b>&nbsp;&nbsp;{selectedModel?.creationTime?.split(" ")[0]}
 											</Text>
 											<Text>
 												<b>Description:</b>&nbsp;&nbsp;

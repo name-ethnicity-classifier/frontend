@@ -125,7 +125,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 							Classify names via file upload
 						</Text>
 						<Text>
-							Put all the names you want to classify into a .csv file under a column “names” and upload it below! Here is an exemplary .csv file.
+							Put all the names you want to classify into a .csv file under a single column (do not add an index column or any header rows) and upload it below!
 						</Text>
 						
 						{
@@ -173,8 +173,9 @@ const ModelDetails = (props: ModelDetailsProps) => {
 							You can also use the /classify endpoint of our REST API.
 						</Text>
 						<Text>
-							Please note:<br />
-							We do not recommend you to use the API as part of your backend or any kind of deployed service. It is mainly meant for doing experiments and to be included in, for example, your Python Notebooks or R scripts.
+							<b>Please note:</b> Do not use our API as part of your backend or any kind of deployed service. It is mainly meant for doing experiments and to be included in, for example, your Python Notebooks or R scripts.
+							<br />
+							<b>Also note:</b> The API key will expire after a month, then you have to copy it again from the user settings.
 						</Text>
 
 						<Link

@@ -22,7 +22,8 @@ export const fetchModels = (callback: (customModels: ModelType[], defaultModels:
 					accuracy: model.accuracy,
 					isCustom: true,
 					scores: model.scores,
-					nationalities: model.nationalities
+					nationalities: model.nationalities,
+					creationTime: model.creationTime
 				})
 			});
 
@@ -33,7 +34,8 @@ export const fetchModels = (callback: (customModels: ModelType[], defaultModels:
 					accuracy: model.accuracy,
 					isCustom: false,
 					scores: model.scores,
-					nationalities: model.nationalities
+					nationalities: model.nationalities,
+					creationTime: model.creationTime
 				})
 			});
 
@@ -103,7 +105,6 @@ export const authAndAccessCheck = (callback: (accessLevel: string, accessLevelRe
 			if (error.status != 401) {
 				console.error(`Request failed. Error: ${error}`);
 			}
-
 			errorCallback();
 		});
 }
