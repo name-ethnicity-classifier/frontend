@@ -169,19 +169,19 @@ const Footer = () => {
             linkChildren={[
               {
                 name: "Theodor Peifer",
-                link: "https://www.linkedin.com",
+                link: "https://www.linkedin.com/in/theodor-peifer-ab6b77190/",
                 icon: <LuHeart color="white" />,
                 isExternal: true,
               },
               {
                 name: "Lena Hafner",
-                link: "https://www.linkedin.com",
+                link: "https://www.linkedin.com/in/lena-folonica-hafner/",
                 icon: <LuHeart color="white" />,
                 isExternal: true,
               },
               {
                 name: "Franziska Hafner",
-                link: "https://www.linkedin.com",
+                link: "https://www.linkedin.com/in/franziska-hafner/",
                 icon: <LuHeart color="white" />,
                 isExternal: true,
               },

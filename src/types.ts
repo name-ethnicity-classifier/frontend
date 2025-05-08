@@ -12,7 +12,8 @@ export interface ModelType {
 	accuracy: number,
 	isCustom: boolean,
 	scores: number[],
-	nationalities: string[]
+	nationalities: string[],
+	creationTime?: string
 }
 
 

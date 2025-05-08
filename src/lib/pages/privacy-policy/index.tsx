@@ -24,7 +24,7 @@ const PrivacyPolicy = () => {
       </Text>
       <Text mt={4}>
         This policy is effective as of 21 December 2021 and was last updated on
-        24 January 2024.
+        08 May 2025.
       </Text>
 
       {/* Information We Collect */}
@@ -64,9 +64,10 @@ const PrivacyPolicy = () => {
         the following:
       </Text>
       <List spacing={2} mt={2}>
-        <ListItem><Text>- name</Text></ListItem>
+        <ListItem><Text>- full name</Text></ListItem>
         <ListItem><Text>- email</Text></ListItem>
         <ListItem><Text>- academic/professional role</Text></ListItem>
+        <ListItem><Text>- description of what the service is being used for</Text></ListItem>
       </List>
 
       <Heading size="xs" mt={6} mb={2}>
@@ -219,6 +220,8 @@ const PrivacyPolicy = () => {
       <List spacing={2} mt={2}>
         <ListItem><Text>- <b>email</b>: This cookie stores your email to facilitate requests and secure account access.</Text></ListItem>
         <ListItem><Text>- <b>token</b>: This cookie holds an authorization token, functioning as a secure key for authorized account access.</Text></ListItem>
+        <ListItem><Text>- <b>access</b>: This cookie stores wether you have full access to our service or not in order to adapt the UI accordingly.</Text></ListItem>
+        <ListItem><Text>- <b>access_level_reason</b>: This cookie stores the reason of your access level in order to notify you if it changes.</Text></ListItem>
         <ListItem><Text>- <b>cc_cookie</b>: This cookie stores the users cookie preferences.</Text></ListItem>
       </List>
 

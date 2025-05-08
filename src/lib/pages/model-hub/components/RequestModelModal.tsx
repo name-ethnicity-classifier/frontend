@@ -168,7 +168,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 					case "NATIONALITIES_INVALID": {
 						setValidationError((prevErrors) => ({
 							...prevErrors,
-							selection: { failed: true, message: "Please select at least two from nationalities or at least two from groups." },
+							selection: { failed: true, message: "Please select at least two origins or at least two origin groups." },
 						}));
 						break;
 					}
@@ -340,14 +340,15 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 							flex="1.5"
 							width="full"
 							borderRadius="7px"
-							gap="4"
+							alignItems="left"
+							gap="3"
 						>
 							<HStack
 								width="full"
 								gap="10px"
 							>
 								<SectionTitle
-									title="Choose nationalities to train on"
+									title="Choose origins to train on"
 									icon={<LuPointer color="var(--chakra-colors-primaryBlue-100"/>}
 								/>
 								<Flex
@@ -385,10 +386,9 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 										setSelectGroupLevel(!selectGroupLevel)
 									}}
 								>
-									<Text lineHeight="15px">Select from nationality groups</Text>
+									<Text lineHeight="15px">Select from origin groups</Text>
 								</Checkbox>
 							</VStack>
-
 							<Flex
 								flexWrap="wrap"
 								borderRadius="7px"
@@ -414,7 +414,8 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 													textAlign="center"
 													display="inline-block"
 													height="auto"
-													title={amount.toString()}
+													border={nationality === "else" ? "1px solid" : "none"}
+													title={nationality !== "else" ? amount.toString() : ""}
 													_hover={{
 														bg: isSelected ? "primaryBlue.200" : "secondaryBlue.200"
 													}}
@@ -443,6 +444,8 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 									: null
 								}
 							</Flex>
+							
+							
 
 							<VStack
 								width="full"
@@ -450,7 +453,14 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 								gap="1"
 								mt="auto"
 							>
-								<Text color="primaryBlue.100"><b>Total amount of names to train on:</b> {smallestNameAmount * selectedClasses.length}</Text>
+								<HStack>
+									<Text variant="bold" color="primaryBlue.100">Tip:</Text>
+									<Text>Select "else" to group all unselected origins into one, eg. as in "british or not british".</Text>
+								</HStack>
+								<HStack>
+									<Text variant="bold" color="primaryBlue.100">Total amount of names:</Text>
+									<Text>{smallestNameAmount * selectedClasses.length}</Text>
+								</HStack>
 								{
 									validationError.selection.failed ?
 										<Text width="full" color="red">{validationError.selection.message}</Text>

@@ -74,7 +74,7 @@ const HowToSection = () => {
                         fontSize="xs"
                         textAlign="justify"
                     >
-                        On the 'Model Hub' page you can access our pretrained and your custom models. For every trained model, we display the overall accuracy as well as individual accuracies for each nationalities. Classifying is very straight-forward, but of course we give you options.
+                        On the 'Model Hub' page you can access our pretrained and your custom models. For every trained model, we display the overall accuracy as well as individual accuracies for each origin. Classifying is very straight-forward, but of course we give you options.
                     </Text>
 
                     <Text
@@ -107,7 +107,7 @@ const HowToSection = () => {
                         fontSize="xs"
                         textAlign="justify"
                     >
-                        With N2E, you can also request custom models tailored to specific nationalities on the ‘Model Hub’ page. You are able select the desired nationalities (including 'else' for unselected ones) and even nationality groups.
+                        With N2E, you can also request custom models tailored to specific origins on the ‘Model Hub’ page. You are able select the desired origins (including 'else' for unselected ones) and even origin groups.
                     </Text>
                     <Text
                         color="textLight"
@@ -117,9 +117,9 @@ const HowToSection = () => {
                         While creating a custom model keep in mind that ...
                     </Text>
 
-                    <BulletSection number={1} text={"... ethnicity estimation is probabilistic and its performance highly dependent on the amount and kind of ethnicities. Compare your nationality configuration with those of our pre-trained models to estimate how good your model might perform."}/>
-                    <BulletSection number={2} text={"... English speaking nationalities have similar names. Therefore, they will be mixed up by the classifier more often. The same principle can apply to other nationalities."}/>
-                    <BulletSection number={3} text={".... machine learning is prone to bias. To reduce bias, we balance training data across chosen nationalities. If one nationality has fewer occurrences of names in our dataset, we limit others to match, which may lower overall accuracy. During model creation we will inform you with according numbers."}/>
+                    <BulletSection number={1} text={"... ethnicity estimation is probabilistic and its performance highly dependent on the amount and kind of ethnicities. Compare your origin configuration with those of our already trained models to estimate how good your model might perform."}/>
+                    <BulletSection number={2} text={"... English speaking origins have similar names. Therefore, they will be mixed up by the classifier more often. The same principle can apply to other origins."}/>
+                    <BulletSection number={3} text={".... machine learning is prone to bias. To reduce bias, we balance training data across chosen origins. That means, we limit the amount of names of each selected origin to match the amount of names of the origin with the least occurences in our dataset. During model creation we will inform you with according numbers."}/>
 
                 </VStack>
             </Flex>
