@@ -10,6 +10,7 @@ import { useAuth } from "~/lib/contexts/AuthContext";
 import { ModelType } from "~/types";
 import { LuLock } from "react-icons/lu";
 import { acessAlertToast } from "~/lib/utils/toasts";
+import config from "~/config";
 
 interface ModelDetailsProps {
 	selectedModel: ModelType
@@ -179,7 +180,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 						</Text>
 
 						<Link
-							href={window.env.API_DOC_URL}
+							href={config.API_DOC_URL}
 							_hover={{
 								underline: "none",
 								paddingLeft: "3"

@@ -1,9 +1,10 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { AccessCheckRespnseType, ModelType, ModelsResponseType, NationalityDataType } from "../../types";
+import config from "~/config";
 
 
-export const BACKEND_URL = `${window.env.BACKEND_URL}`
+export const BACKEND_URL = config.BACKEND_URL;
 
 
 export const fetchModels = (callback: (customModels: ModelType[], defaultModels: ModelType[]) => void, onError?: () => void) => {

@@ -22,6 +22,7 @@ import Cookies from "js-cookie";
 
 import SettingsDrawer from "../components/SettingsDrawer";
 import { useAuth } from "../contexts/AuthContext";
+import config from "~/config";
 
 interface NavigationButtonProps {
   text: string;
@@ -126,7 +127,7 @@ const Header = (props: HeaderProps) => {
       <NavigationButton
         text="API"
         iconName="api"
-        page={window.env.API_DOC_URL}
+        page={config.API_DOC_URL}
         isExternal={true}
       />
     </>

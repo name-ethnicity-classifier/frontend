@@ -3,11 +3,10 @@ import { ReactNode, useState, ChangeEvent, useEffect, ReactElement } from "react
 import { LuLock, LuPencil, LuPointer } from "react-icons/lu";
 import { NationalityDataType } from "~/types";
 import { fetchNationalityData } from "~/lib/utils/serverRequests";
-import { EmailIcon } from "@chakra-ui/icons";
 import axios, { AxiosResponse, AxiosError } from "axios";
-import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import Cookies from "js-cookie";
 import SectionTitle from "~/lib/components/SectionTitle";
+import config from "~/config";
 
 
 interface ValidationError {
@@ -119,7 +118,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 		}
 
 		axios.post(
-			`${BACKEND_URL}/models`, {
+			`${config.BACKEND_URL}/models`, {
 					name: modelName,
 					description: modelDescription,
 					nationalities: selectedClasses

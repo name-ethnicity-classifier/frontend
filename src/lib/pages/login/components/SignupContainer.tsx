@@ -2,10 +2,10 @@ import { Box, Button, Checkbox, VStack, FormControl, Select, IconButton, HStack,
 import { useEffect, useState } from "react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import axios, { AxiosResponse, AxiosError } from "axios";
-import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import { FaBookOpen } from "react-icons/fa";
 import PasswordField from "./PasswordField";
 import EthicalGuidelineModal from "~/lib/components/EthicalGuidelinesModal";
+import config from "~/config";
 
 
 
@@ -133,7 +133,7 @@ const SignupContainer = (props: {onSuccessfulSignup: () => void}) => {
 			consented: consented,
 			usageDescription: usageDescription
         };
-        axios.post(`${BACKEND_URL}/signup`, requestBody)
+        axios.post(`${config.BACKEND_URL}/signup`, requestBody)
             .then((_response: AxiosResponse) => {
 				// Reset all error states
 				setValidationError({

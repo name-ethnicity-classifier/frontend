@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import PasswordField from "./PasswordField";
-import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import { useAuth } from "~/lib/contexts/AuthContext";
+import config from "~/config";
 
 
 interface LoginRequest {
@@ -77,7 +77,7 @@ const LoginContainer = () => {
             email: email,
 			password: password,
         };
-        axios.post(`${BACKEND_URL}/login`, requestBody)
+        axios.post(`${config.BACKEND_URL}/login`, requestBody)
             .then((response: AxiosResponse) => {
 				const cookieOptions = {
 					expires: rememberMe ? 30 : undefined,

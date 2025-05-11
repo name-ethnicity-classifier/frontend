@@ -4,9 +4,9 @@ import axios, { AxiosResponse, AxiosError } from "axios";
 import { useRef, useState } from "react";
 import Papa from "papaparse";
 import Cookies from "js-cookie";
-import { BACKEND_URL } from "~/lib/utils/serverRequests";
 import { LuFileUp } from "react-icons/lu";
 import { BasicClassificationResponseType, DistributionClassificationResponseType } from "~/types";
+import config from "~/config";
 
 
 interface ClassificationProps {
@@ -84,7 +84,7 @@ const Classification = (props: ClassificationProps) => {
 
 		const classificationEndpoint = entireDistribution ? "classify-distribution" : "classify";
 
-        axios.post(`${BACKEND_URL}/${classificationEndpoint}`, {
+        axios.post(`${config.BACKEND_URL}/${classificationEndpoint}`, {
 			modelName: props.selectedModelName,
 			names: uploadedNames
 		},
