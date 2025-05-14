@@ -11,6 +11,7 @@ import { ModelType } from "~/types";
 import { LuLock } from "react-icons/lu";
 import { acessAlertToast } from "~/lib/utils/toasts";
 import config from "~/config";
+import Pill from "~/lib/components/Pill";
 
 interface ModelDetailsProps {
 	selectedModel: ModelType
@@ -171,14 +172,15 @@ const ModelDetails = (props: ModelDetailsProps) => {
 							Classify names via API
 						</Text>
 						<Text>
-							You can also use the /classify endpoint of our REST API.
+							You can also use the <i>/classify</i> or <i>/classify-distribution</i> endpoint of our REST API.
 						</Text>
 						<Text>
-							<b>Please note:</b> Do not use our API as part of your backend or any kind of deployed service. It is mainly meant for doing experiments and to be included in, for example, your Python Notebooks or R scripts.
+							<b>Rate limiting:</b> You can classify <i>10.000</i> names per request and have a daily quota of <i>100.000</i> names.
 							<br />
-							<b>Also note:</b> The API key will expire after a month, then you have to copy it again from the user settings.
+							<b>API key:</b> You can find your key in the user settings. It will expire after a month, then you have to copy it again from the user settings.
+							<br />
+							<b>Dislcaimer:</b> Do not use our API as part of your backend or any kind of deployed service. It is mainly meant for doing experiments and to be included in, for example, your Python Notebooks or R scripts.
 						</Text>
-
 						<Link
 							href={config.API_DOC_URL}
 							_hover={{
@@ -215,7 +217,7 @@ const ModelDetails = (props: ModelDetailsProps) => {
 					gap="3"
 				>
 					<Text variant="bold">
-						Classify names locally on your machine
+						Classify unlimited names locally on your machine
 					</Text>
 					<Text>
 						<i>Coming soon... or sent us an inquiry via email :&#41;</i>

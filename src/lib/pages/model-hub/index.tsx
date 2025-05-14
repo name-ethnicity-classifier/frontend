@@ -66,6 +66,15 @@ const ModelHub = () => {
 				() => showErrorToast()
 			);
 		}
+
+		toast({
+			title: "We have resetted our models!",
+			description: "With our migration to N2E 2.0 we have resetted all custom models. Please request them again if needed!",
+			status: "warning",
+			duration: 60000,
+			isClosable: true,
+		});
+
 	}, [isLoggedIn]);
 
 	useEffect(() => {
@@ -207,7 +216,7 @@ const ModelHub = () => {
 					>
 
 						<Pill
-							text={selectedModel?.isCustom ? "custom" : "default"}
+							text={selectedModel?.isCustom ? "custom model" : "default model"}
 							colorPalette={selectedModel?.isCustom ? "turquoise" : "orange"}
 						/>
 						

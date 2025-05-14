@@ -125,7 +125,7 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 										alignItems="left"
 									>
 										<SectionTitle
-											title="What do you aim to use this tool for?"
+											title="What do you aim to use this tool for? (40 chars.)"
 											icon={<LuPencil color="var(--chakra-colors-primaryBlue-100"/>}
 										/>
 
