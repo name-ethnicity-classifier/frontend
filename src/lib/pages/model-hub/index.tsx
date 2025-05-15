@@ -52,7 +52,7 @@ const ModelHub = () => {
 		if (isLoggedIn) {
 			fetchModels(
 				(customModels: ModelType[], defaultModels: ModelType[]) => {
-					const allModels = defaultModels.concat(customModels);
+					const allModels = defaultModels.reverse().concat(customModels);
 					initialzeModels(allModels);
 				},
 				() => showErrorToast()
@@ -67,6 +67,7 @@ const ModelHub = () => {
 			);
 		}
 
+		toast.closeAll();
 		toast({
 			title: "We have resetted our models!",
 			description: "With our migration to N2E 2.0 we have resetted all custom models. Please request them again if needed!",

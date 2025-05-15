@@ -27,7 +27,7 @@ const Page404 = () => {
             color="secondaryBlue.200"
             maxWidth="275px"
           >
-            This page has been abducted by Aliens!
+            This page has been abducted by aliens!
           </Heading>
 
           <Button

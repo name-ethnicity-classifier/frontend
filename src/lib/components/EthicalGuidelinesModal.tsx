@@ -29,16 +29,16 @@ const EthicalGuidelineListStage = () => {
 				Before proceeding, please read and acknowledge the following ethical guidelines regarding the use of this service:
 			</Text>
 			<Text>
-				✅ <b>Research-Only Purpose:</b> This tool is intended for studying demographic patterns, assessing diversity, and conducting research—whether in academia, journalism, or organizational analysis.
+				✅ <b>Research-only purpose:</b> This tool is intended for studying demographic patterns, assessing diversity, and conducting research—whether in academia, journalism, or organizational analysis.
 			</Text>
 			<Text>
-				🚫 <b>Not for Personal Identification:</b> The results should not be used to assign ethnicity to individuals in personal databases, hiring processes, customer profiling, or any private-sector decision-making.
+				🚫 <b>Not for personal identification:</b> The results should not be used to assign ethnicity to individuals in personal databases, hiring processes, customer profiling, or any private-sector decision-making.
 			</Text>
 			<Text>
-				🛑 <b>Ethical Responsibility:</b> Misuse of this service for discriminatory, invasive, or unethical purposes may result in account suspension.
+				🛑 <b>Ethical responsibility:</b> Misuse of this service for discriminatory, invasive, or unethical purposes may result in account suspension.
 			</Text>
 			<Text>
-				⚖️ <b>Commitment to Fair Use:</b> Users should apply this tool responsibly, promoting fairness, inclusivity, and transparency while avoiding any use that could lead to discrimination or harm.
+				⚖️ <b>Commitment to fair use:</b> Users should apply this tool responsibly, promoting fairness, inclusivity, and transparency while avoiding any use that could lead to discrimination or harm.
 			</Text>
 			<Text>
 				<i>You acknowlege these guidelines by accepting the terms of services.</i>
@@ -101,7 +101,7 @@ const EthicalGuidelineModal = (props: EthicalGuidelinesModalProps) => {
 						<VStack gap="3">
 							<LuHeartHandshake size="45px" color="var(--chakra-colors-primaryRed-100)" />
 							<Heading variant={{ base: "h3", md: "h2" }} textAlign="center">
-								Notice on the ethical use of Name-Ethnicity classification
+								Notice on the ethical use of name-ethnicity classification
 							</Heading>
 						</VStack>
 

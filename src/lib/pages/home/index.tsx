@@ -210,7 +210,7 @@ const Home = () => {
           <Text
             textAlign="justify"
           >
-            Ethnic inequalities come in many shades, and uncovering them requires versatile research tools. Without knowledge about these inequalities, we have no basis for combating them. Embracing the shift within the social sciences from a 'colour-blind' to a 'colour-conscious' concept of justice, we've developed a name-ethnicity classification tool to infuse data with 'colour-consciousness'. This tool, available for free on our website, is customized to your research needs. You can choose relevant origins, and we automatically train a tailor-made machine learning classifier for you using a dataset from the UK government agency CompaniesHouse, which contains roughly 7.3 million names from across the globe. Check out our GitHub repository to see how we built this tool, and join us in opening our eyes to the coloured inequalities of our times.  
+            Ethnic inequalities come in many shades, and uncovering them requires versatile research tools. Without knowledge about these inequalities, we have no basis for combating them. Embracing the shift within the social sciences from a 'colour-blind' to a 'colour-conscious' concept of justice, we've developed a name-ethnicity classification tool to infuse data with 'colour-consciousness'. This tool, available for free on this website, is customizable to your research needs. You can choose relevant origins, and we automatically train a tailor-made machine learning classifier for you, using a dataset from the UK government agency CompaniesHouse, which contains roughly 7.3 million names from across the globe. Check out our GitHub repository to see how we built this tool, and join us in opening our eyes to the coloured inequalities of our times.  
           </Text>
         </VStack>
 
@@ -238,7 +238,7 @@ const Home = () => {
             />
             <TeamMemberCard
               name="Lena Hafner"
-              description="Phd. Candidate in Politics and International Studies, University of Cambridge"
+              description="PhD. Candidate in Politics and International Studies, University of Cambridge"
               linkedInLink="https://www.linkedin.com/in/lena-folonica-hafner/"
               imageURL="/assets/member-l.svg"
             />

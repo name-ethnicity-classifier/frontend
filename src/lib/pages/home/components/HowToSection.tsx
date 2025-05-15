@@ -86,7 +86,7 @@ const HowToSection = () => {
                         You can choose to...
                     </Text>
 
-                    <BulletSection number={1} text={"... either use one of our already trained models or, if none fit your usecase, request a custom model trained on just the ethnicities you need."}/>
+                    <BulletSection number={1} text={"... use one of our already trained models or, if none fits your usecase, request a custom model trained on just the ethnicities you need."}/>
                     <BulletSection number={2} text={"... classify your names using a .csv file upload or via API. If you choose the file upload just put all your names under one column and you are good to go. For using the API please refer to our documentation."}/>
                     <BulletSection number={3} text={"... retrieve only the most likely ethnicity per name or get the full probability distribution across all ethnicities for each name."}/>
                     <BulletSection number={4} text={"... classify names by specific nationalities or broader origin groups (e.g. 'asian' or 'scandinavian')."}/>
@@ -121,7 +121,7 @@ const HowToSection = () => {
 
                     <BulletSection number={1} text={"... ethnicity estimation is probabilistic, and its performance is highly dependent on the number and type of selected origins. Compare your origin configuration with those of our already trained models to estimate how well your model might perform."}/>
                     <BulletSection number={2} text={"... English-speaking origins often share similar names, so the classifier is more likely to confuse them. The same principle can apply to other origins."}/>
-                    <BulletSection number={3} text={"... machine learning is prone to bias. To reduce it, we balance the training data across the chosen origins. This means we limit the number of names per selected origin to match the origin with the fewest entries in our dataset. During model creation, we’ll inform you with the corresponding numbers."}/>
+                    <BulletSection number={3} text={"... machine learning is prone to bias. To reduce it, we balance the training data across the chosen origins. This means we limit the number of names per selected origin to match the origin with the fewest entries in our dataset. During model creation, we’ll inform you about the corresponding numbers."}/>
                 </VStack>
             </Flex>
 
