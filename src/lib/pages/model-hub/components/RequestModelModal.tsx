@@ -174,7 +174,7 @@ const RequestModelModal = (props: RequestModelModalProps) => {
 					case "MODEL_NAME_INVALID": {
 						setValidationError((prevErrors) => ({
 							...prevErrors,
-							modelName: { failed: true, message: "Model name too long." },
+							modelName: { failed: true, message: "Model name too long (max. 32 characters)." },
 						}));
 						break;
 					}

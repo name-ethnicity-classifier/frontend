@@ -36,7 +36,7 @@ const ModelSelectionPopver = (props: ModelSelectionPopoverProps) => {
                     paddingLeft="2"
                     paddingRight="3"
                     onClick={onToggle}
-                    width={{ base: "full", sm: "auto"}}
+                    width={{ base: "full", sm: "full"}}
                     justifyContent="left"
                     leftIcon={
                         isPopoverOpen ? 
@@ -56,7 +56,7 @@ const ModelSelectionPopver = (props: ModelSelectionPopoverProps) => {
                         color="white"
                         whiteSpace="nowrap"
                         overflow="hidden"
-                        maxWidth={{ base: "225px", xs: "auto" }}
+                        maxWidth="250px"
                     >
                         {props.selectedModel?.name}
                     </Text>

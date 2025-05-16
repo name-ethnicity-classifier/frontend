@@ -31,7 +31,7 @@ const CallToAction = () => {
             colorPalette="turquoise"
             keepCasing={true}
             icon={<BiSolidMegaphone color="var(--chakra-colors-primaryTurquoise-100)"/>}
-            text={"name-to-ethnicity 2.0"}
+            text={"name-to-ethnicity v1.0"}
           />
 
           <Text

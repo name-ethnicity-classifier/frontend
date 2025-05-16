@@ -13,7 +13,7 @@ export function acessAlertToast(toast: any) {
     <>
       <p>
         Since May 2025, we require users to provide a description of how they are using our service to ensure ethical compliance.
-        Your usage description is either missing or insufficient (see the reason below).
+        Your usage description is either missing, insufficient or currently under review (see the reason below).
         Please update it in your user settings or contact us via email.
       </p>
       <br />

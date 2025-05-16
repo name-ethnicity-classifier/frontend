@@ -61,7 +61,7 @@ const ModelHub = () => {
 		else {
 			fetchDefaultModels(
 				(defaultModels: ModelType[]) => {
-					initialzeModels(defaultModels);
+					initialzeModels(defaultModels.reverse());
 				},
 				() => showErrorToast()
 			);
@@ -70,7 +70,7 @@ const ModelHub = () => {
 		toast.closeAll();
 		toast({
 			title: "We have resetted our models!",
-			description: "With our migration to N2E 2.0 we have resetted all custom models. Please request them again if needed!",
+			description: "With our release of stable version 1.0 we have resetted all custom models. Please request them again if needed!",
 			status: "warning",
 			duration: 60000,
 			isClosable: true,
@@ -210,18 +210,20 @@ const ModelHub = () => {
 							</>
 					}
 
+					<Pill
+						text={selectedModel?.isCustom ? "custom model" : "default model"}
+						colorPalette={selectedModel?.isCustom ? "turquoise" : "orange"}
+					/>
+
 					<HStack
 						flex="1"
 						marginLeft={{base: "none"}}
 						width={{base: "full", sm: "auto"}}
 					>
 
-						<Pill
-							text={selectedModel?.isCustom ? "custom model" : "default model"}
-							colorPalette={selectedModel?.isCustom ? "turquoise" : "orange"}
-						/>
 						
-						<HStack marginLeft="auto" gap={{ base: "2", sm: "3" }}>
+						
+						<HStack marginLeft={{base: "none", md: "auto"}} gap={{ base: "2", sm: "3" }}>
 							<Box onClick={() => setShowNationalityList(true)}>
 								<Pill
 									text="details"

@@ -30,6 +30,7 @@ interface NavigationButtonProps {
   page: string;
   isExternal: boolean;
   targetId?: string;
+  onClickEffect?: () => void;
 }
 
 const NavigationButton = (props: NavigationButtonProps) => {
@@ -38,6 +39,9 @@ const NavigationButton = (props: NavigationButtonProps) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const handleNavigation = () => {
+    window.scrollTo(0, 0);
+    if (props.onClickEffect) props.onClickEffect();
+
     if (props.isExternal) {
       window.open(props.page, "_blank");
       return;
@@ -117,18 +121,21 @@ const Header = (props: HeaderProps) => {
         page="/"
         isExternal={false}
         targetId="about-section"
+        onClickEffect={onPopoverClose}
       />
       <NavigationButton
         text="Model Hub"
         iconName="model-hub"
         page="/model-hub"
         isExternal={false}
+        onClickEffect={onPopoverClose}
       />
       <NavigationButton
         text="API"
         iconName="api"
         page={config.API_DOC_URL}
         isExternal={true}
+        onClickEffect={onPopoverClose}
       />
     </>
   );
@@ -205,7 +212,7 @@ const Header = (props: HeaderProps) => {
                 marginTop="2"
                 width="auto"
               >
-                <PopoverBody display="flex" flexDirection="column">
+                <PopoverBody>
                   <VStack align="start" spacing="0">
                     <NavigationButtonList />
                   </VStack>

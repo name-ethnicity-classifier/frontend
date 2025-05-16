@@ -54,6 +54,7 @@ const Pill = (props: BadgeProps) => {
                 fontSize="xs"
                 fontWeight="bold"
                 color={color.text}
+                whiteSpace="nowrap"
             >
                 {props.keepCasing ? props.text : props.text.toUpperCase()}
             </Text>
