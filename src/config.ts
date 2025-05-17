@@ -13,7 +13,7 @@ if (hostname === 'localhost') {
     API_DOC_URL = 'http://localhost:3000';
 } else if (hostname === 'www.name-to-ethnicity.com' || hostname === 'name-to-ethnicity.com') {
     BACKEND_URL = 'https://api.name-to-ethnicity.com';
-    API_DOC_URL = 'https://docs.api.name-to-ethnicity.com';
+    API_DOC_URL = 'https://docs.name-to-ethnicity.com';
 } else {
     BACKEND_URL = 'https://api.dev.name-to-ethnicity.com';
     API_DOC_URL = 'https://docs.dev.name-to-ethnicity.com';
